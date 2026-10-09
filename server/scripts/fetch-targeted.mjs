@@ -42,6 +42,15 @@ const TARGETS = {
   // English queries only: a Chinese-language query for "tea tray" returned
   // street furniture, and it also has no place in an English-only codebase.
   'tea-tray': ['Chinese tea tray', 'tea tray bamboo', 'tea board gongfu', 'tea table bamboo'],
+  // Specifically for the one product still without a photograph.
+  'bamboo-tray-photo': [
+    'bamboo tea tray',
+    'wooden tea tray Chinese',
+    'gongfu tea tray',
+    'tea service tray wood',
+    'Chinese tea board bamboo',
+    'slatted tray bamboo',
+  ],
   teaware: ['gaiwan and cups', 'Chinese tea set porcelain', 'tea utensils Chinese', 'tea caddy Chinese'],
   // Jade: nephrite and jadeite, carved objects and rough stone.
   'jade-nephrite': ['Hetian jade', 'nephrite carving', 'Chinese jade pendant', 'white jade China'],

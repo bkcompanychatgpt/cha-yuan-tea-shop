@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-09T18:28:00.823Z",
+  "generatedAt": "2026-10-09T19:52:52.239Z",
   "counts": {
-    "products": 48,
+    "products": 49,
     "categories": 12,
     "story": 7,
-    "files": 276
+    "files": 281
   },
   "hero": "/img/photos/hero-wide.jpg",
   "story": [
@@ -276,6 +276,13 @@
         "/img/photos/oolong-explorer-flight-alt2.jpg"
       ]
     },
+    "bamboo-tea-tray": {
+      "gallery": [
+        "/img/photos/bamboo-tea-tray-hero.jpg",
+        "/img/photos/bamboo-tea-tray-alt.jpg",
+        "/img/photos/bamboo-tea-tray-alt2.jpg"
+      ]
+    },
     "hetian-jade-buddha-pendant": {
       "gallery": [
         "/img/photos/hetian-jade-buddha-pendant-hero.jpg",
@@ -407,6 +414,11 @@
     "/img/photos/aged-white-2019-shoumei-hero-thumb.jpg",
     "/img/photos/aged-white-2019-shoumei-hero-wide.jpg",
     "/img/photos/aged-white-2019-shoumei-hero.jpg",
+    "/img/photos/bamboo-tea-tray-alt.jpg",
+    "/img/photos/bamboo-tea-tray-alt2.jpg",
+    "/img/photos/bamboo-tea-tray-hero-thumb.jpg",
+    "/img/photos/bamboo-tea-tray-hero-wide.jpg",
+    "/img/photos/bamboo-tea-tray-hero.jpg",
     "/img/photos/biluochun-spring-snail-alt.jpg",
     "/img/photos/biluochun-spring-snail-alt2.jpg",
     "/img/photos/biluochun-spring-snail-hero-thumb.jpg",

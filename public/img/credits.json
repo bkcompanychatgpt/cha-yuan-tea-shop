@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T18:28:00.806Z",
+  "generatedAt": "2026-10-09T19:52:52.227Z",
   "credits": {
     "hero": {
       "source": "https://commons.wikimedia.org/wiki/File:Tea_Harvesting_03.jpg",
@@ -389,6 +389,16 @@
       "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
       "author": "Maximilian Wimmer",
       "originalAuthor": "Maximilian Wimmer",
+      "via": "Wikimedia Commons"
+    },
+    "bamboo-tea-tray": {
+      "source": "https://commons.wikimedia.org/wiki/File:Chaju_shizuhaused_25.jpg",
+      "title": "Chaju shizuhaused 25.jpg",
+      "originalTitle": "Chaju shizuhaused 25.jpg",
+      "licence": "CC BY-SA 3.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "author": "Shizuha",
+      "originalAuthor": "Shizuha",
       "via": "Wikimedia Commons"
     },
     "hetian-jade-buddha-pendant": {

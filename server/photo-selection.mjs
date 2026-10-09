@@ -95,13 +95,14 @@ export const PRODUCT_PHOTOS = {
 
   /* ------------------------------------------------------------ gift sets */
   'gongfu-starter-kit': { picks: ['bamboo-tray#1', 'gaiwan-good#6', 'yixing#12'], grade: 'product' },
-  // No studio shot of a gift box exists under an open licence, so the box is
-  // represented by its contents: the six teas inside it.
+  // No studio shot of a bamboo tea tray exists under an open licence, so the box
+  // is represented by its contents: the six teas inside it.
   'the-tea-voyage-gift-box': { picks: ['dianhong#1', 'silver-needle#2', 'puerh#2'], grade: 'product' },
   'oolong-explorer-flight': { picks: ['oolong#2', 'oolong#15', 'oolong#22'], grade: 'product' },
 
-  // `bamboo-tea-tray` keeps the generated artwork: no openly-licensed photograph
-  // of a slatted bamboo tea tray was good enough to use. Add one here later.
+  // The last product without a photograph. A slatted bamboo tray, photographed
+  // straight on, which is what the product is.
+  'bamboo-tea-tray': { picks: ['bamboo-tray-photo#5', 'bamboo-tray-photo#4', 'teaware#11'], grade: 'product' },
 };
 
 /**

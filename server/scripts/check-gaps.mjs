@@ -39,15 +39,14 @@ const EXPECTED_GENERATED = [
 ];
 
 /**
- * Slots that legitimately have no photograph yet. Anything here is a known gap,
- * reported as information rather than as a failure.
+ * Slots that legitimately have no photograph. Empty: every product and every
+ * category now has one, so anything appearing here would be a regression.
+ *
+ * Entries are reported as information rather than as failures, which is why this
+ * list stays even when empty — a future product without photography needs a
+ * deliberate reason recorded here, not a silent pass.
  */
-const KNOWN_NO_PHOTO = [
-  {
-    pattern: /^\/img\/product\/bamboo-tea-tray(\/(layout|profile))?\.svg$/,
-    why: 'no suitable licensed photo of a bamboo tea tray; the three generated views form a set',
-  },
-];
+const KNOWN_NO_PHOTO = [];
 
 async function main() {
   console.log(`\nPlaceholder audit against ${BASE}\n`);

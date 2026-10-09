@@ -56,22 +56,31 @@ function seed({ always = false } = {}) {
   // Only the catalogue itself is expensive and therefore left alone once built.
   setSetting('editorial', JSON.stringify(editorialWithPhotos()));
 
-  if (existing.n > 0 && !force && !always) {
-    console.log(`Catalogue already has ${existing.n} products — editorial content refreshed (use --force to rebuild the catalogue).`);
-    return { skipped: true, products: existing.n };
-  }
-
+  /*
+   * The catalogue is rebuilt on every boot from catalog-data.mjs.
+   *
+   * It used to be seeded once and then left alone, which broke a deploy in a way
+   * that was invisible from the outside: the code shipped 49 products and 276
+   * photographs, and the running site kept serving the 32 products and generated
+   * artwork it had been seeded with on its first boot. Nothing on the dashboard
+   * said so.
+   *
+   * Variants carry the prices and the stock, so they are rebuilt with the
+   * products. That resets stock counts to the figures in the catalogue file, and
+   * it renumbers variant ids — which is harmless, because a basket is validated
+   * against the database on every price request and drops lines that no longer
+   * exist. Order history is untouched: order_items stores its own snapshot of
+   * each product name, variant and price.
+   */
   let productCount = 0;
   let variantCount = 0;
 
   transaction(() => {
-    if (force) {
-      // Orders reference products by id, but order_items keeps its own snapshots,
-      // so replacing the catalogue cannot corrupt historical orders.
-      db.exec('DELETE FROM variants');
-      db.exec('DELETE FROM products');
-      db.exec('DELETE FROM categories');
-    }
+    // Catalogue tables only. Orders, payment attempts and webhook events are the
+    // shop's own records and must survive any number of deploys.
+    db.exec('DELETE FROM variants');
+    db.exec('DELETE FROM products');
+    db.exec('DELETE FROM categories');
 
     const catIds = new Map();
     CATEGORIES.forEach((c, i) => {
@@ -189,8 +198,67 @@ function seed({ always = false } = {}) {
     setSetting('catalogue_version', '1');
   });
 
-  console.log(`Seeded ${CATEGORIES.length} categories, ${productCount} products, ${variantCount} variants.`);
-  return { skipped: false, products: productCount, variants: variantCount };
+  // Point products and categories at their photographs.
+  const photos = applyPhotos();
+
+  console.log(
+    `Seeded ${CATEGORIES.length} categories, ${productCount} products, ${variantCount} variants`
+    + ` — ${photos.products} with photography, ${photos.categories} category tiles.`,
+  );
+  return { skipped: false, products: productCount, variants: variantCount, photos };
+}
+
+/**
+ * Apply the photograph manifest to the catalogue.
+ *
+ * `public/img/photos/manifest.json` is written by build-photos.mjs and lists the
+ * image files that actually exist. Wiring it in here — rather than in a script an
+ * operator has to remember to run — is what makes a deploy self-consistent: the
+ * code, the images and the database all come from the same commit.
+ *
+ * The previous arrangement had `attach-photos.mjs` run by hand against the local
+ * database, which left the deployed site serving the generated SVG artwork while
+ * the photographs sat unused on disk. It looked like the images were missing.
+ */
+function applyPhotos() {
+  const manifestFile = path.join(config.rootDir, 'public', 'img', 'photos', 'manifest.json');
+  const result = { products: 0, categories: 0, story: 0 };
+
+  let manifest;
+  try {
+    manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
+  } catch {
+    // No manifest means no photography yet; the catalogue keeps its artwork.
+    return result;
+  }
+
+  const exists = (rel) => {
+    try {
+      return fs.existsSync(path.join(config.rootDir, 'public', String(rel).replace(/^\//, '')));
+    } catch {
+      return false;
+    }
+  };
+
+  for (const [slug, entry] of Object.entries(manifest.products || {})) {
+    const gallery = (entry.gallery || []).filter(exists);
+    if (!gallery.length) continue;
+    const product = get('SELECT id FROM products WHERE slug = ?', slug);
+    if (!product) continue;
+    run('UPDATE products SET hero_image = ?, images = ? WHERE id = ?', gallery[0], JSON.stringify(gallery), product.id);
+    result.products += 1;
+  }
+
+  for (const [slug, rel] of Object.entries(manifest.categories || {})) {
+    if (!exists(rel)) continue;
+    const category = get('SELECT id FROM categories WHERE slug = ?', slug);
+    if (!category) continue;
+    run('UPDATE categories SET hero_image = ? WHERE id = ?', rel, category.id);
+    result.categories += 1;
+  }
+
+  result.story = (manifest.story || []).length;
+  return result;
 }
 
 // Run when invoked directly.
