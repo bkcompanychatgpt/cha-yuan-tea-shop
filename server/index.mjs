@@ -214,10 +214,31 @@ function sameOrigin(req, res, next) {
 /*  View helpers                                                               */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * Money formatting, used by every price in the storefront and the back office.
+ *
+ * The house format puts the currency code in front and the symbol after the
+ * amount, so a reader who does not recognise "$" alone still knows which dollar
+ * this is:  CAD 188.00$  — code, amount to two decimals, symbol.
+ *
+ * The code comes from CURRENCY and the symbol from CURRENCY_SYMBOL, so an
+ * installation in another market formats itself. The amount uses the locale's
+ * thousands separators, and always two decimals so a column of prices aligns.
+ *
+ * @param {number} cents     Amount in cents; money is never a float here.
+ * @param {{ withSymbol?: boolean }} [options]  Set withSymbol false to get just
+ *        the number, for places that print the currency separately.
+ */
 const money = (cents, { withSymbol = true } = {}) => {
   const value = (Number(cents) || 0) / 100;
-  const formatted = value.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  return withSymbol ? `${config.store.currencySymbol}${formatted}` : formatted;
+  const amount = value.toLocaleString('en-CA', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  if (!withSymbol) return amount;
+  const code = config.store.currency;
+  const symbol = config.store.currencySymbol;
+  return `${code} ${amount}${symbol}`;
 };
 
 app.locals.money = money;

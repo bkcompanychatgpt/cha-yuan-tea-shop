@@ -8,6 +8,7 @@
 
   /* -------------------------------------------------------------- config */
   CY.runtime = {
+    currency: 'CAD',
     currencySymbol: '$',
     csrfToken: '',
     isMock: true,
@@ -20,12 +21,24 @@
   };
 
   /* ------------------------------------------------------------ utilities */
+
+  /**
+   * Money formatting, matching the server's helper exactly: currency code in
+   * front, amount to two decimals, symbol after — CAD 188.00$.
+   *
+   * Kept in step with the `money` helper in server/index.mjs; a price rendered by
+   * the browser has to look identical to one rendered by the server, or the cart
+   * would change format the moment it is re-priced.
+   */
   CY.money = function money(cents) {
     const value = (Number(cents) || 0) / 100;
-    return `${CY.runtime.currencySymbol}${value.toLocaleString('en-CA', {
+    const amount = value.toLocaleString('en-CA', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    })}`;
+    });
+    const code = CY.runtime.currency || '';
+    const symbol = CY.runtime.currencySymbol || '';
+    return `${code} ${amount}${symbol}`;
   };
 
   CY.escape = function escapeHtml(value) {
@@ -107,6 +120,7 @@
       const { ok, data } = await CY.api('/api/config');
       if (ok && data) {
         Object.assign(CY.runtime, {
+          currency: data.store.currency,
           currencySymbol: data.store.currencySymbol,
           freeShippingThreshold: data.store.freeShippingThreshold,
           taxRate: data.store.taxRate,

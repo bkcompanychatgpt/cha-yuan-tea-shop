@@ -70,6 +70,48 @@
       cards: Array.prototype.slice.call(d.querySelectorAll('.tea-card')).filter(isVisible).length,
     };
 
+    // Which elements stick out past the viewport, and by how much. A single
+    // scrollWidth number says a page overflows; this says what to fix.
+    //
+    // Two legitimate cases are excluded, because flagging them would bury the
+    // real problems in noise: a marquee inside an `overflow: hidden` container
+    // is meant to be clipped, and an off-canvas drawer is parked outside the
+    // viewport until it opens. An element is only reported when it is actually
+    // reachable — that is, when nothing above it clips or contains it.
+    function isDeliberatelyOffscreen(el) {
+      var node = el.parentElement;
+      while (node && node !== d.body) {
+        var cs = window.getComputedStyle(node);
+        if (cs.overflowX === 'hidden' || cs.overflowX === 'clip' || cs.overflow === 'hidden') return true;
+        node = node.parentElement;
+      }
+      // Off-canvas panels park themselves outside the viewport with a transform.
+      if (/drawer|scrim|mobile-nav|search-panel|skip-link/.test(String(el.className || ''))) return true;
+      return false;
+    }
+
+    var overflow = [];
+    Array.prototype.slice.call(d.querySelectorAll('body *')).forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.width <= 0) return;
+      if (r.right <= window.innerWidth + 1) return;
+      if (isDeliberatelyOffscreen(el)) return;
+      overflow.push({
+        tag: el.tagName.toLowerCase(),
+        cls: String(el.className || '').slice(0, 60),
+        right: Math.round(r.right),
+        width: Math.round(r.width),
+        over: Math.round(r.right - window.innerWidth),
+      });
+    });
+    overflow.sort(function (a, b) { return b.over - a.over; });
+
+    // Images that have no natural size never render, which is what a broken or
+    // blocked image looks like from the DOM's point of view.
+    var brokenImages = broken.map(function (b) {
+      return { src: String(b.src).slice(0, 120), nw: b.nw, nh: b.nh };
+    });
+
     var doc = d.documentElement;
     var root = window.getComputedStyle(doc);
 
@@ -98,6 +140,18 @@
         return String(b.src).slice(0, 160);
       }).slice(0, 12),
       zeroSizedBlocks: zeroBox.slice(0, 12),
+      overflow: overflow.slice(0, 15),
+      brokenImageDetail: brokenImages.slice(0, 10),
+      // Section offsets, so the page's vertical length can be reasoned about
+      // rather than eyeballed: which block sits how far down.
+      sections: Array.prototype.slice.call(d.querySelectorAll('main > section, main > .ticker')).map(function (el) {
+        var r = el.getBoundingClientRect();
+        return {
+          cls: String(el.className || el.tagName).slice(0, 40),
+          top: Math.round(r.top + window.scrollY),
+          height: Math.round(r.height),
+        };
+      }),
       rects: {
         header: rect(d.querySelector('.site-header')),
         hero: rect(d.querySelector('.hero')),

@@ -145,8 +145,10 @@ h4 { font-size: 1.1rem; }
 .wrap-mid { max-width: 1080px; }
 
 section { position: relative; }
-.section { padding-block: clamp(64px, 9vw, 132px); }
-.section-tight { padding-block: clamp(44px, 6vw, 80px); }
+.section { padding-block: clamp(56px, 7.5vw, 108px); }
+/* Most homepage blocks use this: enough air to separate them, not so much that
+   the page becomes a scroll marathon. */
+.section-tight { padding-block: clamp(34px, 4.2vw, 62px); }
 
 .rule {
   height: 1px;
@@ -438,7 +440,9 @@ section { position: relative; }
 /* ------------------------------------------------------------------ hero */
 .hero {
   position: relative;
-  min-height: min(72vh, 660px);
+  /* Short on purpose: on a phone a tall hero is a whole screen of scrolling
+     before a visitor sees anything they can buy. */
+  min-height: min(62vh, 560px);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -1497,9 +1501,9 @@ select.select option { background: var(--ink-800); color: var(--text); }
   justify-content: space-between;
   gap: 28px;
   flex-wrap: wrap;
-  margin-bottom: 40px;
+  margin-bottom: 28px;
 }
-.section-head h2 { margin-top: 13px; }
+.section-head h2 { margin-top: 11px; }
 .section-head p { max-width: 46ch; font-size: 0.9rem; color: var(--text-dim); line-height: 1.72; }
 .section-head-rule {
   flex: 1 1 120px;
@@ -2045,15 +2049,22 @@ select.select option { background: var(--ink-800); color: var(--text); }
 
 @media (max-width: 760px) {
   :root { --pad-x: 18px; --header-h: 66px; }
+  /* Tighter rhythm on phones, where every wasted 40px is a real swipe. */
+  .section-tight { padding-block: 30px; }
+  .section { padding-block: 44px; }
+  .section-head { margin-bottom: 20px; gap: 12px; }
+  .hero { min-height: min(58vh, 430px); }
+  .hero-copy h1 { font-size: clamp(2rem, 9vw, 2.6rem); }
+  .hero-actions { margin-top: 22px; }
+  .hero-marks { margin-top: 26px; padding-top: 18px; gap: 10px 18px; }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .form-grid.cols-2, .form-grid.cols-3 { grid-template-columns: 1fr; }
   .span-2 { grid-column: auto; }
   .card-row { grid-template-columns: 1fr; }
-  .tea-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 24px 14px; }
+  .tea-grid { grid-template-columns: repeat(auto-fill, minmax(152px, 1fr)); gap: 22px 12px; }
   .cart-line { grid-template-columns: 84px 1fr; row-gap: 10px; }
   .cart-line-price { text-align: left; grid-column: 2; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
-  .hero-marks { gap: 16px 22px; }
   .hero-mark { font-size: 0.72rem; }
   .newsletter form { flex-direction: column; }
   .newsletter input[type="email"] { border-right: 1px solid var(--line); }
@@ -2063,6 +2074,7 @@ select.select option { background: var(--ink-800); color: var(--text); }
   .receipt { padding: 24px 20px; }
   .admin-main { padding: 24px 18px 60px; }
   .table { font-size: 0.8rem; }
+  .photo-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 }
 
 @media (max-width: 520px) {

@@ -19,139 +19,63 @@
     <img src="/img/photos/hero-wide.jpg" alt="" />
   </div>
   <div class="wrap hero-inner">
-    <div class="row" style="align-items:flex-end;gap:40px;flex-wrap:wrap">
-      <div class="hero-copy grow">
-        <div class="hero-badges">
-          <span class="hero-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m5 12 5 5L20 7"/></svg>
-            Harvest-dated lots
-          </span>
-          <span class="hero-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m5 12 5 5L20 7"/></svg>
-            Direct from growers
-          </span>
-          <span class="hero-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m5 12 5 5L20 7"/></svg>
-            Free shipping over <%= money(store.freeShippingThreshold) %>
-          </span>
-        </div>
+    <div class="hero-copy">
+      <span class="eyebrow">Fujian &middot; Yunnan &middot; Anhui &middot; Guangdong</span>
+      <h1>Tea, sourced <em>at the mountain</em></h1>
+      <p class="lede">
+        Single-origin Chinese tea bought in small lots direct from growers. Dated by harvest,
+        brewed in a gaiwan before it is listed, and sent within a season of being picked.
+      </p>
 
-        <span class="eyebrow">Fujian &middot; Yunnan &middot; Anhui &middot; Guangdong</span>
-        <h1>Tea, sourced <em>at the mountain</em></h1>
-        <p class="lede">
-          Single-origin Chinese tea bought in small lots direct from growers. Dated by harvest,
-          brewed in a gaiwan before it is listed, and sent to you within a season of being picked.
-        </p>
-
-        <div class="hero-actions">
-          <a class="btn btn-solid btn-lg" href="/shop">Shop the tea</a>
-          <a class="btn btn-lg" href="/guides">How to brew it</a>
-        </div>
-
-        <div class="hero-marks">
-          <div class="hero-mark">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2 4 6v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/></svg>
-            <span>3-D Secure 2 payments</span>
-          </div>
-          <div class="hero-mark">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 7h13v10H3z"/><path d="M16 10h3l2 3v4h-5"/><circle cx="7" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg>
-            <span>Shipped from Canada</span>
-          </div>
-          <div class="hero-mark">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3v18M5 8l7-5 7 5v8l-7 5-7-5z"/></svg>
-            <span><%= categories.filter(c => c.kind === 'tea').reduce((n, c) => n + c.product_count, 0) %> lots on the shelf</span>
-          </div>
-        </div>
+      <div class="hero-actions">
+        <a class="btn btn-solid btn-lg" href="/shop">Shop the tea</a>
+        <a class="btn btn-lg" href="/guides">How to brew it</a>
       </div>
 
-      <% if (spotlightProduct && spotlightProduct.defaultVariant) { %>
-        <% const sv = spotlightProduct.defaultVariant; %>
-        <aside class="hero-price-card">
-          <span class="hp-label"><%= ed.spotlight ? ed.spotlight.eyebrow : 'Featured' %></span>
-          <h4><%= spotlightProduct.name %></h4>
-          <div class="hp-origin"><%= spotlightProduct.tea_family %> &middot; <%= (spotlightProduct.origin || '').split(',').pop().trim() %></div>
-          <div class="hp-price"><%= money(spotlightProduct.priceFrom) %> <small>&middot; <%= sv.label %></small></div>
-          <div class="hp-notes">
-            <% (spotlightProduct.tasting_notes || []).slice(0, 3).forEach(n => { %>
-              <span class="note-chip"><%= n %></span>
-            <% }) %>
-          </div>
-          <div class="hp-actions">
-            <button class="btn btn-solid btn-sm grow"
-                    type="button"
-                    data-add-to-cart
-                    data-variant-id="<%= sv.id %>"
-                    data-quantity="1"
-                    data-slug="<%= spotlightProduct.slug %>"
-                    data-name="<%= spotlightProduct.name %>"
-                    data-variant-label="<%= sv.label %>"
-                    data-price-cents="<%= sv.price_cents %>"
-                    data-image="<%= spotlightProduct.hero_image %>"
-                    data-stock="<%= sv.stock %>">Add to basket</button>
-            <a class="btn btn-sm" href="/tea/<%= spotlightProduct.slug %>">Details</a>
-          </div>
-        </aside>
-      <% } %>
+      <div class="hero-marks">
+        <div class="hero-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2 4 6v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>3-D Secure 2 payments</span>
+        </div>
+        <div class="hero-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 7h13v10H3z"/><path d="M16 10h3l2 3v4h-5"/><circle cx="7" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg>
+          <span>Free shipping over <%= money(store.freeShippingThreshold) %></span>
+        </div>
+        <div class="hero-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3v18M5 8l7-5 7 5v8l-7 5-7-5z"/></svg>
+          <span><%= categories.filter(c => c.kind === 'tea').reduce((n, c) => n + c.product_count, 0) %> lots on the shelf</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================================ trust strip -->
-<% if (ed.trust && ed.trust.length) { %>
-  <section class="trust-strip">
-    <div class="wrap">
-      <div class="trust-grid">
-        <% ed.trust.forEach(t => { %>
-          <div class="trust-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
-              <% if (t.icon === 'leaf') { %><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/>
-              <% } else if (t.icon === 'calendar') { %><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/>
-              <% } else if (t.icon === 'gaiwan') { %><path d="M4 10h16"/><path d="M6 10c0 5 2.7 8 6 8s6-3 6-8"/><path d="M9 6h6"/><path d="M12 3v3"/>
-              <% } else { %><path d="M12 2 4 6v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/>
-              <% } %>
-            </svg>
-            <div>
-              <h4><%= t.title %></h4>
-              <p><%= t.body %></p>
-            </div>
-          </div>
-        <% }) %>
-      </div>
-    </div>
-  </section>
-<% } %>
-
-<!-- ============================================ the case, in four numbers -->
-<section class="section-tight" style="padding-top:clamp(38px,4vw,58px)">
+<!-- =============================================================== featured -->
+<section class="section-tight">
   <div class="wrap">
-    <div class="case-strip">
-      <div class="case-item">
-        <span class="case-num">èŒ¶</span>
-        <div>
-          <h4>Gongfu, not Western</h4>
-          <p>Brewing parameters on every listing are given for a gaiwan first, because that is how the tea was scored before it was listed.</p>
-        </div>
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Chosen most often</span>
+        <h2>Featured lots</h2>
       </div>
-      <div class="case-item">
-        <span class="case-num">æº</span>
-        <div>
-          <h4>Sourced at the mountain</h4>
-          <p>Fujian, Yunnan, Anhui, Zhejiang and Guangdong &mdash; the region is on the listing, not just the country.</p>
-        </div>
-      </div>
-      <div class="case-item">
-        <span class="case-num">ä»˜</span>
-        <div>
-          <h4>3-D Secure 2 payments</h4>
-          <p>Local card payments through OTT Pay, with Visa, Mastercard, Amex, Discover, JCB, Diners and UnionPay accepted.</p>
-        </div>
-      </div>
+      <div class="section-head-rule"></div>
+      <a class="link-underline small nowrap" href="/shop?sort=rating">By rating &rarr;</a>
+    </div>
+
+    <div class="tea-grid">
+      <% featured.forEach(product => { %>
+        <%- include('partials/tea-card', { product, money }) %>
+      <% }) %>
+    </div>
+
+    <div class="row" style="justify-content:center;margin-top:32px">
+      <a class="btn" href="/shop">Browse the whole shop</a>
     </div>
   </div>
 </section>
 
 <!-- ============================================================= categories -->
-<section class="section">
+<section class="section-tight">
   <div class="wrap">
     <div class="section-head">
       <div>
@@ -164,10 +88,9 @@
 
     <div class="cat-grid">
       <%
-        // A four-column grid where the first tile spans two columns and two rows
-        // shows exactly eight tiles: one large, seven small. Three tea families
-        // plus teaware fill it, and the families that do not fit are offered as
-        // filter chips underneath, so nothing is lost.
+        // A four-column grid whose first tile spans two columns and two rows
+        // shows exactly eight tiles: one large, seven small. Seven tea families
+        // plus teaware fill it, and whatever does not fit is offered as a chip.
         const teaCats = categories.filter(c => c.kind === 'tea').slice(0, 7);
         const teaware = categories.find(c => c.slug === 'teaware');
         const tiles = teaware ? [...teaCats, teaware] : teaCats;
@@ -207,70 +130,19 @@
   </div>
 </section>
 
-<!-- ============================================================== spotlight -->
-<% if (spotlightProduct && ed.spotlight) { %>
-  <section class="section spotlight">
-    <div class="wrap">
-      <div class="spotlight-grid">
-        <div class="spotlight-media">
-          <img src="<%= ed.spotlight.image || spotlightProduct.hero_image %>" alt="<%= spotlightProduct.name %>" loading="lazy" />
-          <div class="spotlight-seal"><%= (spotlightProduct.name || 'èŒ¶').slice(0, 1) %></div>
-        </div>
-
-        <div>
-          <span class="eyebrow"><%= ed.spotlight.eyebrow %></span>
-          <h2 style="margin:16px 0 20px"><%= ed.spotlight.heading %></h2>
-          <p class="lede" style="margin-bottom:6px"><%= ed.spotlight.body %></p>
-
-          <div class="spotlight-facts">
-            <div class="spotlight-fact">
-              <span class="k">Oxidation</span>
-              <span class="v"><%= spotlightProduct.oxidation || '&mdash;' %></span>
-            </div>
-            <div class="spotlight-fact">
-              <span class="k">Harvest</span>
-              <span class="v"><%= (spotlightProduct.harvest || '&mdash;').split(',')[0] %></span>
-            </div>
-            <div class="spotlight-fact">
-              <span class="k">From</span>
-              <span class="v"><%= money(spotlightProduct.priceFrom) %></span>
-            </div>
-          </div>
-
-          <div class="spotlight-points">
-            <% (ed.spotlight.points || []).forEach(point => { %>
-              <div class="spotlight-point">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m5 12 5 5L20 7"/></svg>
-                <span><%= point %></span>
-              </div>
-            <% }) %>
-          </div>
-
-          <div class="row" style="gap:12px;flex-wrap:wrap">
-            <a class="btn btn-solid" href="/tea/<%= spotlightProduct.slug %>">View this lot</a>
-            <a class="btn btn-ghost" href="/guides/how-to-brew-gongfu">How to brew it</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-<% } %>
-
-<!-- =============================================================== featured -->
-<section class="section">
+<!-- =========================================================== new arrivals -->
+<section class="section-tight">
   <div class="wrap">
     <div class="section-head">
       <div>
-        <span class="eyebrow">Chosen most often</span>
-        <h2>Featured lots</h2>
+        <span class="eyebrow">Just arrived</span>
+        <h2>New this season</h2>
       </div>
       <div class="section-head-rule"></div>
-      <p>Every one of these is brewed in a gaiwan and scored before it is listed &mdash; these are simply the ones customers re-order.</p>
-      <a class="link-underline small nowrap" href="/shop?sort=rating">By rating &rarr;</a>
+      <a class="link-underline small nowrap" href="/shop?sort=newest">Everything new &rarr;</a>
     </div>
-
     <div class="tea-grid">
-      <% featured.forEach(product => { %>
+      <% arrivals.forEach(product => { %>
         <%- include('partials/tea-card', { product, money }) %>
       <% }) %>
     </div>
@@ -279,7 +151,7 @@
 
 <!-- ================================================================ brewing -->
 <% if (ed.brewing) { %>
-  <section class="section" style="padding-top:0">
+  <section class="section-tight">
     <div class="wrap">
       <div class="section-head">
         <div>
@@ -299,11 +171,39 @@
           </div>
         <% }) %>
       </div>
+    </div>
+  </section>
+<% } %>
 
-      <div class="band" style="margin-top:22px">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 8v.01M11 12h1v4h1"/></svg>
-        <p><strong>Every product page carries its own parameters</strong> &mdash; leaf weight, water temperature, infusion times and the vessel we brewed it in, for gongfu and Western methods both.</p>
-        <a class="btn btn-sm btn-ghost" href="/guides">Read the guides</a>
+<!-- ============================================================== spotlight -->
+<% if (spotlightProduct && ed.spotlight) { %>
+  <section class="section-tight spotlight">
+    <div class="wrap">
+      <div class="spotlight-grid">
+        <div class="spotlight-media">
+          <img src="<%= ed.spotlight.image || spotlightProduct.hero_image %>" alt="<%= spotlightProduct.name %>" loading="lazy" />
+          <div class="spotlight-seal"><%= String(spotlightProduct.seal || 'Tea').slice(0, 12) %></div>
+        </div>
+
+        <div>
+          <span class="eyebrow"><%= ed.spotlight.eyebrow %></span>
+          <h2 style="margin:14px 0 18px"><%= ed.spotlight.heading %></h2>
+          <p class="lede" style="margin-bottom:4px"><%= ed.spotlight.body %></p>
+
+          <div class="spotlight-points">
+            <% (ed.spotlight.points || []).forEach(point => { %>
+              <div class="spotlight-point">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m5 12 5 5L20 7"/></svg>
+                <span><%= point %></span>
+              </div>
+            <% }) %>
+          </div>
+
+          <div class="row" style="gap:12px;flex-wrap:wrap">
+            <a class="btn btn-solid" href="/tea/<%= spotlightProduct.slug %>">View this lot &mdash; <%= money(spotlightProduct.priceFrom) %></a>
+            <a class="btn btn-ghost" href="/guides/how-to-brew-gongfu">How to brew it</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -311,14 +211,14 @@
 
 <!-- ================================================================== gift -->
 <% if (giftProduct && ed.gift) { %>
-  <section class="section" style="padding-top:0">
+  <section class="section-tight">
     <div class="wrap">
       <div class="gift-banner">
         <img class="gift-banner-media" src="<%= ed.gift.image || giftProduct.hero_image %>" alt="" loading="lazy" />
         <div class="gift-banner-inner">
           <div>
             <span class="eyebrow"><%= ed.gift.eyebrow %></span>
-            <h2 style="margin:16px 0 18px"><%= ed.gift.heading %></h2>
+            <h2 style="margin:14px 0 16px"><%= ed.gift.heading %></h2>
             <p class="lede"><%= ed.gift.body %></p>
             <div class="gift-bullets">
               <% (ed.gift.bullets || []).forEach(b => { %>
@@ -357,40 +257,46 @@
   </section>
 <% } %>
 
-<!-- =========================================================== new arrivals -->
-<section class="section" style="padding-top:0">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <span class="eyebrow">Just arrived</span>
-        <h2>New this season</h2>
+<!-- ============================================================ trust strip -->
+<% if (ed.trust && ed.trust.length) { %>
+  <section class="trust-strip">
+    <div class="wrap">
+      <div class="trust-grid">
+        <% ed.trust.forEach(t => { %>
+          <div class="trust-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <% if (t.icon === 'leaf') { %><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/>
+              <% } else if (t.icon === 'calendar') { %><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/>
+              <% } else if (t.icon === 'gaiwan') { %><path d="M4 10h16"/><path d="M6 10c0 5 2.7 8 6 8s6-3 6-8"/><path d="M9 6h6"/><path d="M12 3v3"/>
+              <% } else { %><path d="M12 2 4 6v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/>
+              <% } %>
+            </svg>
+            <div>
+              <h4><%= t.title %></h4>
+              <p><%= t.body %></p>
+            </div>
+          </div>
+        <% }) %>
       </div>
-      <div class="section-head-rule"></div>
-      <a class="link-underline small nowrap" href="/shop?sort=newest">Everything new &rarr;</a>
     </div>
-    <div class="tea-grid">
-      <% arrivals.forEach(product => { %>
-        <%- include('partials/tea-card', { product, money }) %>
-      <% }) %>
-    </div>
-  </div>
-</section>
+  </section>
+<% } %>
 
 <!-- ================================================================= story -->
-<section class="section" style="background:linear-gradient(180deg,var(--ink-900),var(--ink-850),var(--ink-900));border-block:1px solid var(--line-soft)">
+<section class="section-tight" style="background:linear-gradient(180deg,var(--ink-900),var(--ink-850),var(--ink-900));border-block:1px solid var(--line-soft)">
   <div class="wrap">
     <%
       const story = (ed.photos && ed.photos.story) ? ed.photos.story : [];
-      const picks = story.length ? story : [{ src: '/img/editorial/wuyi-shuixian-detail.svg', key: 'default' }];
-      const hero = picks[0];
+      const storyPicks = story.length ? story : [{ src: '/img/editorial/wuyi-shuixian-detail.svg', key: 'default' }];
+      const storyHero = storyPicks[0];
     %>
     <div class="story-layout">
       <div class="story-media">
         <figure class="story-media-main">
-          <img src="<%= hero.src %>" alt="Tea terraces" loading="lazy" />
+          <img src="<%= storyHero.src %>" alt="Tea terraces" loading="lazy" />
         </figure>
         <div class="story-media-side">
-          <% picks.slice(1, 4).forEach((shot, i) => { %>
+          <% storyPicks.slice(1, 4).forEach((shot) => { %>
             <figure><img src="<%= shot.src %>" alt="" loading="lazy" /></figure>
           <% }) %>
         </div>
@@ -398,9 +304,9 @@
 
       <div>
         <span class="eyebrow">How we buy</span>
-        <h2 style="margin:16px 0 20px">A shop built on a tasting table, not a warehouse</h2>
-        <p class="lede" style="margin-bottom:32px"><%= ed.intro %></p>
-        <div class="pillars" style="grid-template-columns:1fr 1fr;gap:26px">
+        <h2 style="margin:14px 0 18px">A shop built on a tasting table, not a warehouse</h2>
+        <p class="lede" style="margin-bottom:26px"><%= ed.intro %></p>
+        <div class="pillars" style="grid-template-columns:1fr 1fr;gap:22px">
           <% (ed.pillars || []).forEach((p, i) => { %>
             <div class="pillar">
               <span class="num"><%= String(i + 1).padStart(2, '0') %></span>
@@ -414,19 +320,10 @@
   </div>
 </section>
 
-<!-- ========================================================== from the source -->
+<!-- ======================================================== from the source -->
 <% if (ed.photos && ed.photos.story && ed.photos.story.length > 4) { %>
-  <section class="section">
+  <section class="section-tight">
     <div class="wrap">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow">From the source</span>
-          <h2>Where the leaf comes from</h2>
-        </div>
-        <div class="section-head-rule"></div>
-        <p>Terraced hillsides, spring plucking and the slow wither that turns a fresh leaf into white tea &mdash; the parts of the process that decide everything in the cup.</p>
-      </div>
-
       <div class="photo-row">
         <% ed.photos.story.slice(4, 8).forEach((shot, i) => { %>
           <figure class="photo-row-item">
@@ -441,37 +338,8 @@
   </section>
 <% } %>
 
-<!-- ========================================================== testimonials -->
-<% if (ed.testimonials && ed.testimonials.length) { %>
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow">In their words</span>
-          <h2>What customers say</h2>
-        </div>
-        <div class="section-head-rule"></div>
-        <p>Illustrative reviews for this demo build. Replace them with your own once you are trading.</p>
-      </div>
-
-      <div class="testimonial-grid">
-        <% ed.testimonials.forEach(t => { %>
-          <div class="testimonial">
-            <span class="quote-mark">&ldquo;</span>
-            <blockquote><%= t.quote %></blockquote>
-            <footer>
-              <strong><%= t.name %></strong>
-              <%= t.location %> &middot; bought <%= t.product %>
-            </footer>
-          </div>
-        <% }) %>
-      </div>
-    </div>
-  </section>
-<% } %>
-
 <!-- ================================================================= guides -->
-<section class="section" style="padding-top:0">
+<section class="section-tight">
   <div class="wrap">
     <div class="section-head">
       <div>
@@ -497,7 +365,7 @@
 
 <!-- ==================================================================== FAQ -->
 <% if (ed.faq && ed.faq.length) { %>
-  <section class="section" style="padding-top:0">
+  <section class="section-tight">
     <div class="wrap">
       <div class="faq-layout">
         <div>
@@ -506,7 +374,7 @@
           <p class="lede" style="font-size:0.95rem">
             Anything not covered here, write to us &mdash; every message is answered by the person who chose the tea.
           </p>
-          <a class="btn btn-ghost" href="/about" style="margin-top:24px">More about us</a>
+          <a class="btn btn-ghost" href="/about" style="margin-top:22px">More about us</a>
         </div>
 
         <div class="faq-list">
@@ -525,39 +393,13 @@
   </section>
 <% } %>
 
-<!-- ================================================================= mosaic -->
-<% if (imageMosaic && imageMosaic.length) { %>
-  <section class="section" style="padding-top:0">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow">The tea room</span>
-          <h2>Leaf, liquor and clay</h2>
-        </div>
-        <div class="section-head-rule"></div>
-        <a class="link-underline small nowrap" href="/shop">Shop the lots &rarr;</a>
-      </div>
-
-      <div class="mosaic">
-        <% imageMosaic.forEach(tile => { %>
-          <a href="<%= tile.href %>">
-            <img src="<%= tile.src %>" alt="<%= tile.label %>" loading="lazy" />
-            <span class="mosaic-label"><%= tile.label %></span>
-          </a>
-        <% }) %>
-      </div>
-    </div>
-  </section>
-<% } %>
-
 <!-- ============================================================ newsletter -->
-<section class="section newsletter">
+<section class="section-tight newsletter">
   <div class="wrap wrap-mid">
     <span class="eyebrow">The tea letter</span>
-    <h2 style="margin:16px 0 12px">New lots, before they sell out</h2>
+    <h2 style="margin:14px 0 12px">New lots, before they sell out</h2>
     <p class="muted" style="max-width:52ch;margin:0 auto">
       One letter a season: what has just landed, what is nearly gone, and a note on how to brew it.
-      No noise in between.
     </p>
     <form data-newsletter>
       <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" required />

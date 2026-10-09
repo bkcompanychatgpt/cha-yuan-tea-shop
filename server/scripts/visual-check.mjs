@@ -38,7 +38,7 @@ function findBrowser() {
  * pipe: a confined sandbox can refuse to give a child a piped stdio, and this
  * also avoids every layer of shell quoting on Windows.
  */
-function dumpDom(browser, url) {
+function dumpDom(browser, url, viewport) {
   return new Promise((resolve, reject) => {
     const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'cy-probe-'));
     const outFile = path.join(profile, 'dom.html');
@@ -52,6 +52,7 @@ function dumpDom(browser, url) {
         '--no-sandbox',
         '--disable-extensions',
         '--disable-dev-shm-usage',
+        `--window-size=${viewport.width},${viewport.height}`,
         '--virtual-time-budget=10000',
         `--user-data-dir=${profile}`,
         '--dump-dom',
@@ -123,6 +124,15 @@ function check(ok, name, detail = '') {
 
 const PAGES = ['/', '/shop', '/tea/lion-peak-longjing', '/cart', '/checkout', '/guides', '/about'];
 
+/**
+ * Viewports to audit. The default Chrome window is 800px, which is neither a
+ * phone nor a desktop, so the widths that matter are set explicitly.
+ */
+const VIEWPORTS = [
+  { name: 'desktop', width: 1440, height: 900 },
+  { name: 'phone', width: 390, height: 844 },
+];
+
 async function main() {
   const browser = findBrowser();
   if (!browser) {
@@ -132,43 +142,82 @@ async function main() {
   console.log(`\nCha Yuan visual probe (${path.basename(browser)})\n`);
 
   const reports = [];
-  for (const page of PAGES) {
-    const html = await dumpDom(browser, `${BASE}/dev/audit?path=${encodeURIComponent(page)}`);
-    const report = extractReport(html);
-    if (!report) {
-      check(false, `probe returned a report for ${page}`, 'no <pre id="report"> found');
-      continue;
-    }
-    reports.push(report);
+  for (const viewport of VIEWPORTS) {
+    console.log(`\n${'='.repeat(58)}\nViewport: ${viewport.name} (${viewport.width}x${viewport.height})\n${'='.repeat(58)}`);
 
-    console.log(`\n${page}`);
-    check(!report.horizontalOverflow, `${page} has no horizontal overflow`, `${report.docWidth} > ${report.viewportWidth}`);
-    check(report.counts.brokenImages === 0, `${page} has no broken images`, (report.brokenImageSrcs || []).join(', '));
-    check(report.counts.zeroSizedBlocks === 0, `${page} has no collapsed blocks`, (report.zeroSizedBlocks || []).join(', '));
-    check(report.bodyBg === 'rgb(6, 16, 11)', `${page} uses the ink-green ground`, report.bodyBg);
-    check(report.rects.header && report.rects.header.h >= 60, `${page} renders the sticky header`, JSON.stringify(report.rects.header));
-    check(report.docHeight > 900, `${page} produced real content`, `height ${report.docHeight}`);
+    for (const page of PAGES) {
+      const html = await dumpDom(browser, `${BASE}/dev/audit?path=${encodeURIComponent(page)}`, viewport);
+      const report = extractReport(html);
+      if (!report) {
+        check(false, `probe returned a report for ${page} @ ${viewport.name}`, 'no <pre id="report"> found');
+        continue;
+      }
+      report.viewportName = viewport.name;
+      reports.push(report);
 
-    if (report.styles.heroH1) {
-      check(/Cormorant|Georgia|Times|serif/.test(report.styles.heroH1['font-family']), `${page} headline uses the serif display face`, report.styles.heroH1['font-family']);
-    }
-    if (report.styles.eyebrow) {
-      check(report.styles.eyebrow['text-transform'] === 'uppercase', `${page} eyebrow labels are uppercase`, report.styles.eyebrow['text-transform']);
-      check(parseFloat(report.styles.eyebrow['letter-spacing']) > 1, `${page} eyebrow labels are letter-spaced`, report.styles.eyebrow['letter-spacing']);
-    }
-    if (report.accentSwatches) {
-      check(report.accentSwatches.gold === '#dcc07a', `${page} gold accent token is applied`, report.accentSwatches.gold);
-      check(report.accentSwatches.ink === '#06100b', `${page} ink token is applied`, report.accentSwatches.ink);
+      console.log(`\n${page}`);
+      check(
+        !report.horizontalOverflow,
+        `${page} has no horizontal overflow`,
+        report.horizontalOverflow
+          ? `${report.docWidth} > ${report.viewportWidth}; widest offenders: ${(report.overflow || [])
+              .slice(0, 3)
+              .map((o) => `${o.tag}.${o.cls} +${o.over}px`)
+              .join(', ')}`
+          : '',
+      );
+      check(report.counts.brokenImages === 0, `${page} has no broken images`, (report.brokenImageSrcs || []).join(', '));
+      check(report.counts.zeroSizedBlocks === 0, `${page} has no collapsed blocks`, (report.zeroSizedBlocks || []).join(', '));
+      check(report.bodyBg === 'rgb(6, 16, 11)', `${page} uses the ink-green ground`, report.bodyBg);
+      check(report.rects.header && report.rects.header.h >= 60, `${page} renders the sticky header`, JSON.stringify(report.rects.header));
+      check(report.docHeight > 900, `${page} produced real content`, `height ${report.docHeight}`);
+      // Nothing should be wider than the viewport once the page is laid out.
+      check(
+        (report.overflow || []).length === 0,
+        `${page} has no element wider than the viewport`,
+        (report.overflow || []).slice(0, 3).map((o) => `${o.tag}.${o.cls} +${o.over}px`).join(', '),
+      );
+
+      if (report.styles.heroH1) {
+        check(/Cormorant|Georgia|Times|serif/.test(report.styles.heroH1['font-family']), `${page} headline uses the serif display face`, report.styles.heroH1['font-family']);
+      }
+      if (report.styles.eyebrow) {
+        check(report.styles.eyebrow['text-transform'] === 'uppercase', `${page} eyebrow labels are uppercase`, report.styles.eyebrow['text-transform']);
+        check(parseFloat(report.styles.eyebrow['letter-spacing']) > 1, `${page} eyebrow labels are letter-spaced`, report.styles.eyebrow['letter-spacing']);
+      }
+      if (report.accentSwatches) {
+        check(report.accentSwatches.gold === '#dcc07a', `${page} gold accent token is applied`, report.accentSwatches.gold);
+        check(report.accentSwatches.ink === '#06100b', `${page} ink token is applied`, report.accentSwatches.ink);
+      }
     }
   }
 
-  const shop = reports.find((r) => r.path === '/shop');
+  const at = (pathname, viewportName) => reports.find((r) => r.path === pathname && r.viewportName === viewportName);
+
+  const shop = at('/shop', 'desktop');
   if (shop) {
     console.log('\n/shop specifics');
     check(shop.counts.productCards >= 12, 'the grid renders a full page of products', `${shop.counts.productCards} cards`);
     check(shop.styles.navLink && shop.styles.navLink['text-transform'] === 'uppercase', 'nav links are uppercase', shop.styles.navLink?.['text-transform']);
     check(shop.rects.firstProductCard && shop.rects.firstProductCard.h > 280, 'product cards have real height', JSON.stringify(shop.rects.firstProductCard));
     check(shop.styles.price && /Cormorant|Georgia|serif/.test(shop.styles.price['font-family']), 'prices use the display face', shop.styles.price?.['font-family']);
+  }
+
+  // The phone issues a desktop-width check cannot see.
+  const phoneHome = at('/', 'phone');
+  if (phoneHome) {
+    console.log('\nphone specifics (390px)');
+    check(phoneHome.counts.productCards > 0, 'the phone homepage shows product cards', `${phoneHome.counts.productCards}`);
+    check(
+      phoneHome.rects.header && phoneHome.rects.header.w <= 391,
+      'the phone header fits the viewport',
+      JSON.stringify(phoneHome.rects.header),
+    );
+    check(
+      phoneHome.rects.firstProductCard && phoneHome.rects.firstProductCard.w >= 150,
+      'phone product cards are a usable size',
+      JSON.stringify(phoneHome.rects.firstProductCard),
+    );
   }
 
   const checkout = reports.find((r) => r.path === '/checkout');
