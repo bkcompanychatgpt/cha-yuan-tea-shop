@@ -232,7 +232,12 @@ tax and total from the database before an order exists.
 | `npm run visual` | Headless-Chrome layout and palette probe |
 | `npm run contrast` | WCAG AA contrast audit |
 | `npm run assets` | Confirm every referenced asset resolves |
+| `npm run images` | Request every image the HTML references; run it against a deployed URL |
+| `npm run coverage` | Photograph coverage across products and categories |
 | `npm run gaps` | List any remaining generated artwork and why |
+| `npm run probe` | Layout report for one page at one viewport width |
+| `npm run length` | Page height and first-product offset, per viewport |
+| `npm run compare` | Diff a deployed site against the local build |
 | `npm run lang` | Fail on non-English text or mojibake anywhere |
 | `npm run check:render` | Validate `render.yaml` before deploying |
 | `npm run audit` | Database inspection and card-data leak check |
