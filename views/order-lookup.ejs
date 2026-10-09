@@ -1,0 +1,44 @@
+<div class="wrap wrap-narrow">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><span>Find an order</span>
+  </nav>
+</div>
+
+<section class="wrap wrap-narrow" style="padding-bottom:clamp(60px,8vw,110px)">
+  <span class="eyebrow">Order lookup</span>
+  <h1 style="margin:14px 0 18px">Find your order</h1>
+  <p class="lede">
+    Enter the order number from your confirmation email. Add the email address you ordered with
+    to reveal the full delivery address.
+  </p>
+
+  <form class="panel" data-order-lookup style="margin-top:36px" novalidate>
+    <div class="form-grid">
+      <div class="field">
+        <label for="orderNumber">Order number</label>
+        <input class="input" type="text" id="orderNumber" name="orderNumber" placeholder="CY-20260214-0001" required />
+        <span class="hint">It looks like CY-YYYYMMDD-0001 and is in your confirmation email.</span>
+      </div>
+      <div class="field">
+        <label for="email">Email <span class="hint">(optional)</span></label>
+        <input class="input" type="email" id="email" name="email" placeholder="you@example.com" />
+      </div>
+      <button class="btn btn-solid" type="submit">Find my order</button>
+    </div>
+  </form>
+
+  <div class="grid grid-2" style="margin-top:44px;gap:26px">
+    <div class="pillar">
+      <span class="num">01</span>
+      <h4>Where is my parcel?</h4>
+      <p>Tracking is emailed the moment your parcel is scanned by the carrier. Domestic delivery takes
+        2–5 business days, international 7–14.</p>
+    </div>
+    <div class="pillar">
+      <span class="num">02</span>
+      <h4>Something wrong with the tea?</h4>
+      <p>Tell us. If a tea is not to your taste we will replace it or refund it — that is the whole
+        policy, and you do not need to send it back.</p>
+    </div>
+  </div>
+</section>

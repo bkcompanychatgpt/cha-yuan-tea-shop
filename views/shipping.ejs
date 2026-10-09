@@ -1,0 +1,74 @@
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><span>Shipping &amp; returns</span>
+  </nav>
+</div>
+
+<section class="wrap wrap-mid" style="padding-bottom:clamp(60px,8vw,110px)">
+  <span class="eyebrow">Policies</span>
+  <h1 style="margin:14px 0 18px">Shipping, returns &amp; payment</h1>
+  <p class="lede">Plain answers, no small print games.</p>
+
+  <div class="stack-32" style="margin-top:44px">
+    <div class="panel">
+      <h3 style="margin-bottom:16px">Shipping</h3>
+      <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
+        <p>Orders placed before 2:00pm on a business day are packed and dispatched the same day. Everything ships
+          from our tea room in Canada with tracking.</p>
+        <p><strong class="gold">Standard</strong> — 2 to 5 business days domestically, 7 to 14 business days
+          internationally. <%= money(store.flatShippingFee) %> flat, and complimentary on orders over
+          <%= money(store.freeShippingThreshold) %>.</p>
+        <p><strong class="gold">Express</strong> — 1 to 2 business days, <%= money(store.flatShippingFee * 2) %>.</p>
+        <p>Duties and import taxes on international orders are the customer's responsibility. Tea is a food product:
+          some countries restrict the import of unprocessed leaf, and if a parcel is seized by customs we will refund
+          the product cost.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:16px">Returns</h3>
+      <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
+        <p>Unopened, sealed tins can be returned within 30 days of delivery for a full refund of the product cost.
+          Email us first and we will send a prepaid label for domestic orders.</p>
+        <p>If you have opened a tea and it is not to your taste, tell us. We will replace it or refund it — this
+          happens rarely, and it is a better outcome for both of us than an argument. We do not ask you to ship a
+          half-used tin back across a border.</p>
+        <p>Refunds are issued to the original card through OTT Pay and normally appear within 5 to 10 business days,
+          depending on your bank.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:16px">Payment</h3>
+      <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
+        <p>We accept Visa, Mastercard, American Express, Discover, JCB, Diners Club and China UnionPay credit and
+          debit cards. All payments are processed by <strong>OTT Pay</strong>, a PCI-DSS compliant payment provider,
+          using a 3-D Secure 2 authenticated card-not-present transaction.</p>
+        <p>3-D Secure 2 means your bank may ask you to confirm the payment — usually a code in your banking app, a
+          text message, or a fingerprint. This is a security feature of the card scheme, not something we control,
+          and it protects you against fraudulent use of your card.</p>
+        <p><strong class="gold">We never see or store your card number.</strong> The card details you type are
+          transmitted directly to OTT Pay over TLS. Our database records only the card brand, the last four digits
+          and the gateway's payment identifier so that we can reconcile an order or issue a refund.</p>
+        <p>All prices are in <%= store.currency %> and include <%= store.taxLabel %> where applicable, calculated at
+          checkout before you pay.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:16px">3-D Secure and fraud</h3>
+      <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
+        <p>Every card payment on this site is screened in real time for fraud risk before authorisation. If a
+          transaction is flagged we may contact you to confirm the order before shipping. A declined payment means
+          your card was not charged — an authorisation that is later reversed will show a pending amount on your
+          statement which your bank releases on its own schedule.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="gap:12px;margin-top:40px;flex-wrap:wrap">
+    <a class="btn btn-ghost" href="/terms">Full terms &amp; privacy</a>
+    <a class="btn btn-ghost" href="/order">Track an order</a>
+    <a class="btn btn-solid" href="/shop">Shop the tea</a>
+  </div>
+</section>

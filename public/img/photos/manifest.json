@@ -1,0 +1,469 @@
+{
+  "generatedAt": "2026-10-09T17:20:36.568Z",
+  "counts": {
+    "products": 31,
+    "categories": 10,
+    "story": 7,
+    "files": 189
+  },
+  "hero": "/img/photos/hero-wide.jpg",
+  "story": [
+    {
+      "key": "story-terraces",
+      "src": "/img/photos/story-terraces-hero.jpg",
+      "wide": "/img/photos/story-terraces-hero-wide.jpg"
+    },
+    {
+      "key": "story-plantation",
+      "src": "/img/photos/story-plantation-hero.jpg",
+      "wide": "/img/photos/story-plantation-hero-wide.jpg"
+    },
+    {
+      "key": "story-harvest",
+      "src": "/img/photos/story-harvest-hero.jpg",
+      "wide": "/img/photos/story-harvest-hero-wide.jpg"
+    },
+    {
+      "key": "story-pluck",
+      "src": "/img/photos/story-pluck-hero.jpg",
+      "wide": "/img/photos/story-pluck-hero-wide.jpg"
+    },
+    {
+      "key": "story-withering",
+      "src": "/img/photos/story-withering-hero.jpg",
+      "wide": "/img/photos/story-withering-hero-wide.jpg"
+    },
+    {
+      "key": "story-ceremony",
+      "src": "/img/photos/story-ceremony-hero.jpg",
+      "wide": "/img/photos/story-ceremony-hero-wide.jpg"
+    },
+    {
+      "key": "story-ceremony-2",
+      "src": "/img/photos/story-ceremony-2-hero.jpg",
+      "wide": "/img/photos/story-ceremony-2-hero-wide.jpg"
+    }
+  ],
+  "categories": {
+    "green-tea": "/img/photos/category-green-tea-tile.jpg",
+    "white-tea": "/img/photos/category-white-tea-tile.jpg",
+    "oolong-tea": "/img/photos/category-oolong-tea-tile.jpg",
+    "dan-cong": "/img/photos/category-dan-cong-tile.jpg",
+    "rock-oolong": "/img/photos/category-rock-oolong-tile.jpg",
+    "black-tea": "/img/photos/category-black-tea-tile.jpg",
+    "pu-erh": "/img/photos/category-pu-erh-tile.jpg",
+    "floral-blends": "/img/photos/category-floral-blends-tile.jpg",
+    "gift-sets": "/img/photos/category-gift-sets-tile.jpg",
+    "teaware": "/img/photos/category-teaware-tile.jpg"
+  },
+  "products": {
+    "lion-peak-longjing": {
+      "gallery": [
+        "/img/photos/lion-peak-longjing-hero.jpg",
+        "/img/photos/lion-peak-longjing-alt.jpg",
+        "/img/photos/lion-peak-longjing-alt2.jpg"
+      ]
+    },
+    "biluochun-spring-snail": {
+      "gallery": [
+        "/img/photos/biluochun-spring-snail-hero.jpg",
+        "/img/photos/biluochun-spring-snail-alt.jpg",
+        "/img/photos/biluochun-spring-snail-alt2.jpg"
+      ]
+    },
+    "huangshan-maofeng": {
+      "gallery": [
+        "/img/photos/huangshan-maofeng-hero.jpg",
+        "/img/photos/huangshan-maofeng-alt.jpg",
+        "/img/photos/huangshan-maofeng-alt2.jpg"
+      ]
+    },
+    "taiping-houkou": {
+      "gallery": [
+        "/img/photos/taiping-houkou-hero.jpg",
+        "/img/photos/taiping-houkou-alt.jpg",
+        "/img/photos/taiping-houkou-alt2.jpg"
+      ]
+    },
+    "silver-needle-baihao": {
+      "gallery": [
+        "/img/photos/silver-needle-baihao-hero.jpg",
+        "/img/photos/silver-needle-baihao-alt.jpg",
+        "/img/photos/silver-needle-baihao-alt2.jpg"
+      ]
+    },
+    "white-peony-yueguangbai": {
+      "gallery": [
+        "/img/photos/white-peony-yueguangbai-hero.jpg",
+        "/img/photos/white-peony-yueguangbai-alt.jpg",
+        "/img/photos/white-peony-yueguangbai-alt2.jpg"
+      ]
+    },
+    "aged-white-2019-shoumei": {
+      "gallery": [
+        "/img/photos/aged-white-2019-shoumei-hero.jpg",
+        "/img/photos/aged-white-2019-shoumei-alt.jpg",
+        "/img/photos/aged-white-2019-shoumei-alt2.jpg"
+      ]
+    },
+    "tieguanyin-iron-goddess": {
+      "gallery": [
+        "/img/photos/tieguanyin-iron-goddess-hero.jpg",
+        "/img/photos/tieguanyin-iron-goddess-alt.jpg",
+        "/img/photos/tieguanyin-iron-goddess-alt2.jpg"
+      ]
+    },
+    "wuyi-shuixian": {
+      "gallery": [
+        "/img/photos/wuyi-shuixian-hero.jpg",
+        "/img/photos/wuyi-shuixian-alt.jpg",
+        "/img/photos/wuyi-shuixian-alt2.jpg"
+      ]
+    },
+    "da-hong-pao": {
+      "gallery": [
+        "/img/photos/da-hong-pao-hero.jpg",
+        "/img/photos/da-hong-pao-alt.jpg",
+        "/img/photos/da-hong-pao-alt2.jpg"
+      ]
+    },
+    "milk-oolong-jinxuan": {
+      "gallery": [
+        "/img/photos/milk-oolong-jinxuan-hero.jpg",
+        "/img/photos/milk-oolong-jinxuan-alt.jpg",
+        "/img/photos/milk-oolong-jinxuan-alt2.jpg"
+      ]
+    },
+    "dong-ding-oolong": {
+      "gallery": [
+        "/img/photos/dong-ding-oolong-hero.jpg",
+        "/img/photos/dong-ding-oolong-alt.jpg",
+        "/img/photos/dong-ding-oolong-alt2.jpg"
+      ]
+    },
+    "mi-lan-xiang-dan-cong": {
+      "gallery": [
+        "/img/photos/mi-lan-xiang-dan-cong-hero.jpg",
+        "/img/photos/mi-lan-xiang-dan-cong-alt.jpg",
+        "/img/photos/mi-lan-xiang-dan-cong-alt2.jpg"
+      ]
+    },
+    "ya-shi-xiang-dan-cong": {
+      "gallery": [
+        "/img/photos/ya-shi-xiang-dan-cong-hero.jpg",
+        "/img/photos/ya-shi-xiang-dan-cong-alt.jpg",
+        "/img/photos/ya-shi-xiang-dan-cong-alt2.jpg"
+      ]
+    },
+    "lapsang-souchong-tongmuguan": {
+      "gallery": [
+        "/img/photos/lapsang-souchong-tongmuguan-hero.jpg",
+        "/img/photos/lapsang-souchong-tongmuguan-alt.jpg",
+        "/img/photos/lapsang-souchong-tongmuguan-alt2.jpg"
+      ]
+    },
+    "yunnan-dianhong-golden-bud": {
+      "gallery": [
+        "/img/photos/yunnan-dianhong-golden-bud-hero.jpg",
+        "/img/photos/yunnan-dianhong-golden-bud-alt.jpg",
+        "/img/photos/yunnan-dianhong-golden-bud-alt2.jpg"
+      ]
+    },
+    "keemun-hao-ya": {
+      "gallery": [
+        "/img/photos/keemun-hao-ya-hero.jpg",
+        "/img/photos/keemun-hao-ya-alt.jpg",
+        "/img/photos/keemun-hao-ya-alt2.jpg"
+      ]
+    },
+    "jin-jun-mei": {
+      "gallery": [
+        "/img/photos/jin-jun-mei-hero.jpg",
+        "/img/photos/jin-jun-mei-alt.jpg",
+        "/img/photos/jin-jun-mei-alt2.jpg"
+      ]
+    },
+    "menghai-7572-shou-cake": {
+      "gallery": [
+        "/img/photos/menghai-7572-shou-cake-hero.jpg",
+        "/img/photos/menghai-7572-shou-cake-alt.jpg",
+        "/img/photos/menghai-7572-shou-cake-alt2.jpg"
+      ]
+    },
+    "jingmai-raw-sheng-cake": {
+      "gallery": [
+        "/img/photos/jingmai-raw-sheng-cake-hero.jpg",
+        "/img/photos/jingmai-raw-sheng-cake-alt.jpg",
+        "/img/photos/jingmai-raw-sheng-cake-alt2.jpg"
+      ]
+    },
+    "aged-shou-tuocha-2008": {
+      "gallery": [
+        "/img/photos/aged-shou-tuocha-2008-hero.jpg",
+        "/img/photos/aged-shou-tuocha-2008-alt.jpg",
+        "/img/photos/aged-shou-tuocha-2008-alt2.jpg"
+      ]
+    },
+    "jasmine-pearls-nine-scent": {
+      "gallery": [
+        "/img/photos/jasmine-pearls-nine-scent-hero.jpg",
+        "/img/photos/jasmine-pearls-nine-scent-alt.jpg",
+        "/img/photos/jasmine-pearls-nine-scent-alt2.jpg"
+      ]
+    },
+    "osmanthus-oolong": {
+      "gallery": [
+        "/img/photos/osmanthus-oolong-hero.jpg",
+        "/img/photos/osmanthus-oolong-alt.jpg",
+        "/img/photos/osmanthus-oolong-alt2.jpg"
+      ]
+    },
+    "rose-black-tea": {
+      "gallery": [
+        "/img/photos/rose-black-tea-hero.jpg",
+        "/img/photos/rose-black-tea-alt.jpg",
+        "/img/photos/rose-black-tea-alt2.jpg"
+      ]
+    },
+    "chrysanthemum-tai-ju": {
+      "gallery": [
+        "/img/photos/chrysanthemum-tai-ju-hero.jpg",
+        "/img/photos/chrysanthemum-tai-ju-alt.jpg",
+        "/img/photos/chrysanthemum-tai-ju-alt2.jpg"
+      ]
+    },
+    "porcelain-gaiwan-set": {
+      "gallery": [
+        "/img/photos/porcelain-gaiwan-set-hero.jpg",
+        "/img/photos/porcelain-gaiwan-set-alt.jpg",
+        "/img/photos/porcelain-gaiwan-set-alt2.jpg"
+      ]
+    },
+    "glass-tea-tumbler": {
+      "gallery": [
+        "/img/photos/glass-tea-tumbler-hero.jpg",
+        "/img/photos/glass-tea-tumbler-alt.jpg",
+        "/img/photos/glass-tea-tumbler-alt2.jpg"
+      ]
+    },
+    "yixing-zisha-shi-piao-pot": {
+      "gallery": [
+        "/img/photos/yixing-zisha-shi-piao-pot-hero.jpg",
+        "/img/photos/yixing-zisha-shi-piao-pot-alt.jpg",
+        "/img/photos/yixing-zisha-shi-piao-pot-alt2.jpg"
+      ]
+    },
+    "gongfu-starter-kit": {
+      "gallery": [
+        "/img/photos/gongfu-starter-kit-hero.jpg",
+        "/img/photos/gongfu-starter-kit-alt.jpg",
+        "/img/photos/gongfu-starter-kit-alt2.jpg"
+      ]
+    },
+    "the-tea-voyage-gift-box": {
+      "gallery": [
+        "/img/photos/the-tea-voyage-gift-box-hero.jpg",
+        "/img/photos/the-tea-voyage-gift-box-alt.jpg",
+        "/img/photos/the-tea-voyage-gift-box-alt2.jpg"
+      ]
+    },
+    "oolong-explorer-flight": {
+      "gallery": [
+        "/img/photos/oolong-explorer-flight-hero.jpg",
+        "/img/photos/oolong-explorer-flight-alt.jpg",
+        "/img/photos/oolong-explorer-flight-alt2.jpg"
+      ]
+    }
+  },
+  "all": [
+    "/img/photos/aged-shou-tuocha-2008-alt.jpg",
+    "/img/photos/aged-shou-tuocha-2008-alt2.jpg",
+    "/img/photos/aged-shou-tuocha-2008-hero-thumb.jpg",
+    "/img/photos/aged-shou-tuocha-2008-hero-wide.jpg",
+    "/img/photos/aged-shou-tuocha-2008-hero.jpg",
+    "/img/photos/aged-white-2019-shoumei-alt.jpg",
+    "/img/photos/aged-white-2019-shoumei-alt2.jpg",
+    "/img/photos/aged-white-2019-shoumei-hero-thumb.jpg",
+    "/img/photos/aged-white-2019-shoumei-hero-wide.jpg",
+    "/img/photos/aged-white-2019-shoumei-hero.jpg",
+    "/img/photos/biluochun-spring-snail-alt.jpg",
+    "/img/photos/biluochun-spring-snail-alt2.jpg",
+    "/img/photos/biluochun-spring-snail-hero-thumb.jpg",
+    "/img/photos/biluochun-spring-snail-hero-wide.jpg",
+    "/img/photos/biluochun-spring-snail-hero.jpg",
+    "/img/photos/category-black-tea-tile.jpg",
+    "/img/photos/category-dan-cong-tile.jpg",
+    "/img/photos/category-floral-blends-tile.jpg",
+    "/img/photos/category-gift-sets-tile.jpg",
+    "/img/photos/category-green-tea-tile.jpg",
+    "/img/photos/category-oolong-tea-tile.jpg",
+    "/img/photos/category-pu-erh-tile.jpg",
+    "/img/photos/category-rock-oolong-tile.jpg",
+    "/img/photos/category-teaware-tile.jpg",
+    "/img/photos/category-white-tea-tile.jpg",
+    "/img/photos/chrysanthemum-tai-ju-alt.jpg",
+    "/img/photos/chrysanthemum-tai-ju-alt2.jpg",
+    "/img/photos/chrysanthemum-tai-ju-hero-thumb.jpg",
+    "/img/photos/chrysanthemum-tai-ju-hero-wide.jpg",
+    "/img/photos/chrysanthemum-tai-ju-hero.jpg",
+    "/img/photos/da-hong-pao-alt.jpg",
+    "/img/photos/da-hong-pao-alt2.jpg",
+    "/img/photos/da-hong-pao-hero-thumb.jpg",
+    "/img/photos/da-hong-pao-hero-wide.jpg",
+    "/img/photos/da-hong-pao-hero.jpg",
+    "/img/photos/dong-ding-oolong-alt.jpg",
+    "/img/photos/dong-ding-oolong-alt2.jpg",
+    "/img/photos/dong-ding-oolong-hero-thumb.jpg",
+    "/img/photos/dong-ding-oolong-hero-wide.jpg",
+    "/img/photos/dong-ding-oolong-hero.jpg",
+    "/img/photos/glass-tea-tumbler-alt.jpg",
+    "/img/photos/glass-tea-tumbler-alt2.jpg",
+    "/img/photos/glass-tea-tumbler-hero-thumb.jpg",
+    "/img/photos/glass-tea-tumbler-hero-wide.jpg",
+    "/img/photos/glass-tea-tumbler-hero.jpg",
+    "/img/photos/gongfu-starter-kit-alt.jpg",
+    "/img/photos/gongfu-starter-kit-alt2.jpg",
+    "/img/photos/gongfu-starter-kit-hero-thumb.jpg",
+    "/img/photos/gongfu-starter-kit-hero-wide.jpg",
+    "/img/photos/gongfu-starter-kit-hero.jpg",
+    "/img/photos/hero-thumb.jpg",
+    "/img/photos/hero-wide.jpg",
+    "/img/photos/hero.jpg",
+    "/img/photos/huangshan-maofeng-alt.jpg",
+    "/img/photos/huangshan-maofeng-alt2.jpg",
+    "/img/photos/huangshan-maofeng-hero-thumb.jpg",
+    "/img/photos/huangshan-maofeng-hero-wide.jpg",
+    "/img/photos/huangshan-maofeng-hero.jpg",
+    "/img/photos/jasmine-pearls-nine-scent-alt.jpg",
+    "/img/photos/jasmine-pearls-nine-scent-alt2.jpg",
+    "/img/photos/jasmine-pearls-nine-scent-hero-thumb.jpg",
+    "/img/photos/jasmine-pearls-nine-scent-hero-wide.jpg",
+    "/img/photos/jasmine-pearls-nine-scent-hero.jpg",
+    "/img/photos/jin-jun-mei-alt.jpg",
+    "/img/photos/jin-jun-mei-alt2.jpg",
+    "/img/photos/jin-jun-mei-hero-thumb.jpg",
+    "/img/photos/jin-jun-mei-hero-wide.jpg",
+    "/img/photos/jin-jun-mei-hero.jpg",
+    "/img/photos/jingmai-raw-sheng-cake-alt.jpg",
+    "/img/photos/jingmai-raw-sheng-cake-alt2.jpg",
+    "/img/photos/jingmai-raw-sheng-cake-hero-thumb.jpg",
+    "/img/photos/jingmai-raw-sheng-cake-hero-wide.jpg",
+    "/img/photos/jingmai-raw-sheng-cake-hero.jpg",
+    "/img/photos/keemun-hao-ya-alt.jpg",
+    "/img/photos/keemun-hao-ya-alt2.jpg",
+    "/img/photos/keemun-hao-ya-hero-thumb.jpg",
+    "/img/photos/keemun-hao-ya-hero-wide.jpg",
+    "/img/photos/keemun-hao-ya-hero.jpg",
+    "/img/photos/lapsang-souchong-tongmuguan-alt.jpg",
+    "/img/photos/lapsang-souchong-tongmuguan-alt2.jpg",
+    "/img/photos/lapsang-souchong-tongmuguan-hero-thumb.jpg",
+    "/img/photos/lapsang-souchong-tongmuguan-hero-wide.jpg",
+    "/img/photos/lapsang-souchong-tongmuguan-hero.jpg",
+    "/img/photos/lion-peak-longjing-alt.jpg",
+    "/img/photos/lion-peak-longjing-alt2.jpg",
+    "/img/photos/lion-peak-longjing-hero-thumb.jpg",
+    "/img/photos/lion-peak-longjing-hero-wide.jpg",
+    "/img/photos/lion-peak-longjing-hero.jpg",
+    "/img/photos/menghai-7572-shou-cake-alt.jpg",
+    "/img/photos/menghai-7572-shou-cake-alt2.jpg",
+    "/img/photos/menghai-7572-shou-cake-hero-thumb.jpg",
+    "/img/photos/menghai-7572-shou-cake-hero-wide.jpg",
+    "/img/photos/menghai-7572-shou-cake-hero.jpg",
+    "/img/photos/mi-lan-xiang-dan-cong-alt.jpg",
+    "/img/photos/mi-lan-xiang-dan-cong-alt2.jpg",
+    "/img/photos/mi-lan-xiang-dan-cong-hero-thumb.jpg",
+    "/img/photos/mi-lan-xiang-dan-cong-hero-wide.jpg",
+    "/img/photos/mi-lan-xiang-dan-cong-hero.jpg",
+    "/img/photos/milk-oolong-jinxuan-alt.jpg",
+    "/img/photos/milk-oolong-jinxuan-alt2.jpg",
+    "/img/photos/milk-oolong-jinxuan-hero-thumb.jpg",
+    "/img/photos/milk-oolong-jinxuan-hero-wide.jpg",
+    "/img/photos/milk-oolong-jinxuan-hero.jpg",
+    "/img/photos/oolong-explorer-flight-alt.jpg",
+    "/img/photos/oolong-explorer-flight-alt2.jpg",
+    "/img/photos/oolong-explorer-flight-hero-thumb.jpg",
+    "/img/photos/oolong-explorer-flight-hero-wide.jpg",
+    "/img/photos/oolong-explorer-flight-hero.jpg",
+    "/img/photos/osmanthus-oolong-alt.jpg",
+    "/img/photos/osmanthus-oolong-alt2.jpg",
+    "/img/photos/osmanthus-oolong-hero-thumb.jpg",
+    "/img/photos/osmanthus-oolong-hero-wide.jpg",
+    "/img/photos/osmanthus-oolong-hero.jpg",
+    "/img/photos/porcelain-gaiwan-set-alt.jpg",
+    "/img/photos/porcelain-gaiwan-set-alt2.jpg",
+    "/img/photos/porcelain-gaiwan-set-hero-thumb.jpg",
+    "/img/photos/porcelain-gaiwan-set-hero-wide.jpg",
+    "/img/photos/porcelain-gaiwan-set-hero.jpg",
+    "/img/photos/rose-black-tea-alt.jpg",
+    "/img/photos/rose-black-tea-alt2.jpg",
+    "/img/photos/rose-black-tea-hero-thumb.jpg",
+    "/img/photos/rose-black-tea-hero-wide.jpg",
+    "/img/photos/rose-black-tea-hero.jpg",
+    "/img/photos/silver-needle-baihao-alt.jpg",
+    "/img/photos/silver-needle-baihao-alt2.jpg",
+    "/img/photos/silver-needle-baihao-hero-thumb.jpg",
+    "/img/photos/silver-needle-baihao-hero-wide.jpg",
+    "/img/photos/silver-needle-baihao-hero.jpg",
+    "/img/photos/story-ceremony-2-hero-thumb.jpg",
+    "/img/photos/story-ceremony-2-hero-wide.jpg",
+    "/img/photos/story-ceremony-2-hero.jpg",
+    "/img/photos/story-ceremony-hero-thumb.jpg",
+    "/img/photos/story-ceremony-hero-wide.jpg",
+    "/img/photos/story-ceremony-hero.jpg",
+    "/img/photos/story-harvest-hero-thumb.jpg",
+    "/img/photos/story-harvest-hero-wide.jpg",
+    "/img/photos/story-harvest-hero.jpg",
+    "/img/photos/story-plantation-hero-thumb.jpg",
+    "/img/photos/story-plantation-hero-wide.jpg",
+    "/img/photos/story-plantation-hero.jpg",
+    "/img/photos/story-pluck-hero-thumb.jpg",
+    "/img/photos/story-pluck-hero-wide.jpg",
+    "/img/photos/story-pluck-hero.jpg",
+    "/img/photos/story-terraces-hero-thumb.jpg",
+    "/img/photos/story-terraces-hero-wide.jpg",
+    "/img/photos/story-terraces-hero.jpg",
+    "/img/photos/story-withering-hero-thumb.jpg",
+    "/img/photos/story-withering-hero-wide.jpg",
+    "/img/photos/story-withering-hero.jpg",
+    "/img/photos/taiping-houkou-alt.jpg",
+    "/img/photos/taiping-houkou-alt2.jpg",
+    "/img/photos/taiping-houkou-hero-thumb.jpg",
+    "/img/photos/taiping-houkou-hero-wide.jpg",
+    "/img/photos/taiping-houkou-hero.jpg",
+    "/img/photos/the-tea-voyage-gift-box-alt.jpg",
+    "/img/photos/the-tea-voyage-gift-box-alt2.jpg",
+    "/img/photos/the-tea-voyage-gift-box-hero-thumb.jpg",
+    "/img/photos/the-tea-voyage-gift-box-hero-wide.jpg",
+    "/img/photos/the-tea-voyage-gift-box-hero.jpg",
+    "/img/photos/tieguanyin-iron-goddess-alt.jpg",
+    "/img/photos/tieguanyin-iron-goddess-alt2.jpg",
+    "/img/photos/tieguanyin-iron-goddess-hero-thumb.jpg",
+    "/img/photos/tieguanyin-iron-goddess-hero-wide.jpg",
+    "/img/photos/tieguanyin-iron-goddess-hero.jpg",
+    "/img/photos/white-peony-yueguangbai-alt.jpg",
+    "/img/photos/white-peony-yueguangbai-alt2.jpg",
+    "/img/photos/white-peony-yueguangbai-hero-thumb.jpg",
+    "/img/photos/white-peony-yueguangbai-hero-wide.jpg",
+    "/img/photos/white-peony-yueguangbai-hero.jpg",
+    "/img/photos/wuyi-shuixian-alt.jpg",
+    "/img/photos/wuyi-shuixian-alt2.jpg",
+    "/img/photos/wuyi-shuixian-hero-thumb.jpg",
+    "/img/photos/wuyi-shuixian-hero-wide.jpg",
+    "/img/photos/wuyi-shuixian-hero.jpg",
+    "/img/photos/ya-shi-xiang-dan-cong-alt.jpg",
+    "/img/photos/ya-shi-xiang-dan-cong-alt2.jpg",
+    "/img/photos/ya-shi-xiang-dan-cong-hero-thumb.jpg",
+    "/img/photos/ya-shi-xiang-dan-cong-hero-wide.jpg",
+    "/img/photos/ya-shi-xiang-dan-cong-hero.jpg",
+    "/img/photos/yixing-zisha-shi-piao-pot-alt.jpg",
+    "/img/photos/yixing-zisha-shi-piao-pot-alt2.jpg",
+    "/img/photos/yixing-zisha-shi-piao-pot-hero-thumb.jpg",
+    "/img/photos/yixing-zisha-shi-piao-pot-hero-wide.jpg",
+    "/img/photos/yixing-zisha-shi-piao-pot-hero.jpg",
+    "/img/photos/yunnan-dianhong-golden-bud-alt.jpg",
+    "/img/photos/yunnan-dianhong-golden-bud-alt2.jpg",
+    "/img/photos/yunnan-dianhong-golden-bud-hero-thumb.jpg",
+    "/img/photos/yunnan-dianhong-golden-bud-hero-wide.jpg",
+    "/img/photos/yunnan-dianhong-golden-bud-hero.jpg"
+  ]
+}

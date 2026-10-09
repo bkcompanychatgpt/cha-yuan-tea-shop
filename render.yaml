@@ -1,0 +1,114 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+#
+# Deploys the storefront as a Render Web Service with a persistent disk for the
+# SQLite database.
+#
+#   IMPORTANT: the disk below requires a paid instance type (Starter or above).
+#   On the free plan Render offers no persistent storage, so data/shop.db would be
+#   recreated empty on every deploy and every order would be lost. If you must
+#   start on the free plan, see docs/DEPLOY.md for what that costs you.
+#
+# To use: push this repository to GitHub, then in Render choose
+#   New → Blueprint → select the repository.
+# Render reads this file, prompts for the values marked `sync: false`, and
+# creates everything else automatically.
+
+services:
+  - type: web
+    name: cha-yuan-tea-shop
+    runtime: node
+    plan: starter
+    region: oregon
+    branch: main
+    # --include=dev is deliberate: the build script renders SVG assets and needs
+    # the full dependency tree, and nothing here is pruned afterwards.
+    buildCommand: npm ci --include=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    autoDeploy: true
+
+    # Render restarts a service that fails its health check. One instance is all
+    # this needs; scaling horizontally would break SQLite.
+    numInstances: 1
+
+    disk:
+      name: cha-yuan-data
+      mountPath: /var/data
+      sizeGB: 1
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+      # Render injects PORT itself; the app reads it and binds to 0.0.0.0 below.
+      - key: HOST
+        value: 0.0.0.0
+
+      # Behind Render's proxy, so the app must trust X-Forwarded-For to rate-limit
+      # and log the real client IP.
+      - key: TRUST_PROXY
+        value: "1"
+
+      # The SQLite file lives on the mounted disk so it survives deploys.
+      - key: DATABASE_FILE
+        value: /var/data/shop.db
+
+      # Signs the admin session cookie. Render generates and stores this.
+      - key: SESSION_SECRET
+        generateValue: true
+
+      # ------------------------------------------------ storefront identity
+      - key: STORE_NAME
+        value: Cha Yuan
+      - key: STORE_TAGLINE
+        value: Single-origin Chinese tea, sourced at the mountain.
+      - key: CURRENCY
+        value: CAD
+      - key: CURRENCY_SYMBOL
+        value: $
+      - key: FREE_SHIPPING_THRESHOLD
+        value: "79"
+      - key: FLAT_SHIPPING_FEE
+        value: "9.5"
+      - key: TAX_RATE
+        value: "0.13"
+      - key: TAX_LABEL
+        value: HST (13%)
+
+      # ------------------------------------------------------ OTT Pay gateway
+      # `mock` needs no credentials and simulates the acquirer end to end, which
+      # is the right setting for a first deploy. Switch to `sandbox`, then `live`,
+      # once you have credentials and a public URL for the callback.
+      - key: PAYMENT_MODE
+        value: mock
+
+      # Set PUBLIC_BASE_URL to this service's own URL after the first deploy,
+      # e.g. https://cha-yuan-tea-shop.onrender.com — OTT Pay posts the payment
+      # result there, so it must be the public hostname, not localhost.
+      - key: PUBLIC_BASE_URL
+        sync: false
+
+      # Fill these in from your OTT Pay onboarding email. Leave blank while
+      # PAYMENT_MODE=mock.
+      - key: OTT_APP_ID
+        sync: false
+      - key: OTT_APP_KEY
+        sync: false
+      - key: OTT_SIGN_KEY
+        sync: false
+      - key: OTT_MERCHANT_ID
+        sync: false
+
+      # Optional: KOUNT device data collection for 3-D Secure 2.
+      - key: KOUNT_CLIENT_ID
+        sync: false
+      - key: KOUNT_ENVIRONMENT
+        value: TEST
+
+      # --------------------------------------------------------- back office
+      # Render prompts for these. They are what protect /admin, so set real
+      # values — the defaults in .env.example are deliberately unusable.
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false

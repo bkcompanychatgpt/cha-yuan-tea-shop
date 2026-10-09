@@ -1,0 +1,12 @@
+<div class="search-panel" id="search-panel" aria-hidden="true" role="dialog" aria-label="Search">
+  <div class="row-between" style="max-width:720px;margin:0 auto 26px">
+    <span class="eyebrow">Search the tea room</span>
+    <button class="icon-btn" type="button" data-close-search aria-label="Close search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <form role="search" action="/shop" method="get">
+    <input type="search" name="q" placeholder="Try &ldquo;oolong&rdquo;, &ldquo;pu-erh&rdquo;, &ldquo;jasmine&rdquo;&hellip;" autocomplete="off" aria-label="Search teas" />
+  </form>
+  <div class="search-results"></div>
+</div>

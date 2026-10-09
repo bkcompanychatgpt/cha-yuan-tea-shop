@@ -1,0 +1,134 @@
+<div class="admin-head">
+  <div>
+    <span class="eyebrow">Configuration</span>
+    <h1 style="font-size:clamp(1.7rem,3vw,2.3rem);margin-top:10px">Settings</h1>
+  </div>
+</div>
+
+<% if (problems.length) { %>
+  <div class="alert alert-error" style="margin-bottom:24px">
+    <p style="margin-bottom:8px"><strong>Configuration errors — payments will not work until these are fixed:</strong></p>
+    <ul class="stack-8" style="padding-left:18px;list-style:disc">
+      <% problems.forEach(p => { %><li><%= p %></li><% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<% if (typeof warnings !== 'undefined' && warnings.length) { %>
+  <div class="alert alert-warn" style="margin-bottom:24px">
+    <p style="margin-bottom:8px"><strong>Worth fixing before you take real payments:</strong></p>
+    <ul class="stack-8" style="padding-left:18px;list-style:disc">
+      <% warnings.forEach(w => { %><li><%= w %></li><% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<% if (!problems.length && (!(typeof warnings !== 'undefined') || !warnings.length)) { %>
+  <div class="alert alert-success" style="margin-bottom:24px">Configuration is valid for the current payment mode.</div>
+<% } %>
+
+<div class="grid grid-2" style="align-items:start;gap:24px">
+  <div>
+    <div class="admin-card">
+      <h3>Store</h3>
+      <table class="table">
+        <tbody>
+          <tr><td>Name</td><td><%= store.name %></td></tr>
+          <tr><td>Tagline</td><td class="small"><%= store.tagline %></td></tr>
+          <tr><td>Public base URL</td><td class="mono tiny"><%= store.publicBaseUrl %></td></tr>
+          <tr><td>Callback URL</td><td class="mono tiny" style="word-break:break-all"><%= store.publicBaseUrl %>/api/ottpay/callback</td></tr>
+          <tr><td>Currency</td><td class="mono"><%= store.currency %></td></tr>
+          <tr><td>Free shipping over</td><td class="mono"><%= money(store.freeShippingThreshold) %></td></tr>
+          <tr><td>Flat shipping</td><td class="mono"><%= money(store.flatShippingFee) %></td></tr>
+          <tr><td>Tax</td><td><%= store.taxLabel %> (<%= (store.taxRate * 100).toFixed(2) %>%)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="admin-card">
+      <h3>Payment gateway</h3>
+      <table class="table">
+        <tbody>
+          <tr><td>Mode</td><td><span class="status-pill status-<%= payment.mode === 'live' ? 'failed' : payment.mode === 'mock' ? 'awaiting_payment' : 'paid' %>"><%= payment.mode %></span></td></tr>
+          <tr><td>Base URL</td><td class="mono tiny"><%= config.payment.baseUrl %></td></tr>
+          <tr><td>Merchant ID</td><td class="mono tiny"><%= config.payment.merchantId || '—' %></td></tr>
+          <tr><td>appId</td><td class="mono tiny"><%= config.payment.appId ? config.payment.appId : '— not set —' %></td></tr>
+          <tr><td>appKey</td><td class="mono tiny"><%= config.payment.appKey ? '•••• configured' : '— not set —' %></td></tr>
+          <tr><td>signKey</td><td class="mono tiny"><%= config.payment.signKey ? '•••• configured' : '— not set —' %></td></tr>
+          <tr><td>Token lifetime</td><td class="mono tiny"><%= config.payment.tokenTtlSeconds %>s (refreshed <%= config.payment.tokenRefreshSkewSeconds %>s early)</td></tr>
+          <tr><td>HTTP timeout</td><td class="mono tiny"><%= config.payment.httpTimeoutMs %> ms</td></tr>
+          <tr><td>KOUNT DDC</td><td class="mono tiny"><%= config.payment.kount.enabled ? `client ${config.payment.kount.clientId} · ${config.payment.kount.environment}` : 'disabled' %></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <div class="admin-card">
+      <h3>How to switch to the real OTT Pay sandbox</h3>
+      <ol class="stack-12" style="padding-left:18px;list-style:decimal;color:var(--text-dim);font-size:0.9rem;line-height:1.8">
+        <li>Open <span class="mono"><%= envPath %></span> (create it from <span class="mono">.env.example</span> if it does not exist).</li>
+        <li>Fill in the credentials from your OTT Pay onboarding email:
+          <div class="mono tiny" style="margin-top:8px;padding:12px;border:1px solid var(--line-soft);background:rgba(0,0,0,0.25)">
+            OTT_APP_ID=…<br />
+            OTT_APP_KEY=…<br />
+            OTT_SIGN_KEY=…<br />
+            OTT_MERCHANT_ID=…
+          </div>
+        </li>
+        <li>Set <span class="mono">PAYMENT_MODE=sandbox</span>.</li>
+        <li>Set <span class="mono">PUBLIC_BASE_URL</span> to a URL OTT Pay can reach (a tunnel while testing), so the
+          callback can be delivered.</li>
+        <li>Restart the server.</li>
+        <li>Pay with OTT Pay's published test cards — sandbox card transactions are rejected unless the card number is
+          one of theirs.</li>
+      </ol>
+    </div>
+
+    <div class="admin-card">
+      <h3>Test cards (sandbox)</h3>
+      <table class="table">
+        <thead><tr><th>Brand</th><th>Number</th><th>Expiry</th><th>CVV</th></tr></thead>
+        <tbody>
+          <tr><td>Visa credit</td><td class="mono tiny">4000 0200 0000 0000</td><td class="mono tiny">03/2030</td><td class="mono tiny">737</td></tr>
+          <tr><td>Visa debit</td><td class="mono tiny">4400 0000 0000 0008</td><td class="mono tiny">03/2030</td><td class="mono tiny">737</td></tr>
+          <tr><td>Mastercard credit</td><td class="mono tiny">2222 4000 1000 0008</td><td class="mono tiny">03/2030</td><td class="mono tiny">737</td></tr>
+          <tr><td>Mastercard debit</td><td class="mono tiny">2222 4000 6000 0007</td><td class="mono tiny">03/2030</td><td class="mono tiny">737</td></tr>
+          <tr><td>American Express</td><td class="mono tiny">3741 0101 2180 018</td><td class="mono tiny">03/2030</td><td class="mono tiny">7373</td></tr>
+          <tr><td>Discover</td><td class="mono tiny">6011 6011 6011 6611</td><td class="mono tiny">03/2030</td><td class="mono tiny">737</td></tr>
+          <tr><td>JCB</td><td class="mono tiny">3569 9900 1009 5841</td><td class="mono tiny">03/2030</td><td class="mono tiny">737</td></tr>
+          <tr><td>UnionPay</td><td class="mono tiny">6243 0300 0000 0001</td><td class="mono tiny">12/2029</td><td class="mono tiny">737</td></tr>
+          <tr><td>Diners</td><td class="mono tiny">3600 6666 3333 44</td><td class="mono tiny">03/2030</td><td class="mono tiny">737</td></tr>
+        </tbody>
+      </table>
+      <p class="tiny faint" style="margin-top:12px">
+        3-D Secure challenge password for web integrations: <span class="mono">password</span>. Any other value
+        simulates a failed authentication.
+      </p>
+    </div>
+
+    <div class="admin-card">
+      <h3>Endpoint reference implemented by this shop</h3>
+      <table class="table">
+        <tbody>
+          <tr><td><span class="mono tiny">POST /api/v1/auth/token</span></td><td class="tiny faint">bearer token, cached</td></tr>
+          <tr><td><span class="mono tiny">POST /api/v1/payment/local-card/payment3dsV2</span></td><td class="tiny faint">authorise + 3DS2</td></tr>
+          <tr><td><span class="mono tiny">POST /api/v1/payment/status-query</span></td><td class="tiny faint">authoritative status</td></tr>
+          <tr><td><span class="mono tiny">POST /api/v1/payment/local-card/refund</span></td><td class="tiny faint">refund</td></tr>
+          <tr><td><span class="mono tiny">POST &lt;callBackURL&gt;</span></td><td class="tiny faint">AES-128-ECB callback</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="admin-card">
+      <h3>Security notes</h3>
+      <ul class="stack-8" style="padding-left:18px;list-style:disc;color:var(--text-dim);font-size:0.88rem;line-height:1.8">
+        <li>appKey and signKey are read from the environment and are never sent to the browser.</li>
+        <li>Card numbers and CVV are forwarded to OTT Pay and discarded; only brand and last four digits are stored.</li>
+        <li>Checkout is rate-limited per IP and protected by a CSRF token plus a same-origin check.</li>
+        <li>Callbacks are deduplicated by an event key, so a repeated delivery cannot double-fulfil an order.</li>
+        <li>Change <span class="mono">ADMIN_PASSWORD</span> and <span class="mono">SESSION_SECRET</span> before going live.</li>
+      </ul>
+    </div>
+  </div>
+</div>

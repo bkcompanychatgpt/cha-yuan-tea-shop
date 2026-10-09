@@ -1,0 +1,39 @@
+<div class="drawer-scrim" id="drawer-scrim"></div>
+
+<aside class="cart-drawer" id="cart-drawer" aria-hidden="true" aria-label="Shopping basket">
+  <div class="drawer-head">
+    <div>
+      <h3>Your basket</h3>
+      <div class="tiny faint" data-cart-count-label>0 items</div>
+    </div>
+    <button class="icon-btn" type="button" data-close-cart aria-label="Close basket">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div class="drawer-body" data-drawer-body></div>
+
+  <div class="drawer-foot" data-cart-empty-hide>
+    <div class="ship-meter" data-ship-meter style="margin-bottom:18px">
+      <div class="ship-meter-bar"><div class="ship-meter-fill" data-ship-fill style="width:0"></div></div>
+      <p class="tiny muted" style="margin-top:9px" data-ship-text></p>
+    </div>
+
+    <div class="totals-row" style="margin-bottom:6px">
+      <span>Subtotal</span>
+      <span class="mono" data-cart-subtotal><%= money(0) %></span>
+    </div>
+    <div class="totals-row" style="margin-bottom:16px">
+      <span>Shipping</span>
+      <span class="mono small muted">calculated at checkout</span>
+    </div>
+
+    <button class="btn btn-solid btn-block" type="button" data-goto-checkout>Checkout</button>
+    <a class="btn btn-ghost btn-block" href="/cart" style="margin-top:10px">View basket</a>
+
+    <p class="tiny faint center" style="margin-top:16px">
+      <%= config.store.taxLabel %> added at checkout ·
+      <a href="/shipping" class="link-underline">shipping details</a>
+    </p>
+  </div>
+</aside>

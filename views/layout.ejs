@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= typeof title !== 'undefined' && title ? title : store.name + ' — ' + store.tagline %></title>
+  <meta name="description" content="<%= typeof description !== 'undefined' && description ? description.slice(0, 300) : store.tagline %>" />
+  <meta name="theme-color" content="#06100b" />
+  <meta name="csrf-token" content="<%= csrfToken %>" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/favicon.svg" />
+  <link rel="preload" href="/fonts/cormorant.css" as="style" />
+  <link rel="preload" href="/fonts/inter.css" as="style" />
+  <link rel="stylesheet" href="/fonts/cormorant.css" />
+  <link rel="stylesheet" href="/fonts/inter.css" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <meta property="og:title" content="<%= typeof title !== 'undefined' && title ? title : store.name %>" />
+  <meta property="og:description" content="<%= typeof description !== 'undefined' && description ? description.slice(0, 200) : store.tagline %>" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/img/hero/home.svg" />
+</head>
+<body class="<%= typeof page !== 'undefined' && page === 'admin' ? 'admin-body' : '' %>">
+  <a class="skip-link" href="#main" style="position:absolute;left:-9999px">Skip to content</a>
+
+  <% if (typeof layoutAdmin === 'undefined' || !layoutAdmin) { %>
+    <%- include('partials/header') %>
+  <% } %>
+
+  <main id="main">
+    <%- body %>
+  </main>
+
+  <% if (typeof layoutAdmin === 'undefined' || !layoutAdmin) { %>
+    <%- include('partials/footer') %>
+    <%- include('partials/cart-drawer') %>
+    <%- include('partials/search') %>
+  <% } %>
+
+  <script src="/js/app.js" defer></script>
+  <script src="/js/cart.js" defer></script>
+  <% if (typeof page !== 'undefined' && page === 'checkout') { %>
+    <script src="/js/checkout.js" defer></script>
+  <% } %>
+  <% if (typeof view === 'string' && view === 'payment-result') { %>
+    <script src="/js/payment-result.js" defer></script>
+  <% } %>
+  <script src="/js/site.js" defer></script>
+</body>
+</html>

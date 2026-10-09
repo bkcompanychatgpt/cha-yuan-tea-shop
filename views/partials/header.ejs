@@ -1,0 +1,117 @@
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="/" aria-label="<%= store.name %> — home">
+      <img src="/img/logo.svg" alt="" />
+      <span class="brand-text">
+        <span class="brand-name"><%= store.name %></span>
+        <span class="brand-sub">Chinese Tea</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Main">
+      <%
+        const navCategories = (typeof categories !== 'undefined' && categories.length)
+          ? categories
+          : [];
+        const teaCats = navCategories.filter(c => c.kind === 'tea');
+        const otherCats = navCategories.filter(c => c.kind !== 'tea');
+      %>
+
+      <% if (teaCats.length) { %>
+        <div class="nav-item">
+          <a class="nav-link <%= page === 'shop' ? 'is-active' : '' %>" href="/shop">Tea</a>
+          <div class="mega">
+            <div class="mega-title">By type</div>
+            <div class="mega-list cols-2">
+              <% teaCats.forEach(c => { %>
+                <a href="/shop?category=<%= encodeURIComponent(c.slug) %>">
+                  <span><%= c.name %></span>
+                  <span class="count"><%= c.product_count %></span>
+                </a>
+              <% }) %>
+            </div>
+            <div class="mega-feature">
+              <%
+                // One representative lot. The route supplies it so the header
+                // never has to run a query of its own.
+                const shot = (typeof megaShot !== 'undefined' && megaShot) ? megaShot : '/img/logo.svg';
+              %>
+              <img src="<%= shot %>" alt="" loading="lazy" />
+              <div>
+                <h5>Not sure where to begin?</h5>
+                <p class="small muted" style="margin-bottom:8px">Our guide walks through the six families and how they differ.</p>
+                <a class="link-underline small" href="/guides">Read the guides →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+
+      <% otherCats.forEach(c => { %>
+        <div class="nav-item">
+          <a class="nav-link" href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %></a>
+        </div>
+      <% }) %>
+
+      <div class="nav-item">
+        <a class="nav-link <%= page === 'guides' ? 'is-active' : '' %>" href="/guides">Guides</a>
+        <div class="mega" style="min-width:400px">
+          <div class="mega-title">Tea knowledge</div>
+          <div class="mega-list">
+            <a href="/guides/how-to-brew-gongfu"><span>How to brew gongfu style</span></a>
+            <a href="/guides/water-and-temperature"><span>Water and temperature</span></a>
+            <a href="/guides/storing-tea"><span>Storing tea properly</span></a>
+            <a href="/guides/tea-and-health"><span>What tea actually does</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a class="nav-link <%= page === 'about' ? 'is-active' : '' %>" href="/about">About</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" type="button" data-open-search aria-label="Search teas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <a class="icon-btn" href="/order" aria-label="Find an order">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+      </a>
+      <button class="icon-btn" type="button" data-open-cart aria-label="Open basket">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-count" data-cart-count hidden>0</span>
+      </button>
+      <button class="icon-btn burger" type="button" data-open-nav aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<aside class="mobile-nav" id="mobile-nav" aria-hidden="true" aria-label="Menu">
+  <div class="row-between">
+    <span class="eyebrow">Menu</span>
+    <button class="icon-btn" type="button" data-close-nav aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <h4>Tea</h4>
+  <% (typeof categories !== 'undefined' ? categories : []).filter(c => c.kind === 'tea').forEach(c => { %>
+    <a href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %></a>
+  <% }) %>
+
+  <h4>Shop</h4>
+  <a href="/shop">All products</a>
+  <% (typeof categories !== 'undefined' ? categories : []).filter(c => c.kind !== 'tea').forEach(c => { %>
+    <a href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %></a>
+  <% }) %>
+
+  <h4>Learn</h4>
+  <a href="/guides">Tea guides</a>
+  <a href="/about">About us</a>
+  <a href="/order">Track an order</a>
+
+  <a class="btn btn-block" href="/shop" style="margin-top:28px">Shop all tea</a>
+</aside>

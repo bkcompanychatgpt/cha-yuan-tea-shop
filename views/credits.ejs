@@ -1,0 +1,57 @@
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><span>Photography credits</span>
+  </nav>
+</div>
+
+<section class="wrap wrap-mid" style="padding-bottom:clamp(60px,8vw,110px)">
+  <span class="eyebrow">Attribution</span>
+  <h1 style="margin:14px 0 18px">Photography credits</h1>
+  <p class="lede">
+    The product and editorial photographs on this site are openly-licensed images, used under the terms of
+    their licences. Creative Commons licences require that the author and the licence are credited, so every
+    image is listed here. Following each link takes you to the original file and its full licence text.
+  </p>
+
+  <div class="alert alert-info" style="margin-top:28px">
+    <strong>A note for whoever takes this site live.</strong> These photographs are real, correctly-licensed
+    tea photography, which is why they are safe to ship — but they are not photographs of the exact teas this
+    shop sells, and several slots have no openly-licensed photograph at all and still use generated artwork.
+    Commission your own product photography, drop the files into <span class="mono">public/img/photos/</span>,
+    and this page can be deleted.
+  </div>
+
+  <div class="panel" style="margin-top:28px">
+    <div class="row-between" style="margin-bottom:18px">
+      <h3 style="margin:0"><%= photoCredits.length %> credited images</h3>
+      <a class="btn btn-sm btn-ghost" href="/terms#privacy">Privacy &amp; terms</a>
+    </div>
+
+    <% if (!photoCredits.length) { %>
+      <p class="muted small">No credits recorded yet. Run <span class="mono">npm run photos</span> to build them.</p>
+    <% } else { %>
+      <div class="credits">
+        <% photoCredits.forEach(credit => { %>
+          <div class="credits-row">
+            <span>
+              <% if (credit.source) { %>
+                <a href="<%= credit.source %>" target="_blank" rel="noopener noreferrer nofollow"><%= credit.title || credit.slot %></a>
+              <% } else { %>
+                <%= credit.title || credit.slot %>
+              <% } %>
+              <div class="tiny faint mono" style="margin-top:3px"><%= credit.slot %></div>
+            </span>
+            <span><%= credit.author || 'Unknown author' %><% if (credit.via) { %><br /><span class="tiny faint">via <%= credit.via %></span><% } %></span>
+            <span>
+              <% if (credit.licenceUrl) { %>
+                <a href="<%= credit.licenceUrl %>" target="_blank" rel="noopener noreferrer nofollow"><%= credit.licence %></a>
+              <% } else { %>
+                <%= credit.licence %>
+              <% } %>
+            </span>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</section>

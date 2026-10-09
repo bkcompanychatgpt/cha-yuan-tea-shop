@@ -1,0 +1,40 @@
+{
+  "name": "cha-yuan-tea-shop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cha Yuan — a premium single-origin Chinese tea store with cart, checkout and OTT Pay local card 3DS payments.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node server/index.mjs",
+    "dev": "node --watch server/index.mjs",
+    "seed": "node server/seed.mjs",
+    "reseed": "node server/seed.mjs --force",
+    "demo": "node server/scripts/demo-order.mjs",
+    "audit": "node server/scripts/db-audit.mjs",
+    "test": "node server/scripts/smoke.mjs && node server/scripts/contrast-check.mjs && node server/scripts/check-assets.mjs && node server/scripts/check-gaps.mjs && node server/scripts/lang-audit.mjs",
+    "smoke": "node server/scripts/smoke.mjs",
+    "assets": "node server/scripts/check-assets.mjs",
+    "gaps": "node server/scripts/check-gaps.mjs",
+    "coverage": "node server/scripts/coverage.mjs",
+    "lang": "node server/scripts/lang-audit.mjs",
+    "visual": "node server/scripts/visual-check.mjs",
+    "contrast": "node server/scripts/contrast-check.mjs",
+    "shots": "node server/scripts/screenshot.mjs",
+    "fonts": "node server/scripts/fetch-fonts.mjs",
+    "photos:survey": "node server/scripts/fetch-photos.mjs --contact",
+    "photos:targeted": "node server/scripts/fetch-targeted.mjs",
+    "photos:sheets": "node server/scripts/build-sheets.mjs",
+    "photos:build": "node server/scripts/build-photos.mjs --preview",
+    "photos:attach": "node server/scripts/attach-photos.mjs",
+    "photos": "npm run photos:build && npm run photos:attach"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-ejs-layouts": "^2.5.1",
+    "sharp": "^0.35.5"
+  }
+}

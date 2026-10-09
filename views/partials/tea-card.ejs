@@ -1,0 +1,81 @@
+<article class="tea-card">
+  <div class="tea-media">
+    <a href="/tea/<%= product.slug %>" aria-label="<%= product.name %>">
+      <img src="<%= product.hero_image %>" alt="<%= product.name %>" loading="lazy" />
+      <% if (product.images && product.images[1]) { %>
+        <img class="tea-media-alt" src="<%= product.images[1] %>" alt="" loading="lazy" aria-hidden="true" />
+      <% } %>
+    </a>
+
+    <div class="tea-badges">
+      <% if (product.is_new) { %><span class="badge badge-gold">New</span><% } %>
+      <% (product.badges || []).slice(0, 2).forEach(b => { %><span class="badge"><%= b %></span><% }) %>
+      <% if (!product.inStock) { %><span class="badge">Sold out</span><% } %>
+    </div>
+
+    <button class="tea-card-save" type="button" data-wishlist="<%= product.slug %>" aria-label="Save <%= product.name %>">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.8 5.6a5 5 0 0 0-7.1 0L12 7.3l-1.7-1.7a5 5 0 1 0-7.1 7.1L12 21l8.8-8.3a5 5 0 0 0 0-7.1Z"/></svg>
+    </button>
+
+    <% const dv = product.defaultVariant; %>
+    <% if (dv && dv.stock > 0) { %>
+      <div class="tea-quick">
+        <button class="btn btn-sm btn-block"
+                type="button"
+                data-add-to-cart
+                data-variant-id="<%= dv.id %>"
+                data-quantity="1"
+                data-slug="<%= product.slug %>"
+                data-name="<%= product.name %>"
+                data-variant-label="<%= dv.label %>"
+                data-price-cents="<%= dv.price_cents %>"
+                data-image="<%= product.hero_image %>"
+                data-stock="<%= dv.stock %>">
+          Add <%= dv.label %> — <%= money(dv.price_cents) %>
+        </button>
+      </div>
+    <% } %>
+  </div>
+
+  <div class="tea-body">
+    <div class="tea-origin">
+      <%= product.tea_family %><% if (product.origin && product.origin !== '—') { %> · <%= product.origin.split(',').pop().trim() %><% } %>
+    </div>
+    <h3 class="tea-name"><a href="/tea/<%= product.slug %>"><%= product.name %></a></h3>
+
+    <% if (product.tasting_notes && product.tasting_notes.length) { %>
+      <div class="tea-notes">
+        <% product.tasting_notes.slice(0, 3).forEach(n => { %><span class="tea-note"><%= n %></span><% }) %>
+      </div>
+    <% } else { %>
+      <p class="tea-desc"><%= product.short_description %></p>
+    <% } %>
+
+    <% if (product.variants && product.variants.length > 1) { %>
+      <div class="tea-meta-row">
+        <span class="tea-sizes"><%= product.variants.length %> sizes · <%= product.variants[0].label %>–<%= product.variants[product.variants.length - 1].label %></span>
+        <% if (product.harvest) { %><span><%= product.harvest.split(',')[0].slice(0, 22) %></span><% } %>
+      </div>
+    <% } %>
+
+    <div class="tea-foot">
+      <div>
+        <div class="price">
+          <% if (product.priceFrom === product.priceTo) { %>
+            <%= money(product.priceFrom) %>
+            <small>· <%= dv ? dv.label : '' %></small>
+          <% } else { %>
+            <small>from</small> <%= money(product.priceFrom) %>
+          <% } %>
+        </div>
+        <% if (product.review_count) { %>
+          <div class="stars" aria-label="Rated <%= product.rating %> out of 5">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.6 7 .8-5.2 4.7 1.4 6.9L12 17.5 5.8 21l1.4-6.9L2 9.4l7-.8Z"/></svg>
+            <span class="small faint" style="margin-left:4px"><%= product.rating.toFixed(1) %> (<%= product.review_count %>)</span>
+          </div>
+        <% } %>
+      </div>
+      <a class="small link-underline" href="/tea/<%= product.slug %>">Details</a>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,495 @@
+{
+  "generatedAt": "2026-10-09T17:20:36.553Z",
+  "credits": {
+    "hero": {
+      "source": "https://commons.wikimedia.org/wiki/File:Tea_Harvesting_03.jpg",
+      "title": "Tea Harvesting 03.jpg",
+      "originalTitle": "Tea Harvesting 03.jpg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Coolbrizzy",
+      "originalAuthor": "Coolbrizzy",
+      "via": "Wikimedia Commons"
+    },
+    "story-terraces": {
+      "source": "https://commons.wikimedia.org/wiki/File:Tea_Harvesting_03.jpg",
+      "title": "Tea Harvesting 03.jpg",
+      "originalTitle": "Tea Harvesting 03.jpg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Coolbrizzy",
+      "originalAuthor": "Coolbrizzy",
+      "via": "Wikimedia Commons"
+    },
+    "story-plantation": {
+      "source": "https://commons.wikimedia.org/wiki/File:A_youngster_harvesting_tea.jpg",
+      "title": "A youngster harvesting tea.jpg",
+      "originalTitle": "A youngster harvesting tea.jpg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Erasmus Kamugisha",
+      "originalAuthor": "Erasmus Kamugisha",
+      "via": "Wikimedia Commons"
+    },
+    "story-harvest": {
+      "source": "https://commons.wikimedia.org/wiki/File:Tea_Harvesting_01.jpg",
+      "title": "Tea Harvesting 01.jpg",
+      "originalTitle": "Tea Harvesting 01.jpg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Coolbrizzy",
+      "originalAuthor": "Coolbrizzy",
+      "via": "Wikimedia Commons"
+    },
+    "story-pluck": {
+      "source": "https://commons.wikimedia.org/wiki/File:Women_harvesting_tea,_West_Bengal_02.jpg",
+      "title": "Women harvesting tea, West Bengal 02.jpg",
+      "originalTitle": "Women harvesting tea, West Bengal 02.jpg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Bernard Gagnon",
+      "originalAuthor": "Bernard Gagnon",
+      "via": "Wikimedia Commons"
+    },
+    "story-withering": {
+      "source": "https://commons.wikimedia.org/wiki/File:White_Tea_Withering.jpg",
+      "title": "White Tea Withering.jpg",
+      "originalTitle": "White Tea Withering.jpg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "KZZZ01",
+      "originalAuthor": "KZZZ01",
+      "via": "Wikimedia Commons"
+    },
+    "story-ceremony": {
+      "source": "https://commons.wikimedia.org/wiki/File:Tea_ceremony,_Rostov-on-Don,_Russia.jpg",
+      "title": "Tea ceremony, Rostov-on-Don, Russia.jpg",
+      "originalTitle": "Tea ceremony, Rostov-on-Don, Russia.jpg",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0",
+      "author": "Vyacheslav Argenberg",
+      "originalAuthor": "Vyacheslav Argenberg",
+      "via": "Wikimedia Commons"
+    },
+    "story-ceremony-2": {
+      "source": "https://commons.wikimedia.org/wiki/File:青花蓋碗.jpg",
+      "title": "Blue-and-white porcelain gaiwan, Qing dynasty",
+      "originalTitle": "青花蓋碗.jpg",
+      "licence": "CC0",
+      "licenceUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "author": "Ujiko",
+      "originalAuthor": "氏子",
+      "via": "Wikimedia Commons"
+    },
+    "lion-peak-longjing": {
+      "source": "https://commons.wikimedia.org/wiki/File:Longjing_tea.jpg",
+      "title": "Longjing tea.jpg",
+      "originalTitle": "Longjing tea.jpg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Difference engine",
+      "originalAuthor": "Difference engine",
+      "via": "Wikimedia Commons"
+    },
+    "biluochun-spring-snail": {
+      "source": "https://commons.wikimedia.org/wiki/File:Biluochun_(medium_grade,_spring_2007).jpg",
+      "title": "Biluochun (medium grade, spring 2007).jpg",
+      "originalTitle": "Biluochun (medium grade, spring 2007).jpg",
+      "licence": "CC BY-SA 3.0",
+      "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "author": "Verylikerice at en.wikipedia",
+      "originalAuthor": "Verylikerice at en.wikipedia",
+      "via": "Wikimedia Commons"
+    },
+    "huangshan-maofeng": {
+      "source": "https://commons.wikimedia.org/wiki/File:MaoFeng_Green_Tea_黄山毛峰.jpg",
+      "title": "Huangshan Maofeng green tea",
+      "originalTitle": "MaoFeng Green Tea 黄山毛峰.jpg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Qirille",
+      "originalAuthor": "Qirille",
+      "via": "Wikimedia Commons"
+    },
+    "taiping-houkou": {
+      "source": "https://commons.wikimedia.org/wiki/File:Taiping_houkui_15.jpg",
+      "title": "Taiping houkui 15.jpg",
+      "originalTitle": "Taiping houkui 15.jpg",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0",
+      "author": "Pannet",
+      "originalAuthor": "Pannet",
+      "via": "Wikimedia Commons"
+    },
+    "silver-needle-baihao": {
+      "source": "https://commons.wikimedia.org/wiki/File:2010_FirstFlush_Yunnan_Baihao_Yinzhen.jpg",
+      "title": "2010 FirstFlush Yunnan Baihao Yinzhen.jpg",
+      "originalTitle": "2010 FirstFlush Yunnan Baihao Yinzhen.jpg",
+      "licence": "Public domain",
+      "licenceUrl": "",
+      "author": "Kaminix",
+      "originalAuthor": "Kaminix",
+      "via": "Wikimedia Commons"
+    },
+    "white-peony-yueguangbai": {
+      "source": "https://commons.wikimedia.org/wiki/File:Bai_Mudan.jpg",
+      "title": "Bai Mudan.jpg",
+      "originalTitle": "Bai Mudan.jpg",
+      "licence": "CC BY 3.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/3.0",
+      "author": "chaidrakon.ru",
+      "originalAuthor": "chaidrakon.ru",
+      "via": "Wikimedia Commons"
+    },
+    "aged-white-2019-shoumei": {
+      "source": "https://commons.wikimedia.org/wiki/File:2010_FirstFlush_Yunnan_Baihao_Yinzhen.jpg",
+      "title": "2010 FirstFlush Yunnan Baihao Yinzhen.jpg",
+      "originalTitle": "2010 FirstFlush Yunnan Baihao Yinzhen.jpg",
+      "licence": "Public domain",
+      "licenceUrl": "",
+      "author": "Kaminix",
+      "originalAuthor": "Kaminix",
+      "via": "Wikimedia Commons"
+    },
+    "tieguanyin-iron-goddess": {
+      "source": "https://commons.wikimedia.org/wiki/File:Maxim-2a-TinKuanYinLeaves.JPG",
+      "title": "Maxim-2a-TinKuanYinLeaves.JPG",
+      "originalTitle": "Maxim-2a-TinKuanYinLeaves.JPG",
+      "licence": "CC BY-SA 3.0",
+      "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "author": "Maximilian Wimmer",
+      "originalAuthor": "Maximilian Wimmer",
+      "via": "Wikimedia Commons"
+    },
+    "wuyi-shuixian": {
+      "source": "https://commons.wikimedia.org/wiki/File:Qi_Lan_Oolong_tea_leaf.jpg",
+      "title": "Qi Lan Oolong tea leaf.jpg",
+      "originalTitle": "Qi Lan Oolong tea leaf.jpg",
+      "licence": "CC BY-SA 3.0",
+      "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "author": "Iateasquirrel at English Wikipedia",
+      "originalAuthor": "Iateasquirrel at English Wikipedia",
+      "via": "Wikimedia Commons"
+    },
+    "da-hong-pao": {
+      "source": "https://commons.wikimedia.org/wiki/File:BZC_Oolong_tea_leaf.jpg",
+      "title": "BZC Oolong tea leaf.jpg",
+      "originalTitle": "BZC Oolong tea leaf.jpg",
+      "licence": "CC BY-SA 3.0",
+      "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "author": "User Iateasquirrel on en.wikipedia",
+      "originalAuthor": "User Iateasquirrel on en.wikipedia",
+      "via": "Wikimedia Commons"
+    },
+    "milk-oolong-jinxuan": {
+      "source": "https://commons.wikimedia.org/wiki/File:Huang_Jin_Gui_Tea.jpeg",
+      "title": "Huang Jin Gui Tea.jpeg",
+      "originalTitle": "Huang Jin Gui Tea.jpeg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Peaceeverywhere",
+      "originalAuthor": "Peaceeverywhere",
+      "via": "Wikimedia Commons"
+    },
+    "dong-ding-oolong": {
+      "source": "https://commons.wikimedia.org/wiki/File:Dong_Ding_tea.jpg",
+      "title": "Dong Ding tea.jpg",
+      "originalTitle": "Dong Ding tea.jpg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Waliy sherpa",
+      "originalAuthor": "Waliy sherpa",
+      "via": "Wikimedia Commons"
+    },
+    "mi-lan-xiang-dan-cong": {
+      "source": "https://commons.wikimedia.org/wiki/File:Duck_shit_aroma_tea_2.jpg",
+      "title": "Duck shit aroma tea 2.jpg",
+      "originalTitle": "Duck shit aroma tea 2.jpg",
+      "licence": "CC0",
+      "licenceUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "author": "Mx. Granger",
+      "originalAuthor": "Mx. Granger",
+      "via": "Wikimedia Commons"
+    },
+    "ya-shi-xiang-dan-cong": {
+      "source": "https://commons.wikimedia.org/wiki/File:Duck_shit_aroma_tea_1.jpg",
+      "title": "Duck shit aroma tea 1.jpg",
+      "originalTitle": "Duck shit aroma tea 1.jpg",
+      "licence": "CC0",
+      "licenceUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "author": "Mx. Granger",
+      "originalAuthor": "Mx. Granger",
+      "via": "Wikimedia Commons"
+    },
+    "lapsang-souchong-tongmuguan": {
+      "source": "https://commons.wikimedia.org/wiki/File:Keemun_FTGFOP_(2).JPG",
+      "title": "Keemun FTGFOP (2).JPG",
+      "originalTitle": "Keemun FTGFOP (2).JPG",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Whiteness",
+      "originalAuthor": "Whiteness",
+      "via": "Wikimedia Commons"
+    },
+    "yunnan-dianhong-golden-bud": {
+      "source": "https://commons.wikimedia.org/wiki/File:GoldenDianHong.jpg",
+      "title": "GoldenDianHong.jpg",
+      "originalTitle": "GoldenDianHong.jpg",
+      "licence": "CC BY 3.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/3.0",
+      "author": "Sjschen",
+      "originalAuthor": "Sjschen",
+      "via": "Wikimedia Commons"
+    },
+    "keemun-hao-ya": {
+      "source": "https://commons.wikimedia.org/wiki/File:Flickr_-_cyclonebill_-_Keemun.jpg",
+      "title": "Flickr - cyclonebill - Keemun.jpg",
+      "originalTitle": "Flickr - cyclonebill - Keemun.jpg",
+      "licence": "CC BY-SA 2.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "author": "cyclonebill",
+      "originalAuthor": "cyclonebill",
+      "via": "Wikimedia Commons"
+    },
+    "jin-jun-mei": {
+      "source": "https://commons.wikimedia.org/wiki/File:Jin_Jun_Mei.jpg",
+      "title": "Jin Jun Mei.jpg",
+      "originalTitle": "Jin Jun Mei.jpg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Difference engine",
+      "originalAuthor": "Difference engine",
+      "via": "Wikimedia Commons"
+    },
+    "menghai-7572-shou-cake": {
+      "source": "https://commons.wikimedia.org/wiki/File:Pu-erh_tea.JPG",
+      "title": "Pu-erh tea.JPG",
+      "originalTitle": "Pu-erh tea.JPG",
+      "licence": "CC BY-SA 3.0",
+      "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "author": "No machine-readable author provided. Yongxinge assumed (based on copyright claims).",
+      "originalAuthor": "No machine-readable author provided. Yongxinge assumed (based on copyright claims).",
+      "via": "Wikimedia Commons"
+    },
+    "jingmai-raw-sheng-cake": {
+      "source": "https://commons.wikimedia.org/wiki/File:White_pu_erh_silver_buds_3.jpg",
+      "title": "White pu erh silver buds 3.jpg",
+      "originalTitle": "White pu erh silver buds 3.jpg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Qirille",
+      "originalAuthor": "Qirille",
+      "via": "Wikimedia Commons"
+    },
+    "aged-shou-tuocha-2008": {
+      "source": "https://commons.wikimedia.org/wiki/File:Yunnan_Sourcing_-_15_Years_Aged_Melon_Ripe_Pu-Erh_Tea_Tuo_-_WikiTea.jpg",
+      "title": "Yunnan Sourcing - 15 Years Aged Melon Ripe Pu-Erh Tea Tuo - WikiTea.jpg",
+      "originalTitle": "Yunnan Sourcing - 15 Years Aged Melon Ripe Pu-Erh Tea Tuo - WikiTea.jpg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Ash Crow",
+      "originalAuthor": "Ash Crow",
+      "via": "Wikimedia Commons"
+    },
+    "jasmine-pearls-nine-scent": {
+      "source": "https://commons.wikimedia.org/wiki/File:Jasmine_tea_pearls.jpg",
+      "title": "Jasmine tea pearls.jpg",
+      "originalTitle": "Jasmine tea pearls.jpg",
+      "licence": "CC0",
+      "licenceUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "author": "Fumikas Sagisavas",
+      "originalAuthor": "Fumikas Sagisavas",
+      "via": "Wikimedia Commons"
+    },
+    "osmanthus-oolong": {
+      "source": "https://commons.wikimedia.org/wiki/File:Guangxi_Guilin_dried_osmanthus_fragrans.jpg",
+      "title": "Guangxi Guilin dried osmanthus fragrans.jpg",
+      "originalTitle": "Guangxi Guilin dried osmanthus fragrans.jpg",
+      "licence": "CC0",
+      "licenceUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "author": "Fumikas Sagisavas",
+      "originalAuthor": "Fumikas Sagisavas",
+      "via": "Wikimedia Commons"
+    },
+    "rose-black-tea": {
+      "source": "https://commons.wikimedia.org/wiki/File:Cup_of_rosebud_tea_with_dried_pink_rose_buds.jpg",
+      "title": "Cup of rosebud tea with dried pink rose buds.jpg",
+      "originalTitle": "Cup of rosebud tea with dried pink rose buds.jpg",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0",
+      "author": "Loppy poppy",
+      "originalAuthor": "Loppy poppy",
+      "via": "Wikimedia Commons"
+    },
+    "chrysanthemum-tai-ju": {
+      "source": "https://commons.wikimedia.org/wiki/File:Green_Tea_with_Chrysanthemum.jpg",
+      "title": "Green Tea with Chrysanthemum.jpg",
+      "originalTitle": "Green Tea with Chrysanthemum.jpg",
+      "licence": "CC BY 2.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+      "author": "Saad Akhtar",
+      "originalAuthor": "Saad Akhtar",
+      "via": "Wikimedia Commons"
+    },
+    "porcelain-gaiwan-set": {
+      "source": "https://commons.wikimedia.org/wiki/File:青花蓋碗.jpg",
+      "title": "Blue-and-white porcelain gaiwan, Qing dynasty",
+      "originalTitle": "青花蓋碗.jpg",
+      "licence": "CC0",
+      "licenceUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "author": "Ujiko",
+      "originalAuthor": "氏子",
+      "via": "Wikimedia Commons"
+    },
+    "glass-tea-tumbler": {
+      "source": "https://commons.wikimedia.org/wiki/File:Teapot_verre.jpg",
+      "title": "Teapot verre.jpg",
+      "originalTitle": "Teapot verre.jpg",
+      "licence": "CC BY-SA 3.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "author": "Anarkia777",
+      "originalAuthor": "Anarkia777",
+      "via": "Wikimedia Commons"
+    },
+    "yixing-zisha-shi-piao-pot": {
+      "source": "https://commons.wikimedia.org/wiki/File:Yixing_clay_teapot.jpg",
+      "title": "Yixing clay teapot.jpg",
+      "originalTitle": "Yixing clay teapot.jpg",
+      "licence": "CC BY-SA 3.0",
+      "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "author": "Eugene.shi at English Wikipedia",
+      "originalAuthor": "Eugene.shi at English Wikipedia",
+      "via": "Wikimedia Commons"
+    },
+    "gongfu-starter-kit": {
+      "source": "https://commons.wikimedia.org/wiki/File:Chinese_tea_utensils_shelve.jpg",
+      "title": "Chinese tea utensils shelve.jpg",
+      "originalTitle": "Chinese tea utensils shelve.jpg",
+      "licence": "CC BY 2.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+      "author": "Gary Stevens",
+      "originalAuthor": "Gary Stevens",
+      "via": "Wikimedia Commons"
+    },
+    "the-tea-voyage-gift-box": {
+      "source": "https://commons.wikimedia.org/wiki/File:GoldenDianHong.jpg",
+      "title": "GoldenDianHong.jpg",
+      "originalTitle": "GoldenDianHong.jpg",
+      "licence": "CC BY 3.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/3.0",
+      "author": "Sjschen",
+      "originalAuthor": "Sjschen",
+      "via": "Wikimedia Commons"
+    },
+    "oolong-explorer-flight": {
+      "source": "https://commons.wikimedia.org/wiki/File:Maxim-2a-TinKuanYinLeaves.JPG",
+      "title": "Maxim-2a-TinKuanYinLeaves.JPG",
+      "originalTitle": "Maxim-2a-TinKuanYinLeaves.JPG",
+      "licence": "CC BY-SA 3.0",
+      "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "author": "Maximilian Wimmer",
+      "originalAuthor": "Maximilian Wimmer",
+      "via": "Wikimedia Commons"
+    },
+    "category-green-tea": {
+      "source": "https://commons.wikimedia.org/wiki/File:Maofeng_Tea_02.jpg",
+      "title": "Maofeng Tea 02.jpg",
+      "originalTitle": "Maofeng Tea 02.jpg",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0",
+      "author": "Pannet",
+      "originalAuthor": "Pannet",
+      "via": "Wikimedia Commons"
+    },
+    "category-white-tea": {
+      "source": "https://commons.wikimedia.org/wiki/File:White_tea_Padang_Pj.JPG",
+      "title": "White tea Padang Pj.JPG",
+      "originalTitle": "White tea Padang Pj.JPG",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "Kembangraps",
+      "originalAuthor": "Kembangraps",
+      "via": "Wikimedia Commons"
+    },
+    "category-oolong-tea": {
+      "source": "https://commons.wikimedia.org/wiki/File:Maxim-2a-TinKuanYinLeaves.JPG",
+      "title": "Maxim-2a-TinKuanYinLeaves.JPG",
+      "originalTitle": "Maxim-2a-TinKuanYinLeaves.JPG",
+      "licence": "CC BY-SA 3.0",
+      "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "author": "Maximilian Wimmer",
+      "originalAuthor": "Maximilian Wimmer",
+      "via": "Wikimedia Commons"
+    },
+    "category-dan-cong": {
+      "source": "https://commons.wikimedia.org/wiki/File:Duck_shit_aroma_tea_2.jpg",
+      "title": "Duck shit aroma tea 2.jpg",
+      "originalTitle": "Duck shit aroma tea 2.jpg",
+      "licence": "CC0",
+      "licenceUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "author": "Mx. Granger",
+      "originalAuthor": "Mx. Granger",
+      "via": "Wikimedia Commons"
+    },
+    "category-rock-oolong": {
+      "source": "https://commons.wikimedia.org/wiki/File:Qi_Lan_Oolong_tea_leaf.jpg",
+      "title": "Qi Lan Oolong tea leaf.jpg",
+      "originalTitle": "Qi Lan Oolong tea leaf.jpg",
+      "licence": "CC BY-SA 3.0",
+      "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "author": "Iateasquirrel at English Wikipedia",
+      "originalAuthor": "Iateasquirrel at English Wikipedia",
+      "via": "Wikimedia Commons"
+    },
+    "category-black-tea": {
+      "source": "https://commons.wikimedia.org/wiki/File:Flickr_-_cyclonebill_-_Keemun.jpg",
+      "title": "Flickr - cyclonebill - Keemun.jpg",
+      "originalTitle": "Flickr - cyclonebill - Keemun.jpg",
+      "licence": "CC BY-SA 2.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "author": "cyclonebill",
+      "originalAuthor": "cyclonebill",
+      "via": "Wikimedia Commons"
+    },
+    "category-pu-erh": {
+      "source": "https://commons.wikimedia.org/wiki/File:Pu-erh_tea.JPG",
+      "title": "Pu-erh tea.JPG",
+      "originalTitle": "Pu-erh tea.JPG",
+      "licence": "CC BY-SA 3.0",
+      "licenceUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "author": "No machine-readable author provided. Yongxinge assumed (based on copyright claims).",
+      "originalAuthor": "No machine-readable author provided. Yongxinge assumed (based on copyright claims).",
+      "via": "Wikimedia Commons"
+    },
+    "category-floral-blends": {
+      "source": "https://commons.wikimedia.org/wiki/File:Cup_of_rosebud_tea_with_dried_pink_rose_buds.jpg",
+      "title": "Cup of rosebud tea with dried pink rose buds.jpg",
+      "originalTitle": "Cup of rosebud tea with dried pink rose buds.jpg",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0",
+      "author": "Loppy poppy",
+      "originalAuthor": "Loppy poppy",
+      "via": "Wikimedia Commons"
+    },
+    "category-gift-sets": {
+      "source": "https://commons.wikimedia.org/wiki/File:GoldenDianHong.jpg",
+      "title": "GoldenDianHong.jpg",
+      "originalTitle": "GoldenDianHong.jpg",
+      "licence": "CC BY 3.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/3.0",
+      "author": "Sjschen",
+      "originalAuthor": "Sjschen",
+      "via": "Wikimedia Commons"
+    },
+    "category-teaware": {
+      "source": "https://commons.wikimedia.org/wiki/File:Chinese_gaiwan.jpg",
+      "title": "Chinese gaiwan.jpg",
+      "originalTitle": "Chinese gaiwan.jpg",
+      "licence": "CC BY 2.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+      "author": "Gary Stevens",
+      "originalAuthor": "Gary Stevens",
+      "via": "Wikimedia Commons"
+    }
+  }
+}

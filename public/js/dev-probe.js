@@ -1,0 +1,141 @@
+/* ==========================================================================
+   Cha Yuan — development probe (not loaded by any storefront page)
+   Measures the rendered page and writes a JSON report into <pre id="report">.
+   Used by server/scripts/visual-check.mjs and by GET /dev/audit.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  function rect(el) {
+    if (!el) return null;
+    var r = el.getBoundingClientRect();
+    return { x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.width), h: Math.round(r.height) };
+  }
+
+  function style(el, props) {
+    if (!el) return null;
+    var cs = window.getComputedStyle(el);
+    var out = {};
+    props.forEach(function (p) {
+      out[p] = cs.getPropertyValue(p);
+    });
+    return out;
+  }
+
+  function run() {
+    var d = document;
+    var images = Array.prototype.slice.call(d.images).map(function (img) {
+      var r = img.getBoundingClientRect();
+      return {
+        src: img.getAttribute('src'),
+        complete: img.complete,
+        nw: img.naturalWidth,
+        nh: img.naturalHeight,
+        w: Math.round(r.width),
+        h: Math.round(r.height),
+      };
+    });
+    var broken = images.filter(function (i) {
+      return !i.nw || !i.nh;
+    });
+
+    var selectors = '.tea-card, .cat-tile, .guide-card, .panel, .summary-card, .btn, .stat, .receipt, .pillar, .variant, .pdp-main, .pdp-thumb';
+
+    /** True when an element is actually rendered (not inside a closed drawer, etc). */
+    function isVisible(el) {
+      var node = el;
+      while (node && node.nodeType === 1 && node !== d.body) {
+        var cs = window.getComputedStyle(node);
+        if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') return false;
+        if (node.hidden) return false;
+        node = node.parentElement;
+      }
+      // A closed off-canvas drawer is still "displayed", so check the box too.
+      return el.getBoundingClientRect().width > 0 || el.getBoundingClientRect().height > 0;
+    }
+
+    var zeroBox = Array.prototype.slice
+      .call(d.querySelectorAll(selectors))
+      .filter(isVisible)
+      .filter(function (el) {
+        var r = el.getBoundingClientRect();
+        return r.width < 2 || r.height < 2;
+      })
+      .map(function (el) {
+        return el.className;
+      });
+
+    var visibleCounts = {
+      panels: Array.prototype.slice.call(d.querySelectorAll('.panel')).filter(isVisible).length,
+      cards: Array.prototype.slice.call(d.querySelectorAll('.tea-card')).filter(isVisible).length,
+    };
+
+    var doc = d.documentElement;
+    var root = window.getComputedStyle(doc);
+
+    var report = {
+      path: window.location.pathname + window.location.search,
+      title: d.title,
+      readyState: d.readyState,
+      bodyBg: window.getComputedStyle(d.body).backgroundColor,
+      bodyColor: window.getComputedStyle(d.body).color,
+      docWidth: doc.scrollWidth,
+      viewportWidth: window.innerWidth,
+      horizontalOverflow: doc.scrollWidth > window.innerWidth + 1,
+      docHeight: doc.scrollHeight,
+      counts: {
+        productCards: d.querySelectorAll('.tea-card').length,
+        images: d.images.length,
+        brokenImages: broken.length,
+        zeroSizedBlocks: zeroBox.length,
+        navLinks: d.querySelectorAll('.main-nav .nav-link').length,
+        forms: d.forms.length,
+        stylesheets: d.styleSheets.length,
+        visiblePanels: visibleCounts.panels,
+        visibleCards: visibleCounts.cards,
+      },
+      brokenImageSrcs: broken.map(function (b) {
+        return String(b.src).slice(0, 160);
+      }).slice(0, 12),
+      zeroSizedBlocks: zeroBox.slice(0, 12),
+      rects: {
+        header: rect(d.querySelector('.site-header')),
+        hero: rect(d.querySelector('.hero')),
+        firstProductCard: rect(d.querySelector('.tea-card')),
+        primaryButton: rect(d.querySelector('.btn-solid')),
+        footer: rect(d.querySelector('.site-footer')),
+        cartDrawer: rect(d.querySelector('.cart-drawer')),
+        summaryCard: rect(d.querySelector('.summary-card')),
+        pdpMain: rect(d.querySelector('.pdp-main')),
+      },
+      styles: {
+        heroH1: style(d.querySelector('.hero h1') || d.querySelector('h1'), ['font-family', 'font-size', 'color', 'line-height']),
+        primaryButton: style(d.querySelector('.btn-solid'), ['background-image', 'color', 'font-size', 'letter-spacing', 'text-transform']),
+        navLink: style(d.querySelector('.main-nav .nav-link'), ['font-size', 'letter-spacing', 'text-transform', 'color']),
+        price: style(d.querySelector('.price'), ['font-family', 'font-size', 'color']),
+        eyebrow: style(d.querySelector('.eyebrow'), ['font-size', 'letter-spacing', 'text-transform', 'color']),
+        teaCard: style(d.querySelector('.tea-card'), ['background-color', 'border-top-width']),
+        badge: style(d.querySelector('.badge'), ['background-color', 'color', 'text-transform', 'font-size']),
+      },
+      accentSwatches: {
+        bodyBg: window.getComputedStyle(d.body).backgroundColor,
+        gold: root.getPropertyValue('--gold-300').trim(),
+        goldLight: root.getPropertyValue('--gold-200').trim(),
+        ink: root.getPropertyValue('--ink-900').trim(),
+        ink600: root.getPropertyValue('--ink-600').trim(),
+      },
+      scripts: Array.prototype.slice.call(d.scripts).map(function (s) {
+        return s.getAttribute('src') || 'inline';
+      }),
+    };
+
+    var pre = d.getElementById('report') || d.createElement('pre');
+    pre.id = 'report';
+    pre.textContent = JSON.stringify(report, null, 2);
+    if (!pre.parentNode) d.body.appendChild(pre);
+    d.title = 'probe-ready';
+  }
+
+  if (document.readyState === 'complete') run();
+  else window.addEventListener('load', run);
+})();

@@ -1,0 +1,57 @@
+<div class="admin-head">
+  <div>
+    <span class="eyebrow">Diagnostics</span>
+    <h1 style="font-size:clamp(1.7rem,3vw,2.3rem);margin-top:10px">Payment callbacks</h1>
+    <p class="small faint" style="margin-top:8px">
+      Every POST OTT Pay makes to <span class="mono"><%= config.store.publicBaseUrl %>/api/ottpay/callback</span>,
+      with the AES-ECB decryption result. Failed decryptions are kept here so a signature problem is visible
+      immediately rather than silently losing payments.
+    </p>
+  </div>
+</div>
+
+<% if (!events.length) { %>
+  <div class="admin-card">
+    <p class="muted small">
+      No callbacks received yet. Place a test order from the storefront — in mock mode the shop sends itself a genuine
+      signed callback so this pipeline is exercised end to end.
+    </p>
+  </div>
+<% } else { %>
+  <div class="admin-card">
+    <table class="table">
+      <thead>
+        <tr><th>Received</th><th>Order</th><th>Code</th><th>Processed</th><th>Decryption</th><th>Payload</th></tr>
+      </thead>
+      <tbody>
+        <% events.forEach(e => { %>
+          <tr>
+            <td class="tiny faint nowrap"><%= e.received_at %></td>
+            <td class="mono tiny"><%= e.order_id || '—' %></td>
+            <td class="tiny"><%= e.rsp_code || '—' %> <span class="faint"><%= e.rsp_msg %></span></td>
+            <td>
+              <% if (e.processed) { %><span class="status-pill status-paid">yes</span>
+              <% } else { %><span class="status-pill status-failed">no</span><% } %>
+            </td>
+            <td class="tiny" style="color:<%= e.error ? 'var(--danger)' : 'var(--success)' %>">
+              <%= e.error ? e.error.slice(0, 120) : 'decrypted' %>
+            </td>
+            <td>
+              <% if (e.decrypted) { %>
+                <details>
+                  <summary class="tiny link-underline" style="cursor:pointer">Show</summary>
+                  <pre class="mono tiny" style="white-space:pre-wrap;word-break:break-all;margin-top:8px;color:var(--text-dim);max-width:520px"><%= e.decrypted %></pre>
+                </details>
+              <% } else { %>
+                <details>
+                  <summary class="tiny link-underline" style="cursor:pointer">Raw body</summary>
+                  <pre class="mono tiny" style="white-space:pre-wrap;word-break:break-all;margin-top:8px;color:var(--text-dim);max-width:520px"><%= e.raw_body %></pre>
+                </details>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+<% } %>

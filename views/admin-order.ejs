@@ -1,0 +1,209 @@
+<div class="admin-head">
+  <div>
+    <a class="small faint link-underline" href="/admin/orders">← All orders</a>
+    <h1 style="font-size:clamp(1.6rem,3vw,2.2rem);margin-top:12px"><%= order.order_number %></h1>
+    <p class="small faint" style="margin-top:6px">
+      Placed <%= order.created_at %><% if (order.paid_at) { %> · paid <%= order.paid_at %><% } %>
+    </p>
+  </div>
+  <div class="row" style="gap:10px;flex-wrap:wrap">
+    <span class="status-pill status-<%= order.status %>"><%= order.status.replace(/_/g, ' ') %></span>
+    <span class="status-pill status-<%= order.payment_status %>">payment: <%= order.payment_status.replace(/_/g, ' ') %></span>
+  </div>
+</div>
+
+<% if (typeof req !== 'undefined' && req.query.refund === 'ok') { %>
+  <div class="alert alert-success" style="margin-bottom:22px">Refund submitted to OTT Pay successfully.</div>
+<% } %>
+<% if (typeof req !== 'undefined' && req.query.refund === 'failed') { %>
+  <div class="alert alert-error" style="margin-bottom:22px">The refund was rejected by the gateway. See the refund log below.</div>
+<% } %>
+<% if (typeof req !== 'undefined' && req.query.sync === 'ok') { %>
+  <div class="alert alert-success" style="margin-bottom:22px">Status re-queried from OTT Pay.</div>
+<% } %>
+
+<div class="grid grid-2" style="align-items:start;gap:24px">
+  <div>
+    <div class="admin-card">
+      <h3>Items</h3>
+      <table class="table">
+        <thead><tr><th>Product</th><th>Size</th><th class="num">Qty</th><th class="num">Unit</th><th class="num">Line</th></tr></thead>
+        <tbody>
+          <% order.items.forEach(item => { %>
+            <tr>
+              <td><%= item.product_name %><div class="tiny faint mono"><%= item.sku %></div></td>
+              <td class="tiny faint"><%= item.variant_label %></td>
+              <td class="num"><%= item.quantity %></td>
+              <td class="num"><%= money(item.unit_price_cents) %></td>
+              <td class="num"><%= money(item.line_total_cents) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+        <tfoot>
+          <tr><td colspan="4" class="num faint">Subtotal</td><td class="num"><%= money(order.subtotal_cents) %></td></tr>
+          <tr><td colspan="4" class="num faint">Shipping (<%= order.shipping_method %>)</td><td class="num"><%= money(order.shipping_cents) %></td></tr>
+          <tr><td colspan="4" class="num faint"><%= config.store.taxLabel %></td><td class="num"><%= money(order.tax_cents) %></td></tr>
+          <tr><td colspan="4" class="num"><strong>Total</strong></td><td class="num"><strong class="gold"><%= money(order.total_cents) %></strong></td></tr>
+          <% if (order.refunded_cents) { %>
+            <tr><td colspan="4" class="num faint">Refunded</td><td class="num">−<%= money(order.refunded_cents) %></td></tr>
+          <% } %>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="admin-card">
+      <h3>Customer &amp; delivery</h3>
+      <table class="table">
+        <tbody>
+          <tr><td>Name</td><td><%= order.customer_name %></td></tr>
+          <tr><td>Email</td><td class="mono"><%= order.customer_email %></td></tr>
+          <tr><td>Phone</td><td class="mono"><%= order.customer_phone || '—' %></td></tr>
+          <tr><td>Ship to</td><td>
+            <%= order.shipping_name %><br />
+            <%= order.shipping_line1 %><% if (order.shipping_line2) { %><br /><%= order.shipping_line2 %><% } %><br />
+            <%= order.shipping_city %>, <%= order.shipping_province %> <%= order.shipping_postal_code %><br />
+            <%= order.shipping_country %>
+          </td></tr>
+          <tr><td>Method</td><td><%= order.shipping_method %></td></tr>
+          <% if (order.customer_note) { %><tr><td>Customer note</td><td><%= order.customer_note %></td></tr><% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="admin-card">
+      <h3>Payment attempts</h3>
+      <% if (!order.attempts.length) { %>
+        <p class="muted small">No payment attempts recorded.</p>
+      <% } else { %>
+        <table class="table">
+          <thead><tr><th>Reference</th><th>Status</th><th>Gateway status</th><th>Card</th><th>OTT payment id</th><th>Created</th></tr></thead>
+          <tbody>
+            <% order.attempts.forEach(a => { %>
+              <tr>
+                <td class="mono tiny"><%= a.reference %></td>
+                <td><span class="status-pill status-<%= a.status %>"><%= a.status %></span></td>
+                <td class="tiny"><%= a.ott_payment_status || '—' %><% if (a.error_code) { %><div style="color:var(--danger)"><%= a.error_code %> <%= a.error_message %></div><% } %></td>
+                <td class="tiny"><%= a.cc_type || '—' %> <% if (a.card_last4) { %>····<%= a.card_last4 %><% } %></td>
+                <td class="mono tiny"><%= a.ott_payment_id || '—' %></td>
+                <td class="tiny faint nowrap"><%= a.created_at %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </div>
+
+  <div>
+    <div class="admin-card">
+      <h3>Actions</h3>
+
+      <form method="post" action="/admin/orders/<%= order.order_number %>/status" class="stack-16">
+        <div class="field">
+          <label for="status">Order status</label>
+          <select class="select" id="status" name="status">
+            <% statuses.forEach(s => { %>
+              <option value="<%= s %>" <%= order.status === s ? 'selected' : '' %>><%= s.replace(/_/g, ' ') %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="field">
+          <label for="adminNote">Internal note</label>
+          <textarea class="textarea" id="adminNote" name="adminNote" placeholder="Packed 14 Feb, tracking 1Z…"><%= order.admin_note %></textarea>
+        </div>
+        <button class="btn btn-sm btn-solid btn-block" type="submit">Update order</button>
+      </form>
+
+      <hr class="rule" style="margin:22px 0" />
+
+      <form method="post" action="/admin/orders/<%= order.order_number %>/sync">
+        <button class="btn btn-sm btn-block" type="submit">Re-query status from OTT Pay</button>
+      </form>
+      <p class="tiny faint" style="margin-top:8px">
+        Calls <span class="mono">POST /api/v1/payment/status-query</span> and applies the result.
+      </p>
+    </div>
+
+    <div class="admin-card">
+      <h3>Refund</h3>
+      <% const refundable = order.total_cents - order.refunded_cents; %>
+      <% if (refundable <= 0) { %>
+        <p class="muted small">This order is fully refunded.</p>
+      <% } else { %>
+        <p class="small muted" style="margin-bottom:16px">
+          Refundable: <span class="gold mono"><%= money(refundable) %></span>
+          <% if (!order.ott_payment_id) { %><br /><span class="tiny" style="color:var(--warn)">No gateway payment id yet — a refund can only be issued once the payment is captured.</span><% } %>
+        </p>
+        <form method="post" action="/admin/orders/<%= order.order_number %>/refund" class="stack-16">
+          <div class="field">
+            <label for="amount">Amount to refund (<%= order.currency %>)</label>
+            <input class="input" type="number" step="0.01" min="0.01" max="<%= (refundable / 100).toFixed(2) %>" id="amount" name="amount" value="<%= (refundable / 100).toFixed(2) %>" />
+          </div>
+          <div class="field">
+            <label for="reason">Reason <span class="hint">(internal)</span></label>
+            <input class="input" type="text" id="reason" name="reason" placeholder="Customer did not enjoy the tea" />
+          </div>
+          <button class="btn btn-sm btn-block" type="submit" <%= order.ott_payment_id ? '' : 'disabled' %>>Refund partial amount</button>
+        </form>
+        <form method="post" action="/admin/orders/<%= order.order_number %>/refund" style="margin-top:10px">
+          <input type="hidden" name="full" value="1" />
+          <button class="btn btn-sm btn-solid btn-block" type="submit" <%= order.ott_payment_id ? '' : 'disabled' %>>Refund in full</button>
+        </form>
+        <p class="tiny faint" style="margin-top:10px">
+          Calls <span class="mono">POST /api/v1/payment/local-card/refund</span>. Refunds are recorded against the
+          order and, once successful, flip the payment status to refunded.
+        </p>
+      <% } %>
+
+      <% if (order.refunds.length) { %>
+        <hr class="rule" style="margin:20px 0" />
+        <table class="table">
+          <thead><tr><th>Refund id</th><th class="num">Amount</th><th>Status</th><th>When</th></tr></thead>
+          <tbody>
+            <% order.refunds.forEach(r => { %>
+              <tr>
+                <td class="mono tiny"><%= r.refund_id || '—' %><% if (r.reason) { %><div class="tiny faint"><%= r.reason %></div><% } %></td>
+                <td class="num"><%= money(r.amount_cents) %></td>
+                <td><span class="status-pill status-<%= r.status === 'success' ? 'paid' : 'failed' %>"><%= r.status %></span></td>
+                <td class="tiny faint nowrap"><%= r.created_at %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+
+    <div class="admin-card">
+      <h3>Gateway identifiers</h3>
+      <table class="table">
+        <tbody>
+          <tr><td>Our reference</td><td class="mono tiny"><%= order.ott_reference || '—' %></td></tr>
+          <tr><td>OTT payment id</td><td class="mono tiny"><%= order.ott_payment_id || '—' %></td></tr>
+          <tr><td>Channel order</td><td class="mono tiny"><%= order.ott_bizpay_order_id || '—' %></td></tr>
+          <tr><td>Gateway status</td><td class="mono tiny"><%= order.ott_payment_status || '—' %></td></tr>
+          <tr><td>Card</td><td class="mono tiny"><%= order.ott_cc_type || '—' %> <% if (order.ott_card_last4) { %>····<%= order.ott_card_last4 %><% } %></td></tr>
+        </tbody>
+      </table>
+      <a class="btn btn-sm btn-ghost btn-block" href="/order/<%= order.order_number %>?email=<%= encodeURIComponent(order.customer_email) %>" style="margin-top:14px">Customer view of this order</a>
+    </div>
+
+    <% if (typeof webhooks !== 'undefined' && webhooks.length) { %>
+      <div class="admin-card">
+        <h3>Related callbacks</h3>
+        <table class="table">
+          <thead><tr><th>Received</th><th>Code</th><th>Processed</th><th>Error</th></tr></thead>
+          <tbody>
+            <% webhooks.forEach(w => { %>
+              <tr>
+                <td class="tiny faint nowrap"><%= w.received_at %></td>
+                <td class="mono tiny"><%= w.rsp_code || '—' %></td>
+                <td><%= w.processed ? 'yes' : 'no' %></td>
+                <td class="tiny" style="color:var(--danger)"><%= w.error || '' %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</div>

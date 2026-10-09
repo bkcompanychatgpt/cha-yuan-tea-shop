@@ -1,0 +1,94 @@
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><span>About</span>
+  </nav>
+</div>
+
+<section class="hero" style="min-height:min(58vh,520px)">
+  <div class="hero-bg">
+    <img src="/img/photos/hero-wide.jpg" alt="Tea terraces" />
+  </div>
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <span class="eyebrow">Since 2019</span>
+      <h1 style="margin:16px 0 18px">A tea room, not a warehouse</h1>
+      <p class="lede"><%= editorial.intro %></p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="pillars">
+      <% (editorial.pillars || []).forEach((p, i) => { %>
+        <div class="pillar">
+          <span class="num"><%= String(i + 1).padStart(2, '0') %></span>
+          <h4><%= p.title %></h4>
+          <p><%= p.body %></p>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="border-top:1px solid var(--line-soft);background:var(--ink-850)">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <span class="eyebrow">How we buy</span>
+        <h2 style="margin:16px 0 22px">Three questions before a lot is listed</h2>
+        <div class="stack-24" style="color:var(--text-dim);line-height:1.85">
+          <p><strong class="gold">Where exactly was it grown?</strong> Not &ldquo;Fujian&rdquo; &mdash; the mountain. Altitude, soil and
+            aspect change a tea more than any processing decision, and a grower who cannot tell you the mountain is
+            usually a grower who bought the leaf from someone else.</p>
+          <p><strong class="gold">When was it picked, and how was it fixed?</strong> For green and floral teas this is
+            the whole game. A 2024 spring Longjing and a 2023 one are different products with the same name, and a
+            hand-firing in a wok cannot be imitated by a machine.</p>
+          <p><strong class="gold">Does it hold up across eight infusions?</strong> Cheap tea shows its faults on the
+            second pour. Good tea gets more interesting. We brew every candidate gongfu-style, side by side with the
+            lots we already sell, and we only list what wins.</p>
+        </div>
+      </div>
+      <div class="split-media">
+        <img src="/img/photos/story-harvest-hero.jpg" alt="Tea being plucked" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap wrap-mid center">
+    <span class="eyebrow">The practical bits</span>
+    <h2 style="margin:16px 0 34px">Shipping &amp; payment</h2>
+    <div class="grid grid-3" style="gap:30px;text-align:left">
+      <div class="pillar">
+        <h4>Shipped from Canada</h4>
+        <p>Packed the same business day on orders before 2pm. Standard 2&ndash;5 business days domestically,
+          7&ndash;14 internationally, tracked throughout.
+          Complimentary over <%= money(store.freeShippingThreshold) %>.</p>
+      </div>
+      <div class="pillar">
+        <h4>Cards via OTT Pay</h4>
+        <p>Visa, Mastercard, Amex, Discover, JCB, Diners and UnionPay, authenticated with 3-D Secure 2.
+          Card data goes straight to the gateway &mdash; we keep only the brand and the last four digits.</p>
+      </div>
+      <div class="pillar">
+        <h4>If you do not like it</h4>
+        <p>Unopened tins are returnable for 30 days, and if a tea simply is not to your taste we will replace
+          or refund it without asking for the tin back. Tell us what you did like and we will suggest better.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section newsletter">
+  <div class="wrap wrap-mid">
+    <span class="eyebrow">Questions?</span>
+    <h2 style="margin:16px 0 12px">Write to us</h2>
+    <p class="muted" style="max-width:48ch;margin:0 auto 24px">
+      Every email is answered by the person who chose the tea. Ask about a lot, a harvest, or what to buy for
+      someone who thinks they dislike tea.
+    </p>
+    <a class="btn btn-solid" href="mailto:hello@chayuan.test">hello@chayuan.test</a>
+  </div>
+</section>

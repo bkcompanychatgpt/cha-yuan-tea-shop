@@ -1,0 +1,108 @@
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><span>Terms &amp; privacy</span>
+  </nav>
+</div>
+
+<section class="wrap wrap-mid" style="padding-bottom:clamp(60px,8vw,110px)">
+  <span class="eyebrow">Legal</span>
+  <h1 style="margin:14px 0 18px">Terms, privacy &amp; cookies</h1>
+  <p class="lede">Written to be read. If anything here is unclear, ask us and we will explain it in plain language.</p>
+
+  <div class="stack-32" style="margin-top:44px;font-size:0.94rem;line-height:1.9;color:var(--text-dim)">
+    <div class="panel" id="terms">
+      <h3 style="margin-bottom:14px">Terms of sale</h3>
+      <div class="stack-12">
+        <p>By placing an order you make an offer to buy the goods at the price shown. A contract is formed when we
+          confirm the order by email, not when the payment is authorised. If a product is mispriced or has sold out
+          we may decline the order and refund you in full.</p>
+        <p>All prices are in <%= store.currency %>. <%= store.taxLabel %> and shipping are calculated at checkout and
+          shown before you pay. Nothing is added after you press pay.</p>
+        <p>Tea is a natural agricultural product: leaf appearance, aroma intensity and even flavour vary year to
+          year and lot to lot. Our tasting notes describe the lot we are currently shipping, and we will always tell
+          you if a new harvest differs meaningfully from the previous one.</p>
+        <p>We may update these terms; the version in force is the one published when you place your order.</p>
+      </div>
+    </div>
+
+    <div class="panel" id="privacy">
+      <h3 style="margin-bottom:14px">Privacy</h3>
+      <div class="stack-12">
+        <p><strong class="gold">What we collect.</strong> To fulfil an order we need your name, email address,
+          delivery address and — for the payment — the card details you type into the checkout. We also keep a record
+          of what you ordered and the gateway's transaction identifiers.</p>
+        <p><strong class="gold">What we do not collect.</strong> We never receive or store your full card number, its
+          expiry date or its security code. Those fields are transmitted directly to OTT Pay when you press pay, and
+          what comes back to us is only the card brand and the last four digits.</p>
+        <p><strong class="gold">Who else sees it.</strong> OTT Pay processes the payment and receives the card data,
+          your name, email and billing address, together with a device fingerprint used for fraud screening. Our
+          shipping carrier receives your name and delivery address. That is the complete list; we do not sell, rent
+          or share personal data with anyone else for marketing.</p>
+        <p><strong class="gold">How long we keep it.</strong> Order records are kept for seven years because tax law
+          requires it. Newsletter subscriptions are kept until you unsubscribe, which is one click in every email.</p>
+        <p><strong class="gold">Your rights.</strong> Ask us for a copy of what we hold about you, ask us to correct
+          it, or ask us to delete anything we are not legally required to keep. Email
+          <a class="link-underline" href="mailto:privacy@chayuan.test">privacy@chayuan.test</a> and we will respond
+          within 30 days.</p>
+      </div>
+    </div>
+
+    <div class="panel" id="cookies">
+      <h3 style="margin-bottom:14px">Cookies and local storage</h3>
+      <div class="stack-12">
+        <p>We use the smallest possible set of cookies:</p>
+        <ul class="stack-8" style="padding-left:18px;list-style:disc">
+          <li><span class="mono">cy_csrf</span> — a security token that stops another site from submitting forms on
+            your behalf. It contains no personal data.</li>
+          <li><span class="mono">cy_admin</span> — only set after a staff member signs in to the back office.</li>
+        </ul>
+        <p>Your basket is stored in your browser's <span class="mono">localStorage</span>, under the key
+          <span class="mono">cy_cart_v1</span>, so that it survives a page reload. It contains product identifiers and
+          quantities and nothing else. Clearing your browser data empties it permanently.</p>
+        <p>When a payment is submitted, a device-fingerprint script supplied by our fraud-screening provider runs in
+          the checkout page. It reports technical characteristics of your browser and device to that provider. It does
+          not read your files, your other tabs, or anything you have typed.</p>
+        <p>We run no advertising or third-party analytics trackers on this site.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Contact</h3>
+      <p>Cha Yuan Tea — <a class="link-underline" href="mailto:hello@chayuan.test">hello@chayuan.test</a>.
+        We answer every message within one business day.</p>
+    </div>
+
+    <% if (typeof photoCredits !== 'undefined' && photoCredits.length) { %>
+      <div class="panel" id="photo-credits">
+        <h3 style="margin-bottom:10px">Photography credits</h3>
+        <p style="margin-bottom:20px">
+          Product and editorial photographs on this site are openly licensed images used under the terms of
+          their licences, which require attribution. Each is listed below with its author and licence; the
+          title links to the original file and its full licence text. Replace these with your own photography
+          before launch and this list can be removed.
+        </p>
+        <div class="credits">
+          <% photoCredits.forEach(credit => { %>
+            <div class="credits-row">
+              <span>
+                <% if (credit.source) { %>
+                  <a href="<%= credit.source %>" target="_blank" rel="noopener noreferrer nofollow"><%= credit.title || credit.slot %></a>
+                <% } else { %>
+                  <%= credit.title || credit.slot %>
+                <% } %>
+              </span>
+              <span><%= credit.author || 'Unknown author' %><% if (credit.via) { %>, via <%= credit.via %><% } %></span>
+              <span>
+                <% if (credit.licenceUrl) { %>
+                  <a href="<%= credit.licenceUrl %>" target="_blank" rel="noopener noreferrer nofollow"><%= credit.licence %></a>
+                <% } else { %>
+                  <%= credit.licence %>
+                <% } %>
+              </span>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</section>

@@ -1,0 +1,128 @@
+<div class="admin-head">
+  <div>
+    <span class="eyebrow">Overview</span>
+    <h1 style="font-size:clamp(1.7rem,3vw,2.3rem);margin-top:10px">Dashboard</h1>
+  </div>
+  <div class="row" style="gap:10px">
+    <% if (paymentMode === 'mock') { %>
+      <span class="status-pill status-awaiting_payment">Mock payment mode</span>
+    <% } else { %>
+      <span class="status-pill status-paid">Live gateway: <%= paymentMode %></span>
+    <% } %>
+  </div>
+</div>
+
+<div class="stat-grid">
+  <div class="stat">
+    <div class="k">Revenue (paid)</div>
+    <div class="v"><%= money(stats.revenue) %></div>
+    <div class="sub"><%= stats.paid %> paid orders</div>
+  </div>
+  <div class="stat">
+    <div class="k">Awaiting payment</div>
+    <div class="v"><%= stats.awaiting %></div>
+    <div class="sub">not yet confirmed by the gateway</div>
+  </div>
+  <div class="stat">
+    <div class="k">Orders</div>
+    <div class="v"><%= stats.total %></div>
+    <div class="sub"><%= stats.units %> tins &amp; items sold</div>
+  </div>
+  <div class="stat">
+    <div class="k">Refunded</div>
+    <div class="v"><%= stats.refunded %></div>
+    <div class="sub"><%= stats.pendingWebhooks %> unprocessed callbacks</div>
+  </div>
+</div>
+
+<% if (paymentMode === 'mock') { %>
+  <div class="alert alert-warn" style="margin-bottom:26px">
+    <strong>Mock payment mode is active.</strong> No OTT Pay credentials are configured, so payments are simulated
+    in-process. To switch to the real sandbox: set
+    <span class="mono">OTT_APP_ID</span>, <span class="mono">OTT_APP_KEY</span>,
+    <span class="mono">OTT_SIGN_KEY</span> and <span class="mono">OTT_MERCHANT_ID</span> in
+    <span class="mono">.env</span>, then set <span class="mono">PAYMENT_MODE=sandbox</span> and restart.
+    Sandbox card payments must use OTT Pay's published test cards.
+  </div>
+<% } %>
+
+<div class="alert alert-info" style="margin-bottom:26px">
+  <p style="margin-bottom:8px"><strong>Callback URL</strong> — OTT Pay posts the payment result here. This must be
+    reachable from the internet, and it must be the exact URL you registered with OTT Pay:</p>
+  <p class="mono" style="font-size:0.82rem;word-break:break-all"><%= baseUrl %>/api/ottpay/callback</p>
+  <p class="tiny faint" style="margin-top:8px">
+    Current <span class="mono">PUBLIC_BASE_URL</span> is <span class="mono"><%= baseUrl %></span>.
+    For local testing use a tunnel (ngrok, cloudflared) and update it.
+  </p>
+</div>
+
+<div class="admin-card">
+  <div class="row-between" style="margin-bottom:18px">
+    <h3 style="margin:0">Recent orders</h3>
+    <a class="btn btn-sm btn-ghost" href="/admin/orders">All orders</a>
+  </div>
+
+  <% if (!recent.length) { %>
+    <p class="muted small">No orders yet. Place a test order from the storefront to exercise the payment flow.</p>
+  <% } else { %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Order</th><th>Customer</th><th>Placed</th><th>Payment</th><th class="num">Total</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% recent.forEach(o => { %>
+          <tr>
+            <td><strong class="mono"><%= o.order_number %></strong></td>
+            <td><%= o.customer_name %><br /><span class="tiny faint"><%= o.customer_email %></span></td>
+            <td class="tiny faint nowrap"><%= o.created_at %></td>
+            <td><span class="status-pill status-<%= o.payment_status %>"><%= o.payment_status %></span></td>
+            <td class="num"><%= money(o.total_cents) %></td>
+            <td><a class="link-underline small" href="/admin/orders/<%= o.order_number %>">Open</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<div class="admin-card">
+  <div class="row-between" style="margin-bottom:18px">
+    <h3 style="margin:0">Low stock</h3>
+    <a class="btn btn-sm btn-ghost" href="/admin/products">Manage catalogue</a>
+  </div>
+  <% if (!lowStock.length) { %>
+    <p class="muted small">Everything is comfortably in stock.</p>
+  <% } else { %>
+    <table class="table">
+      <thead><tr><th>Tea</th><th>Size</th><th class="num">Stock</th><th></th></tr></thead>
+      <tbody>
+        <% lowStock.forEach(v => { %>
+          <tr>
+            <td><%= v.name %></td>
+            <td class="tiny faint"><%= v.label %></td>
+            <td class="num <%= v.stock === 0 ? '' : '' %>" style="<%= v.stock === 0 ? 'color:var(--danger)' : v.stock <= 3 ? 'color:var(--warn)' : '' %>"><%= v.stock %></td>
+            <td><a class="link-underline small" href="/tea/<%= v.slug %>">View</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<div class="admin-card">
+  <h3>Integration status</h3>
+  <table class="table">
+    <tbody>
+      <tr><td>Payment mode</td><td class="mono"><%= payment.mode %></td></tr>
+      <tr><td>Gateway base URL</td><td class="mono tiny"><%= config.payment.baseUrl %></td></tr>
+      <tr><td>Merchant ID</td><td class="mono"><%= config.payment.merchantId || '— (mock)' %></td></tr>
+      <tr><td>appId configured</td><td><%= config.payment.appId ? 'yes' : 'no' %></td></tr>
+      <tr><td>appKey configured</td><td><%= config.payment.appKey ? 'yes' : 'no' %></td></tr>
+      <tr><td>signKey configured</td><td><%= config.payment.signKey ? 'yes' : 'no' %></td></tr>
+      <tr><td>KOUNT device data</td><td><%= config.payment.kount.enabled ? `enabled (${config.payment.kount.environment}, client ${config.payment.kount.clientId})` : 'disabled — falling back to a locally generated session id' %></td></tr>
+      <tr><td>Currency</td><td class="mono"><%= config.store.currency %></td></tr>
+    </tbody>
+  </table>
+</div>

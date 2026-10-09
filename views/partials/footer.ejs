@@ -1,0 +1,112 @@
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a class="brand" href="/" style="margin-bottom:18px">
+          <img src="/img/logo.svg" alt="" style="height:46px" />
+        </a>
+        <p><%= store.tagline %></p>
+        <p style="margin-top:14px">
+          Buying in small lots direct from growers in Fujian, Yunnan, Anhui, Zhejiang and
+          Guangdong. Every lot is tasted in a gaiwan before it is listed.
+        </p>
+
+        <div class="footer-contact">
+          <span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            <a href="mailto:hello@chayuan.test" class="link-underline">hello@chayuan.test</a>
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <span>Packed and shipped from Canada</span>
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <span>Orders before 2pm posted the same day</span>
+          </span>
+        </div>
+
+        <div class="footer-social">
+          <a href="/about" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="/about" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 9h3V5h-3a4 4 0 0 0-4 4v2H8v4h2v6h4v-6h3l1-4h-4V9Z"/></svg>
+          </a>
+          <a href="/about" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="6" width="19" height="12" rx="4"/><path d="m11 9.5 4 2.5-4 2.5z" fill="currentColor"/></svg>
+          </a>
+          <a href="mailto:hello@chayuan.test" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Tea by family</h4>
+        <% (typeof categories !== 'undefined' ? categories : []).filter(c => c.kind === 'tea').slice(0, 8).forEach(c => { %>
+          <a href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %> <span class="faint">(<%= c.product_count %>)</span></a>
+        <% }) %>
+      </div>
+
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <a href="/shop">All products</a>
+        <a href="/shop?sort=newest">New arrivals</a>
+        <% (typeof categories !== 'undefined' ? categories : []).filter(c => c.kind !== 'tea').forEach(c => { %>
+          <a href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %></a>
+        <% }) %>
+        <a href="/shop?sort=price-asc">Under <%= money(3000) %></a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Help</h4>
+        <a href="/guides">Brewing guides</a>
+        <a href="/guides/how-to-brew-gongfu">How to brew gongfu</a>
+        <a href="/guides/water-and-temperature">Water &amp; temperature</a>
+        <a href="/shipping">Shipping &amp; returns</a>
+        <a href="/order">Track an order</a>
+        <a href="/about">About us</a>
+        <a href="/terms">Terms &amp; privacy</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Secure payment</h4>
+        <p style="font-size:0.82rem">
+          Card payments are processed by OTT Pay over a PCI-DSS compliant gateway with
+          3-D Secure 2 authentication. Card details never reach our servers.
+        </p>
+        <div class="footer-pay" style="margin-top:16px">
+          <img src="/img/badge/visa.svg" alt="Visa" loading="lazy" />
+          <img src="/img/badge/mastercard.svg" alt="Mastercard" loading="lazy" />
+          <img src="/img/badge/amex.svg" alt="American Express" loading="lazy" />
+          <img src="/img/badge/discover.svg" alt="Discover" loading="lazy" />
+        </div>
+        <div class="footer-pay" style="margin-top:9px">
+          <img src="/img/badge/jcb.svg" alt="JCB" loading="lazy" />
+          <img src="/img/badge/diners.svg" alt="Diners Club" loading="lazy" />
+          <img src="/img/badge/unionpay.svg" alt="China UnionPay" loading="lazy" />
+          <img src="/img/badge/3ds.svg" alt="3-D Secure" loading="lazy" />
+        </div>
+
+        <div class="footer-badges">
+          <span>Harvest dated</span>
+          <span>Small lots</span>
+          <span>Shipped from Canada</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <%= year %> <%= store.name %>. All rights reserved.</span>
+      <span class="mono tiny"><%= store.currency %> · all prices in <%= store.currency %></span>
+      <span class="row" style="gap:18px">
+        <a href="/terms" style="color:inherit">Terms</a>
+        <a href="/terms#privacy" style="color:inherit">Privacy</a>
+        <a href="/shipping" style="color:inherit">Shipping</a>
+        <a href="/credits" style="color:inherit">Photo credits</a>
+        <a href="/admin/login" style="color:inherit">Staff</a>
+      </span>
+    </div>
+  </div>
+</footer>

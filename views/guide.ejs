@@ -1,0 +1,48 @@
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span>
+    <a href="/guides">Guides</a><span class="sep">/</span>
+    <span><%= guide.title %></span>
+  </nav>
+</div>
+
+<article class="wrap wrap-narrow" style="padding-bottom:clamp(60px,8vw,110px)">
+  <span class="eyebrow"><%= guide.family %></span>
+  <h1 style="margin:16px 0 20px"><%= guide.title %></h1>
+  <p class="lede" style="font-size:1.14rem;color:var(--text)"><%= guide.summary %></p>
+
+  <hr class="rule" style="margin:34px 0" />
+
+  <div class="stack-24" style="font-size:1.02rem;line-height:1.92;color:var(--text-dim)">
+    <% guide.body.forEach((paragraph, i) => { %>
+      <p<% if (i === 0) { %> style="font-size:1.12rem;color:var(--text)"<% } %>><%= paragraph %></p>
+    <% }) %>
+  </div>
+
+  <div class="panel" style="margin-top:46px">
+    <span class="eyebrow">Put it into practice</span>
+    <h3 style="margin:14px 0 12px">Pick a tea and brew it tonight</h3>
+    <p class="muted" style="margin-bottom:22px">
+      Every product page carries its own gaiwan and Western parameters, so you never have to guess.
+    </p>
+    <div class="row" style="gap:12px;flex-wrap:wrap">
+      <a class="btn btn-solid" href="/shop">Shop the tea</a>
+      <a class="btn btn-ghost" href="/guides">All guides</a>
+    </div>
+  </div>
+
+  <% if (others && others.length) { %>
+    <section style="margin-top:56px">
+      <h3 style="margin-bottom:22px">Keep reading</h3>
+      <div class="guide-list">
+        <% others.forEach(g => { %>
+          <a class="guide-card" href="/guides/<%= g.slug %>">
+            <span class="eyebrow"><%= g.family %></span>
+            <h3><%= g.title %></h3>
+            <p><%= g.summary %></p>
+          </a>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+</article>

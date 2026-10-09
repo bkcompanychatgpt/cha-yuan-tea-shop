@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# Environment — never commit real OTT Pay credentials
+.env
+.env.local
+.env.*.local
+
+# Database and runtime data
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# Downloaded source photography (large). The build outputs are committed under
+# public/img/photos; see docs/PHOTOS.md for how to regenerate the sources.
+data/photos/raw/
+data/photos/openverse-raw/
+data/photos/targeted-raw/
+data/photos/preview/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Generated webfonts (re-create with `npm run fonts`)
+public/fonts/*.woff2
+
+# Development artefacts
+_shots/
+_research/
+_doc_*.txt
+_doc_*.html
+_ott_*.html
+_raw_*.html
+_txt_*.txt
+*.tmp
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

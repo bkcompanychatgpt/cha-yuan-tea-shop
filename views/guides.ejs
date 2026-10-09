@@ -1,0 +1,28 @@
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><span>Guides</span>
+  </nav>
+</div>
+
+<section class="wrap" style="padding-bottom:44px">
+  <span class="eyebrow">Knowledge</span>
+  <h1 style="margin:14px 0 18px">Tea guides</h1>
+  <p class="lede">
+    Everything we have learned about buying, storing and brewing Chinese tea — written to be useful
+    rather than mystical. Start with gongfu brewing and water temperature; those two account for most
+    of the difference between a good cup and a disappointing one.
+  </p>
+</section>
+
+<section class="wrap" style="padding-bottom:clamp(60px,8vw,110px)">
+  <div class="guide-list">
+    <% editorial.guides.forEach(g => { %>
+      <a class="guide-card" href="/guides/<%= g.slug %>">
+        <span class="eyebrow"><%= g.family %></span>
+        <h3><%= g.title %></h3>
+        <p><%= g.summary %></p>
+        <span class="link-underline small" style="margin-top:auto">Read →</span>
+      </a>
+    <% }) %>
+  </div>
+</section>

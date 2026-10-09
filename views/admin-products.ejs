@@ -1,0 +1,50 @@
+<div class="admin-head">
+  <div>
+    <span class="eyebrow">Merchandising</span>
+    <h1 style="font-size:clamp(1.7rem,3vw,2.3rem);margin-top:10px">Catalogue</h1>
+  </div>
+  <span class="small faint"><%= total %> products</span>
+</div>
+
+<div class="alert alert-info" style="margin-bottom:24px">
+  Product copy, prices, images and the taxonomy live in <span class="mono">server/catalog-data.mjs</span>.
+  Edit that file and run <span class="mono">npm run reseed</span> to rebuild the catalogue — historical orders keep
+  their own snapshots, so they are never affected.
+</div>
+
+<div class="admin-card">
+  <table class="table">
+    <thead>
+      <tr><th>Product</th><th>Family</th><th>Category</th><th>Variants &amp; stock</th><th class="num">From</th><th></th></tr>
+    </thead>
+    <tbody>
+      <% products.forEach(p => { %>
+        <tr>
+          <td>
+            <div class="row" style="gap:12px;align-items:center">
+              <img src="<%= p.hero_image %>" alt="" style="width:44px;aspect-ratio:1;object-fit:cover;border:1px solid var(--line-soft)" />
+              <div>
+                <strong><%= p.name %></strong>
+                <div class="tiny faint mono"><%= p.sku %></div>
+              </div>
+            </div>
+          </td>
+          <td class="tiny"><%= p.tea_family %></td>
+          <td class="tiny faint"><%= p.category_name %></td>
+          <td>
+            <% p.variants.forEach(v => { %>
+              <form method="post" action="/admin/products/<%= v.id %>/stock" class="row" style="gap:8px;margin-bottom:6px">
+                <span class="tiny faint" style="min-width:104px"><%= v.label %></span>
+                <input class="input" type="number" name="stock" value="<%= v.stock %>" min="0" style="width:78px;padding:5px 8px;font-size:0.78rem" />
+                <span class="tiny faint"><%= money(v.price_cents) %></span>
+                <button class="btn btn-sm btn-ghost" type="submit" style="padding:5px 10px;font-size:0.6rem">Save</button>
+              </form>
+            <% }) %>
+          </td>
+          <td class="num"><%= money(p.priceFrom) %></td>
+          <td><a class="link-underline small" href="/tea/<%= p.slug %>" target="_blank" rel="noopener">View</a></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>

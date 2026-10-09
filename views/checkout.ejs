@@ -1,0 +1,278 @@
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span>
+    <a href="/cart">Basket</a><span class="sep">/</span>
+    <span>Checkout</span>
+  </nav>
+</div>
+
+<section class="wrap" style="padding-bottom:clamp(60px,8vw,110px)">
+  <span class="eyebrow">Step 2 of 2</span>
+  <h1 style="margin:14px 0 26px">Checkout</h1>
+
+  <div class="checkout-steps">
+    <span class="step is-active"><span class="dot">1</span> Your details</span>
+    <span class="step-sep"></span>
+    <span class="step is-active"><span class="dot">2</span> Payment</span>
+    <span class="step-sep"></span>
+    <span class="step"><span class="dot">3</span> Confirmation</span>
+  </div>
+
+  <% if (isMock) { %>
+    <div class="alert alert-warn" style="margin-bottom:28px">
+      <strong>Sandbox mode.</strong> No real gateway credentials are configured, so payments are simulated end to end
+      (including the 3-D Secure challenge and the encrypted callback). Use test card
+      <span class="mono">5454 5454 5454 5454</span>, any future expiry, CVC <span class="mono">737</span>, and the 3-D Secure
+      password <span class="mono">password</span>. Add your <span class="mono">OTT_APP_ID</span> /
+      <span class="mono">OTT_APP_KEY</span> / <span class="mono">OTT_SIGN_KEY</span> to <span class="mono">.env</span> and set
+      <span class="mono">PAYMENT_MODE=sandbox</span> to hit the real OTT Pay sandbox.
+    </div>
+  <% } %>
+
+  <div data-checkout-empty style="display:none">
+    <div class="panel" style="text-align:center;padding:70px 30px">
+      <p class="eyebrow" style="font-size:0.8rem">Nothing to check out</p>
+      <h3 style="margin:20px 0 10px">Your basket is empty</h3>
+      <p class="muted">Add some tea before checking out.</p>
+      <a class="btn" href="/shop" style="margin-top:24px">Browse the tea</a>
+    </div>
+  </div>
+
+  <div data-checkout-content>
+    <form id="checkout-form" novalidate>
+      <div class="checkout-layout">
+        <div>
+          <div data-checkout-alert style="display:none;margin-bottom:22px"></div>
+          <div class="alert alert-error" data-cart-error style="display:none;margin-bottom:22px"></div>
+
+          <!-- ------------------------------------------------ 1. contact -->
+          <div class="panel">
+            <div class="panel-head">
+              <span class="panel-num">1</span>
+              <h3>Contact</h3>
+            </div>
+
+            <div class="form-grid cols-2">
+              <div class="field">
+                <label for="email">Email</label>
+                <input class="input" type="email" id="email" name="email" autocomplete="email" required placeholder="you@example.com" />
+                <span class="field-error" data-error-for="email"></span>
+              </div>
+              <div class="field">
+                <label for="phone">Phone <span class="hint">(optional, for delivery)</span></label>
+                <input class="input" type="tel" id="phone" name="phone" autocomplete="tel" placeholder="+1 416 555 0123" />
+                <span class="field-error" data-error-for="phone"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ----------------------------------------------- 2. shipping -->
+          <div class="panel">
+            <div class="panel-head">
+              <span class="panel-num">2</span>
+              <h3>Shipping address</h3>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="name">Full name</label>
+                <input class="input" type="text" id="name" name="name" autocomplete="name" required placeholder="Wei Chen" />
+                <span class="field-error" data-error-for="name"></span>
+              </div>
+
+              <div class="field">
+                <label for="country">Country / region</label>
+                <select class="select" id="country" name="country" autocomplete="country">
+                  <% [['CA','Canada'],['US','United States'],['GB','United Kingdom'],['AU','Australia'],['DE','Germany'],['FR','France'],['NL','Netherlands'],['SG','Singapore'],['HK','Hong Kong SAR'],['JP','Japan'],['KR','South Korea'],['NZ','New Zealand'],['IE','Ireland'],['ES','Spain'],['IT','Italy'],['SE','Sweden'],['CH','Switzerland'],['AE','United Arab Emirates'],['TW','Taiwan'],['MY','Malaysia']].forEach(([code, label]) => { %>
+                    <option value="<%= code %>" <%= code === 'CA' ? 'selected' : '' %>><%= label %></option>
+                  <% }) %>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="address">Street address</label>
+                <input class="input" type="text" id="address" name="address" autocomplete="address-line1" required placeholder="1123 Leslie Street" />
+                <span class="field-error" data-error-for="address"></span>
+              </div>
+
+              <div class="field">
+                <label for="address2">Apartment, suite, etc. <span class="hint">(optional)</span></label>
+                <input class="input" type="text" id="address2" name="address2" autocomplete="address-line2" placeholder="Unit 4" />
+              </div>
+
+              <div class="form-grid cols-3">
+                <div class="field">
+                  <label for="city">City</label>
+                  <input class="input" type="text" id="city" name="city" autocomplete="address-level2" required placeholder="Toronto" />
+                  <span class="field-error" data-error-for="city"></span>
+                </div>
+                <div class="field">
+                  <label for="province">State / province</label>
+                  <input class="input" type="text" id="province" name="province" autocomplete="address-level1" required placeholder="ON" />
+                  <span class="field-error" data-error-for="province"></span>
+                </div>
+                <div class="field">
+                  <label for="postalCode">Postal code</label>
+                  <input class="input" type="text" id="postalCode" name="postalCode" autocomplete="postal-code" required placeholder="M3C 2K5" />
+                  <span class="field-error" data-error-for="postalCode"></span>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="shippingName">Name on the parcel <span class="hint">(if different)</span></label>
+                <input class="input" type="text" id="shippingName" name="shippingName" autocomplete="name" placeholder="Leave blank to use the name above" />
+              </div>
+
+              <div class="field">
+                <label for="note">Order note <span class="hint">(optional)</span></label>
+                <textarea class="textarea" id="note" name="note" placeholder="Gift message, delivery instructions, brew preferences…"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- ---------------------------------------------- 3. delivery -->
+          <div class="panel">
+            <div class="panel-head">
+              <span class="panel-num">3</span>
+              <h3>Delivery method</h3>
+            </div>
+
+            <div class="stack-12">
+              <label class="pay-option" style="cursor:pointer">
+                <input type="radio" name="shippingMethod" value="standard" checked style="width:17px;height:17px;accent-color:var(--gold-300);margin-top:3px" />
+                <span class="grow">
+                  <strong>Standard — 2 to 5 business days</strong>
+                  <span>Tracked parcel. Complimentary on orders over <%= money(store.freeShippingThreshold) %>, otherwise <%= money(store.flatShippingFee) %>.</span>
+                </span>
+              </label>
+              <label class="pay-option" style="cursor:pointer;border-color:var(--line);background:transparent">
+                <input type="radio" name="shippingMethod" value="express" style="width:17px;height:17px;accent-color:var(--gold-300);margin-top:3px" />
+                <span class="grow">
+                  <strong>Express — 1 to 2 business days</strong>
+                  <span>Priority handling and courier delivery. <%= money(store.flatShippingFee * 2) %>.</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- ----------------------------------------------- 4. payment -->
+          <div class="panel">
+            <div class="panel-head">
+              <span class="panel-num">4</span>
+              <h3>Payment</h3>
+            </div>
+
+            <div class="pay-option">
+              <span class="radio" aria-hidden="true"></span>
+              <span class="grow">
+                <strong>Credit or debit card</strong>
+                <span>Processed securely by <strong>OTT Pay</strong> with 3-D Secure 2 authentication.
+                  You may be asked by your bank to confirm the payment.</span>
+                <span class="card-logos">
+                  <img src="/img/badge/visa.svg" alt="Visa" />
+                  <img src="/img/badge/mastercard.svg" alt="Mastercard" />
+                  <img src="/img/badge/amex.svg" alt="American Express" />
+                  <img src="/img/badge/discover.svg" alt="Discover" />
+                  <img src="/img/badge/jcb.svg" alt="JCB" />
+                  <img src="/img/badge/unionpay.svg" alt="China UnionPay" />
+                  <img src="/img/badge/diners.svg" alt="Diners Club" />
+                </span>
+              </span>
+            </div>
+
+            <div class="form-grid" style="grid-template-columns:1fr;gap:22px">
+              <div class="card-preview" data-card-preview aria-hidden="true">
+                <div class="row-between">
+                  <span class="cp-chip"></span>
+                  <span class="cp-brand" data-cp-brand>CARD</span>
+                </div>
+                <div class="cp-number" data-cp-number>•••• •••• •••• ••••</div>
+                <div class="cp-foot">
+                  <div>
+                    <div class="cp-label">Cardholder</div>
+                    <div class="cp-value" data-cp-holder>YOUR NAME</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div class="cp-label">Expires</div>
+                    <div class="cp-value" data-cp-expiry>MM / YY</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="cardNumber">Card number</label>
+                <div class="card-input-wrap">
+                  <input class="input" type="text" id="cardNumber" name="cardNumber" inputmode="numeric" autocomplete="cc-number"
+                         placeholder="1234 5678 9012 3456" required maxlength="23" />
+                  <span class="card-brand" data-card-brand></span>
+                </div>
+                <span class="field-error" data-error-for="cardNumber"></span>
+              </div>
+
+              <div class="field">
+                <label for="cardHolder">Name on card</label>
+                <input class="input" type="text" id="cardHolder" name="cardHolder" autocomplete="cc-name" placeholder="WEI CHEN" required />
+                <span class="field-error" data-error-for="cardHolder"></span>
+              </div>
+
+              <div class="card-row">
+                <div class="field">
+                  <label for="cardExpiry">Expiry date</label>
+                  <input class="input" type="text" id="cardExpiry" name="cardExpiry" inputmode="numeric" autocomplete="cc-exp"
+                         placeholder="MM / YY" required maxlength="7" />
+                  <span class="field-error" data-error-for="cardExpiry"></span>
+                </div>
+                <div class="field">
+                  <label for="cardCvv">Security code</label>
+                  <input class="input" type="password" id="cardCvv" name="cardCvv" inputmode="numeric" autocomplete="cc-csc"
+                         placeholder="•••" required maxlength="4" />
+                  <span class="field-error" data-error-for="cardCvv"></span>
+                </div>
+              </div>
+
+              <div class="secure-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                <span>
+                  Your card is sent directly to OTT Pay over an encrypted connection for authorisation.
+                  We store only the card brand and last four digits. This site is PCI-DSS SAQ-A compliant:
+                  card data never reaches our database.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ------------------------------------------------------ summary -->
+        <aside class="summary-card">
+          <h3 style="font-size:1.2rem;margin-bottom:18px">Your order</h3>
+          <div data-checkout-lines style="margin-bottom:20px"></div>
+
+          <div class="ship-meter" data-ship-meter style="margin-bottom:20px">
+            <div class="ship-meter-bar"><div class="ship-meter-fill" data-ship-fill style="width:0"></div></div>
+            <p class="tiny muted" style="margin-top:9px" data-ship-text></p>
+          </div>
+
+          <div class="totals">
+            <div class="totals-row"><span>Subtotal</span><span class="mono" data-cart-subtotal><%= money(0) %></span></div>
+            <div class="totals-row"><span>Shipping</span><span class="mono" data-cart-shipping>—</span></div>
+            <div class="totals-row"><span><%= store.taxLabel %></span><span class="mono" data-cart-tax>—</span></div>
+            <div class="totals-row grand"><span>Total due</span><span class="price" data-cart-total><%= money(0) %></span></div>
+          </div>
+
+          <button class="btn btn-solid btn-block btn-lg" type="submit" data-submit style="margin-top:26px">
+            Pay now
+          </button>
+
+          <p class="tiny faint center" style="margin-top:14px">
+            By placing this order you agree to our <a class="link-underline" href="/terms">terms</a>.
+            You will receive an email receipt immediately.
+          </p>
+
+          <p class="tiny faint center" style="margin-top:10px">
+            Currency: <span class="gold"><%= store.currency %></span> · secured by OTT Pay
+          </p>
+        </aside>
+      </div>
+    </form>
+  </div>
+</section>

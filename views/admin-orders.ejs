@@ -1,0 +1,66 @@
+<div class="admin-head">
+  <div>
+    <span class="eyebrow">Operations</span>
+    <h1 style="font-size:clamp(1.7rem,3vw,2.3rem);margin-top:10px">Orders</h1>
+  </div>
+  <span class="small faint"><%= total %> total</span>
+</div>
+
+<form method="get" action="/admin/orders" class="toolbar" style="align-items:flex-end">
+  <div class="field" style="min-width:220px">
+    <label for="q">Search</label>
+    <input class="input" type="search" id="q" name="q" value="<%= filters.q %>" placeholder="Order number, email, payment id" />
+  </div>
+  <div class="field" style="min-width:180px">
+    <label for="status">Status</label>
+    <select class="select" id="status" name="status">
+      <option value="">All statuses</option>
+      <% ['pending','awaiting_payment','paid','processing','shipped','delivered','cancelled','refunded'].forEach(s => { %>
+        <option value="<%= s %>" <%= filters.status === s ? 'selected' : '' %>><%= s.replace(/_/g, ' ') %></option>
+      <% }) %>
+    </select>
+  </div>
+  <button class="btn btn-sm" type="submit">Filter</button>
+  <% if (filters.q || filters.status) { %><a class="btn btn-sm btn-ghost" href="/admin/orders">Reset</a><% } %>
+</form>
+
+<div class="admin-card">
+  <% if (!orders.length) { %>
+    <p class="muted small">No orders match. Place a test order from the storefront to try the flow.</p>
+  <% } else { %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Order</th><th>Customer</th><th>Ship to</th><th>Payment</th><th>Order status</th>
+          <th class="num">Total</th><th class="num">Refunded</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% orders.forEach(o => { %>
+          <tr>
+            <td>
+              <strong class="mono"><%= o.order_number %></strong>
+              <div class="tiny faint"><%= o.created_at %></div>
+            </td>
+            <td>
+              <%= o.customer_name %>
+              <div class="tiny faint"><%= o.customer_email %></div>
+            </td>
+            <td class="tiny faint">
+              <%= o.shipping_city %>, <%= o.shipping_province %><br /><%= o.shipping_country %>
+            </td>
+            <td>
+              <span class="status-pill status-<%= o.payment_status %>"><%= o.payment_status %></span>
+              <% if (o.ott_cc_type) { %><div class="tiny faint" style="margin-top:5px"><%= o.ott_cc_type %> ····<%= o.ott_card_last4 %></div><% } %>
+              <% if (o.ott_payment_id) { %><div class="tiny faint mono" style="margin-top:3px"><%= o.ott_payment_id %></div><% } %>
+            </td>
+            <td><span class="status-pill status-<%= o.status %>"><%= o.status.replace(/_/g, ' ') %></span></td>
+            <td class="num"><%= money(o.total_cents) %></td>
+            <td class="num"><%= o.refunded_cents ? money(o.refunded_cents) : '—' %></td>
+            <td><a class="link-underline small" href="/admin/orders/<%= o.order_number %>">Open</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>

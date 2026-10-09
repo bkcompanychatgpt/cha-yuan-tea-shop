@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= typeof title !== 'undefined' && title ? title : 'Admin' %> — <%= store.name %> admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="csrf-token" content="<%= csrfToken %>" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/fonts/cormorant.css" />
+  <link rel="stylesheet" href="/fonts/inter.css" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body class="admin-body">
+  <% if (typeof admin === 'undefined' || !admin) { %>
+    <%- body %>
+  <% } else { %>
+    <div class="admin-shell">
+      <aside class="admin-side">
+        <a class="brand" href="/admin">
+          <img src="/img/logo.svg" alt="" style="height:40px" />
+          <span class="brand-text">
+            <span class="brand-name" style="font-size:1.1rem"><%= store.name %></span>
+            <span class="brand-sub">Back office</span>
+          </span>
+        </a>
+
+        <nav class="admin-nav" aria-label="Admin">
+          <a href="/admin" class="<%= page === 'admin' && view === 'admin-dashboard' ? 'is-active' : '' %>">Dashboard</a>
+          <a href="/admin/orders" class="<%= view === 'admin-orders' || view === 'admin-order' ? 'is-active' : '' %>">Orders</a>
+          <a href="/admin/products" class="<%= view === 'admin-products' ? 'is-active' : '' %>">Catalogue</a>
+          <a href="/admin/webhooks" class="<%= view === 'admin-webhooks' ? 'is-active' : '' %>">Payment callbacks</a>
+          <a href="/admin/settings" class="<%= view === 'admin-settings' ? 'is-active' : '' %>">Settings</a>
+        </nav>
+
+        <div style="margin-top:26px;padding-top:22px;border-top:1px solid var(--line-soft)">
+          <p class="tiny faint" style="margin-bottom:6px">Signed in as</p>
+          <p class="small"><%= admin.email %></p>
+          <form method="post" action="/admin/logout" style="margin-top:14px">
+            <button class="btn btn-sm btn-ghost btn-block" type="submit">Sign out</button>
+          </form>
+          <a class="btn btn-sm btn-ghost btn-block" href="/" style="margin-top:8px">View storefront</a>
+        </div>
+
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--line-soft)">
+          <p class="tiny faint">Payment mode</p>
+          <p class="mono small gold"><%= payment.mode.toUpperCase() %></p>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+        <%- body %>
+      </main>
+    </div>
+  <% } %>
+
+  <script src="/js/app.js" defer></script>
+</body>
+</html>

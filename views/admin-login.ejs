@@ -1,0 +1,31 @@
+<div class="challenge-page">
+  <div class="challenge-card">
+    <img src="/img/logo.svg" alt="<%= store.name %>" style="height:52px;margin:0 auto" />
+    <span class="eyebrow" style="display:block;margin-top:20px">Back office</span>
+    <h1 style="margin-top:12px;font-size:1.5rem">Sign in</h1>
+
+    <% if (error) { %>
+      <div class="alert alert-error" style="margin-top:22px;text-align:left"><%= error %></div>
+    <% } %>
+
+    <form method="post" action="/admin/login" style="margin-top:24px;text-align:left">
+      <input type="hidden" name="next" value="<%= next %>" />
+      <div class="stack-16">
+        <div class="field">
+          <label for="email">Email</label>
+          <input class="input" type="email" id="email" name="email" autocomplete="username" required autofocus />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input class="input" type="password" id="password" name="password" autocomplete="current-password" required />
+        </div>
+        <button class="btn btn-solid btn-block" type="submit">Sign in</button>
+      </div>
+    </form>
+
+    <p class="tiny faint" style="margin-top:22px">
+      Credentials are set by <span class="mono">ADMIN_EMAIL</span> and <span class="mono">ADMIN_PASSWORD</span>
+      in your <span class="mono">.env</span> file. Change them before going live.
+    </p>
+  </div>
+</div>

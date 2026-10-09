@@ -1,0 +1,100 @@
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span>
+    <a href="/order">Orders</a><span class="sep">/</span>
+    <span><%= order.order_number %></span>
+  </nav>
+</div>
+
+<section class="wrap wrap-mid" style="padding-bottom:clamp(60px,8vw,110px)">
+  <div class="row-between" style="align-items:flex-start;flex-wrap:wrap;gap:20px">
+    <div>
+      <span class="eyebrow">Order</span>
+      <h1 style="font-size:clamp(1.9rem,4vw,2.6rem);margin:12px 0 10px"><%= order.order_number %></h1>
+      <p class="small faint">
+        Placed <%= order.created_at %>
+        <% if (order.paid_at) { %> · paid <%= order.paid_at %><% } %>
+      </p>
+    </div>
+    <div class="stack-8" style="text-align:right">
+      <span class="status-pill status-<%= order.status %>"><%= order.status.replace(/_/g, ' ') %></span>
+      <span class="status-pill status-<%= order.payment_status %>">payment: <%= order.payment_status.replace(/_/g, ' ') %></span>
+    </div>
+  </div>
+
+  <% if (!verified) { %>
+    <div class="alert alert-info" style="margin-top:26px">
+      The delivery address is hidden. Open the link from your confirmation email, or
+      <a class="link-underline" href="/order?orderNumber=<%= order.order_number %>">enter your email</a> to see the full order.
+    </div>
+  <% } %>
+
+  <div class="receipt" style="margin-top:34px">
+    <div class="stack-12" style="margin-bottom:26px">
+      <% order.items.forEach(item => { %>
+        <div class="row" style="gap:16px;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid var(--line-soft)">
+          <img src="<%= item.image %>" alt="" style="width:62px;aspect-ratio:1;object-fit:cover;border:1px solid var(--line-soft)" />
+          <div class="grow">
+            <div><%= item.product_name %></div>
+            <div class="tiny faint"><%= item.variant_label %> · SKU <%= item.sku %></div>
+          </div>
+          <div class="mono small"><%= item.quantity %> × <%= money(item.unit_price_cents) %></div>
+          <div class="mono small nowrap" style="min-width:74px;text-align:right"><%= money(item.line_total_cents) %></div>
+        </div>
+      <% }) %>
+    </div>
+
+    <div class="receipt-rows" style="max-width:340px;margin-left:auto">
+      <div class="receipt-row"><span>Subtotal</span><span><%= money(order.subtotal_cents) %></span></div>
+      <div class="receipt-row"><span>Shipping</span><span><%= order.shipping_cents === 0 ? 'Complimentary' : money(order.shipping_cents) %></span></div>
+      <div class="receipt-row"><span><%= store.taxLabel %></span><span><%= money(order.tax_cents) %></span></div>
+      <div class="receipt-row" style="padding-top:12px;border-top:1px solid var(--line-soft)">
+        <span style="color:var(--text)">Total</span><span class="gold"><%= money(order.total_cents) %></span>
+      </div>
+    </div>
+
+    <hr class="rule" style="margin:26px 0" />
+
+    <div class="grid grid-3" style="gap:26px">
+      <div>
+        <span class="eyebrow">Delivery address</span>
+        <p class="small muted" style="margin-top:10px;line-height:1.75">
+          <%= order.shipping_name %><br />
+          <%= order.shipping_line1 %><% if (order.shipping_line2) { %><br /><%= order.shipping_line2 %><% } %><br />
+          <%= order.shipping_city %>, <%= order.shipping_province %> <%= order.shipping_postal_code %><br />
+          <%= order.shipping_country %>
+        </p>
+      </div>
+      <div>
+        <span class="eyebrow">Contact</span>
+        <p class="small muted" style="margin-top:10px;line-height:1.75">
+          <%= order.customer_name %><br />
+          <%= order.customer_email %>
+          <% if (order.customer_phone) { %><br /><%= order.customer_phone %><% } %>
+        </p>
+      </div>
+      <div>
+        <span class="eyebrow">Payment</span>
+        <p class="small muted" style="margin-top:10px;line-height:1.75">
+          Card via OTT Pay<br />
+          <% if (order.ott_cc_type) { %><%= order.ott_cc_type %> ····<%= order.ott_card_last4 %><br /><% } %>
+          <% if (order.ott_payment_id) { %><span class="mono tiny">ID <%= order.ott_payment_id %></span><br /><% } %>
+          <% if (order.ott_reference) { %><span class="mono tiny">REF <%= order.ott_reference %></span><% } %>
+        </p>
+      </div>
+    </div>
+
+    <% if (order.customer_note) { %>
+      <hr class="rule" style="margin:26px 0" />
+      <div>
+        <span class="eyebrow">Your note</span>
+        <p class="small muted" style="margin-top:10px"><%= order.customer_note %></p>
+      </div>
+    <% } %>
+  </div>
+
+  <div class="row" style="gap:12px;margin-top:30px;flex-wrap:wrap">
+    <a class="btn btn-ghost" href="/shop">Continue shopping</a>
+    <a class="btn btn-ghost" href="/shipping">Shipping &amp; returns</a>
+  </div>
+</section>

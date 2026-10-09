@@ -1,0 +1,241 @@
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span>
+    <a href="/shop">Shop</a><span class="sep">/</span>
+    <% if (breadcrumbCategory) { %>
+      <a href="/shop?category=<%= encodeURIComponent(breadcrumbCategory.slug) %>"><%= breadcrumbCategory.name %></a><span class="sep">/</span>
+    <% } %>
+    <span><%= product.name %></span>
+  </nav>
+</div>
+
+<section class="wrap" style="padding-bottom:clamp(50px,7vw,96px)">
+  <div class="pdp">
+    <!-- ------------------------------------------------------- gallery -->
+    <div class="pdp-gallery">
+      <div class="pdp-main" data-pdp-main>
+        <img src="<%= product.hero_image %>" alt="<%= product.name %> — <%= product.subtitle %>" />
+        <div class="tea-badges">
+          <% if (product.is_new) { %><span class="badge badge-gold">New season</span><% } %>
+          <% (product.badges || []).slice(0, 3).forEach(b => { %><span class="badge"><%= b %></span><% }) %>
+        </div>
+      </div>
+      <div class="pdp-thumbs">
+        <% (product.images || []).slice(0, 3).forEach((img, i) => { %>
+          <button class="pdp-thumb <%= i === 0 ? 'is-active' : '' %>" type="button" data-pdp-thumb data-src="<%= img %>" data-alt="<%= product.name %> view <%= i + 1 %>" aria-label="View <%= i + 1 %>">
+            <img src="<%= img %>" alt="" loading="lazy" />
+          </button>
+        <% }) %>
+      </div>
+
+      <div class="secure-note" style="margin-top:6px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        <span>Card payments are handled by OTT Pay with 3-D Secure 2. We never see or store your card number.</span>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------- details -->
+    <div>
+      <div class="tea-origin" style="letter-spacing:0.22em"><%= product.tea_family %><% if (product.origin && product.origin !== '—') { %> · <%= product.origin %><% } %></div>
+      <h1 class="pdp-title"><%= product.name %></h1>
+      <p class="pdp-sub"><%= product.subtitle %></p>
+
+      <% if (product.review_count) { %>
+        <div class="stars" style="margin-top:12px" aria-label="Rated <%= product.rating %> out of 5">
+          <% for (let i = 0; i < 5; i += 1) { %>
+            <svg viewBox="0 0 24 24" fill="<%= i < Math.round(product.rating) ? 'currentColor' : 'none' %>" stroke="currentColor" stroke-width="1.2"><path d="m12 2 3 6.6 7 .8-5.2 4.7 1.4 6.9L12 17.5 5.8 21l1.4-6.9L2 9.4l7-.8Z"/></svg>
+          <% } %>
+          <span class="small faint" style="margin-left:6px"><%= product.rating.toFixed(1) %> · <%= product.review_count %> reviews</span>
+        </div>
+      <% } %>
+
+      <div class="pdp-price">
+        <span class="price" data-pdp-price><%= money(product.priceFrom) %></span>
+        <span class="was" data-pdp-compare style="display:none"></span>
+      </div>
+      <p class="tiny faint" data-pdp-stock></p>
+
+      <p class="lede" style="margin:22px 0 10px;font-size:0.98rem"><%= product.short_description %></p>
+
+      <% if (product.tasting_notes && product.tasting_notes.length) { %>
+        <div class="notes">
+          <% product.tasting_notes.forEach(n => { %><span class="note-chip"><%= n %></span><% }) %>
+        </div>
+      <% } %>
+
+      <!-- ------------------------------------------------------- variants -->
+      <div style="margin-top:30px">
+        <div class="row-between" style="margin-bottom:11px">
+          <span class="eyebrow">Choose a size</span>
+          <% if (product.variants.length > 1) { %>
+            <span class="tiny faint">
+              From <%= money(product.priceFrom) %> to <%= money(product.priceTo) %>
+            </span>
+          <% } %>
+        </div>
+        <div class="variant-picker" data-variant-picker role="group" aria-label="Size options">
+          <% product.variants.forEach(v => { %>
+            <button class="variant <%= v.is_default ? 'is-active' : '' %>" type="button"
+                    data-variant-id="<%= v.id %>"
+                    data-price="<%= v.price_cents %>"
+                    data-compare="<%= v.compare_cents || 0 %>"
+                    data-stock="<%= v.stock %>"
+                    data-label="<%= v.label %>"
+                    aria-pressed="<%= v.is_default ? 'true' : 'false' %>"
+                    <%= v.stock <= 0 ? 'disabled' : '' %>>
+              <span class="v-label"><%= v.label %></span>
+              <span class="v-price"><%= money(v.price_cents) %><% if (v.stock <= 0) { %> · sold out<% } else if (v.stock <= 5) { %> · <%= v.stock %> left<% } %></span>
+            </button>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- ---------------------------------------------------- add to cart -->
+      <div class="pdp-actions">
+        <div class="qty" data-pdp-qty>
+          <button type="button" data-step="-1" aria-label="Decrease quantity">−</button>
+          <input type="number" value="1" min="1" max="99" aria-label="Quantity" />
+          <button type="button" data-step="1" aria-label="Increase quantity">+</button>
+        </div>
+        <button class="btn btn-solid"
+                type="button"
+                data-pdp-add
+                data-sticky-add
+                data-add-to-cart
+                data-quantity="1"
+                data-slug="<%= product.slug %>"
+                data-name="<%= product.name %>"
+                data-image="<%= product.hero_image %>"
+                data-variant-id="<%= product.defaultVariant ? product.defaultVariant.id : '' %>"
+                data-variant-label="<%= product.defaultVariant ? product.defaultVariant.label : '' %>"
+                data-price-cents="<%= product.defaultVariant ? product.defaultVariant.price_cents : 0 %>"
+                data-stock="<%= product.defaultVariant ? product.defaultVariant.stock : 0 %>">
+          Add to basket
+        </button>
+      </div>
+
+      <div class="row" style="gap:22px;margin-top:20px;flex-wrap:wrap">
+        <span class="tiny faint">✓ Free shipping over <%= money(store.freeShippingThreshold) %></span>
+        <span class="tiny faint">✓ Shipped within 1 business day</span>
+        <span class="tiny faint">✓ Sealed in a light-proof tin</span>
+      </div>
+
+      <!-- ------------------------------------------------------ metadata -->
+      <dl class="pdp-meta">
+        <% [
+          ['Origin', product.origin],
+          ['Altitude', product.altitude],
+          ['Cultivar', product.cultivar],
+          ['Harvest', product.harvest],
+          ['Oxidation', product.oxidation],
+          ['Roast', product.roast],
+          ['Caffeine', product.caffeine],
+          ['Liquor', product.liquor],
+          ['SKU', product.sku]
+        ].filter(([, v]) => v && v !== '—').forEach(([k, v]) => { %>
+          <div class="pdp-meta-row"><dt><%= k %></dt><dd><%= v %></dd></div>
+        <% }) %>
+      </dl>
+
+      <!-- ---------------------------------------------------- accordions -->
+      <div class="accordion">
+        <div class="acc-item is-open">
+          <button class="acc-head" type="button" aria-expanded="true">Tasting &amp; provenance <span class="plus">+</span></button>
+          <div class="acc-body">
+            <div class="acc-inner">
+              <% String(product.description).split('\n\n').forEach(par => { %><p><%= par %></p><% }) %>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-head" type="button" aria-expanded="false">How to brew it <span class="plus">+</span></button>
+          <div class="acc-body">
+            <div class="acc-inner">
+              <dl class="brew-table">
+                <div class="brew-row"><dt>Gaiwan</dt><dd><%= product.brewing.gaiwan || '—' %></dd></div>
+                <div class="brew-row"><dt>Western</dt><dd><%= product.brewing.western || '—' %></dd></div>
+                <div class="brew-row"><dt>Vessel</dt><dd><%= product.brewing.vessel || '—' %></dd></div>
+              </dl>
+              <p style="margin-top:18px"><a class="link-underline" href="/guides/how-to-brew-gongfu">Read the full gongfu method →</a></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-head" type="button" aria-expanded="false">Shipping &amp; returns <span class="plus">+</span></button>
+          <div class="acc-body">
+            <div class="acc-inner">
+              <p>Orders placed before 2pm are packed the same business day and shipped from Canada within one business day.
+                Standard delivery is 2–5 business days domestically and 7–14 business days internationally.</p>
+              <p>Shipping is complimentary on orders over <%= money(store.freeShippingThreshold) %>; below that a flat
+                <%= money(store.flatShippingFee) %> applies. <%= store.taxLabel %> is calculated at checkout.</p>
+              <p>Unopened tins can be returned within 30 days for a full refund. If a tea is not to your taste, tell us —
+                we would rather send you something you like than keep the money.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-item">
+          <button class="acc-head" type="button" aria-expanded="false">Payment &amp; security <span class="plus">+</span></button>
+          <div class="acc-body">
+            <div class="acc-inner">
+              <p>We accept Visa, Mastercard, American Express, Discover, JCB, Diners Club and China UnionPay through
+                OTT Pay's local card gateway, protected by 3-D Secure 2 authentication. Your bank may ask you to confirm
+                the payment in your banking app or with a one-time code.</p>
+              <p>Card details are entered on our checkout and transmitted directly to OTT Pay over TLS. They are never
+                written to our database — we only keep the card brand and the last four digits so you can recognise the
+                charge on your statement. All prices are in <%= store.currency %>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% if (related && related.length) { %>
+  <section class="section" style="border-top:1px solid var(--line-soft);background:var(--ink-850)">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Goes well with</span>
+          <h2>Other teas from the same table</h2>
+        </div>
+        <div class="section-head-rule"></div>
+        <a class="link-underline small nowrap" href="/shop?category=<%= encodeURIComponent(product.category_slug) %>">All <%= product.category_name %> →</a>
+      </div>
+      <div class="tea-grid">
+        <% related.forEach(p => { %>
+          <%- include('partials/tea-card', { product: p, money }) %>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+<% } %>
+
+<!-- ================================================= sticky purchase bar -->
+<% if (product.defaultVariant) { %>
+  <div class="sticky-buy" data-sticky-buy>
+    <div class="wrap sticky-buy-inner">
+      <img src="<%= product.hero_image %>" alt="" />
+      <div>
+        <h5><%= product.name %></h5>
+        <span class="small faint" data-sticky-label><%= product.defaultVariant.label %> — <%= money(product.defaultVariant.price_cents) %></span>
+      </div>
+      <span class="price"><%= money(product.priceFrom) %></span>
+      <button class="btn btn-solid"
+              type="button"
+              data-add-to-cart
+              data-sticky-button
+              data-quantity="1"
+              data-slug="<%= product.slug %>"
+              data-name="<%= product.name %>"
+              data-image="<%= product.hero_image %>"
+              data-variant-id="<%= product.defaultVariant.id %>"
+              data-variant-label="<%= product.defaultVariant.label %>"
+              data-price-cents="<%= product.defaultVariant.price_cents %>"
+              data-stock="<%= product.defaultVariant.stock %>">Add to basket</button>
+    </div>
+  </div>
+<% } %>

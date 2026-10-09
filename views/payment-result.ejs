@@ -1,0 +1,129 @@
+<div class="wrap wrap-mid" data-result-page data-order-number="<%= order ? order.order_number : orderNumber %>">
+  <% const paid = order && ['paid','processing','shipped','delivered'].includes(order.status); %>
+  <% const failed = order && ['pending','cancelled'].includes(order.status); %>
+
+  <section class="result-hero">
+    <div class="result-icon <%= paid ? 'is-ok' : failed ? 'is-bad' : 'is-wait' %>" data-result-icon>
+      <% if (paid) { %>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 6 9 17l-5-5"/></svg>
+      <% } else if (failed) { %>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      <% } else { %>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12a9 9 0 1 1-6.2-8.6"/><path d="M21 3v6h-6"/></svg>
+      <% } %>
+    </div>
+
+    <span class="eyebrow">Payment</span>
+    <h1 style="margin:16px 0 14px" data-result-status>
+      <%= paid ? 'Payment received' : failed ? 'Payment not completed' : 'Waiting for your bank' %>
+    </h1>
+    <p class="lede" style="margin:0 auto" data-result-detail>
+      <%= paid
+        ? 'Your card was charged and the tea is being weighed out now.'
+        : failed
+          ? 'The payment did not go through. No money has left your account.'
+          : 'Your bank has not confirmed the payment yet. This usually takes a few seconds.' %>
+    </p>
+
+    <div style="margin-top:22px" data-result-state>
+      <% if (order) { %>
+        <span class="status-pill status-<%= order.status %>"><%= order.status.replace(/_/g, ' ') %></span>
+      <% } %>
+    </div>
+
+    <div style="margin-top:30px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a class="btn" href="/shop">Continue shopping</a>
+      <button class="btn btn-ghost" type="button" data-sync>Check with the bank</button>
+    </div>
+  </section>
+
+  <% if (order) { %>
+    <div class="receipt">
+      <div class="row-between" style="margin-bottom:24px;align-items:flex-start">
+        <div>
+          <span class="eyebrow">Order</span>
+          <h2 style="font-size:1.6rem;margin-top:8px"><%= order.order_number %></h2>
+          <p class="tiny faint" style="margin-top:6px">
+            Placed <%= order.created_at %> ·
+            <% if (order.paid_at) { %>Paid <%= order.paid_at %><% } else { %>Not yet paid<% } %>
+          </p>
+        </div>
+        <div style="text-align:right">
+          <div class="price" style="font-size:1.6rem"><%= money(order.total_cents) %></div>
+          <div class="tiny faint"><%= order.currency %></div>
+        </div>
+      </div>
+
+      <hr class="rule" style="margin-bottom:22px" />
+
+      <div class="stack-8" style="margin-bottom:24px">
+        <% order.items.forEach(item => { %>
+          <div class="row" style="gap:14px;align-items:flex-start">
+            <img src="<%= item.image %>" alt="" style="width:50px;aspect-ratio:1;object-fit:cover;border:1px solid var(--line-soft)" />
+            <div class="grow">
+              <div style="font-size:0.92rem"><%= item.product_name %></div>
+              <div class="tiny faint"><%= item.variant_label %> × <%= item.quantity %></div>
+            </div>
+            <div class="mono small nowrap"><%= money(item.line_total_cents) %></div>
+          </div>
+        <% }) %>
+      </div>
+
+      <hr class="rule" style="margin-bottom:22px" />
+
+      <div class="receipt-rows">
+        <div class="receipt-row"><span>Subtotal</span><span><%= money(order.subtotal_cents) %></span></div>
+        <div class="receipt-row"><span>Shipping</span><span><%= order.shipping_cents === 0 ? 'Complimentary' : money(order.shipping_cents) %></span></div>
+        <div class="receipt-row"><span><%= store.taxLabel %></span><span><%= money(order.tax_cents) %></span></div>
+        <div class="receipt-row" style="padding-top:12px;border-top:1px solid var(--line-soft)">
+          <span style="color:var(--text)">Total</span><span class="gold"><%= money(order.total_cents) %></span>
+        </div>
+        <% if (order.refunded_cents > 0) { %>
+          <div class="receipt-row"><span>Refunded</span><span>−<%= money(order.refunded_cents) %></span></div>
+        <% } %>
+      </div>
+
+      <hr class="rule" style="margin:24px 0" />
+
+      <div class="grid grid-2" style="gap:26px">
+        <div>
+          <span class="eyebrow">Delivery</span>
+          <p class="small muted" style="margin-top:10px;line-height:1.75">
+            <%= order.shipping_name %><br />
+            <%= order.shipping_line1 %><% if (order.shipping_line2) { %><br /><%= order.shipping_line2 %><% } %><br />
+            <%= order.shipping_city %>, <%= order.shipping_province %> <%= order.shipping_postal_code %><br />
+            <%= order.shipping_country %>
+          </p>
+        </div>
+        <div>
+          <span class="eyebrow">Payment</span>
+          <p class="small muted" style="margin-top:10px;line-height:1.75">
+            <% if (order.ott_cc_type) { %><%= order.ott_cc_type %> ending <%= order.ott_card_last4 %><br /><% } %>
+            <% if (order.ott_payment_id) { %>OTT Pay ID <span class="mono"><%= order.ott_payment_id %></span><br /><% } %>
+            <% if (order.ott_reference) { %>Reference <span class="mono"><%= order.ott_reference %></span><br /><% } %>
+            Status: <%= (order.ott_payment_status || order.payment_status) %>
+          </p>
+        </div>
+      </div>
+
+      <div class="row" style="gap:12px;margin-top:26px;flex-wrap:wrap">
+        <a class="btn btn-sm btn-ghost" href="/order/<%= order.order_number %>?email=<%= encodeURIComponent(order.customer_email) %>">View full order</a>
+        <span class="tiny faint">A receipt has been sent to <%= order.customer_email %></span>
+      </div>
+    </div>
+
+    <div class="alert alert-info" style="margin-top:24px" data-mock-note hidden>
+      <strong>Sandbox demonstration.</strong> This payment ran through the built-in mock acquirer, which follows the same
+      3-D Secure 2 state machine as OTT Pay: the challenge page, the encrypted AES-ECB callback and this reconciliation
+      are the same code paths used against <span class="mono">sandbox-api.ottpay.com</span>.
+    </div>
+  <% } else { %>
+    <div class="panel" style="text-align:center;padding:50px 30px">
+      <p class="muted">We could not find an order for that reference.</p>
+      <a class="btn" href="/shop" style="margin-top:22px">Back to the shop</a>
+      <p class="small faint" style="margin-top:20px">
+        Already ordered? <a class="link-underline" href="/order">Find your order</a>.
+      </p>
+    </div>
+  <% } %>
+</div>

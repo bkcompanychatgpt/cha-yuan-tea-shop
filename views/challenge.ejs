@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Confirm your payment — <%= store.name %></title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/fonts/cormorant.css" />
+  <link rel="stylesheet" href="/fonts/inter.css" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="challenge-page">
+    <div class="challenge-card">
+      <div class="lock">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      </div>
+
+      <span class="eyebrow">3-D Secure 2</span>
+      <h1 style="margin-top:14px">Confirm your payment</h1>
+      <p class="muted small" style="margin-top:10px">
+        Your bank is verifying this transaction. Do not close this window.
+      </p>
+
+      <% if (order) { %>
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--line-soft)">
+          <div class="receipt-rows">
+            <div class="receipt-row"><span>Order</span><span><%= order.order_number %></span></div>
+            <div class="receipt-row"><span>Amount</span><span><%= money(order.total_cents) %> <%= order.currency %></span></div>
+            <div class="receipt-row"><span>Reference</span><span><%= reference %></span></div>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (typeof askPassword !== 'undefined' && askPassword) { %>
+        <!-- ---------------------------------------------------------------
+             Mock acquirer only: this stands in for the issuer's ACS page so
+             the whole 3-D Secure flow can be demonstrated without live
+             credentials. With PAYMENT_MODE=sandbox the real issuer form is
+             injected below instead.
+             --------------------------------------------------------------- -->
+        <div class="alert alert-warn" style="margin-top:22px;text-align:left">
+          <strong>Sandbox issuer authentication.</strong>
+          Enter the test 3-D Secure password <span class="mono">password</span> to approve, or anything else to
+          simulate a failed authentication.
+        </div>
+
+        <form method="post" action="/mock-3ds/challenge" style="margin-top:20px;text-align:left">
+          <input type="hidden" name="MD" value="<%= challengeId %>" />
+          <input type="hidden" name="ref" value="<%= reference %>" />
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+          <div class="field">
+            <label for="password">Authentication password</label>
+            <input class="input" type="password" id="password" name="password" autocomplete="one-time-code" autofocus placeholder="password" />
+          </div>
+          <button class="btn btn-solid btn-block" type="submit" style="margin-top:20px">Authenticate</button>
+        </form>
+      <% } else if (form) { %>
+        <!-- The issuer's authentication form, exactly as OTT Pay returned it. -->
+        <div style="display:none"><%- form %></div>
+        <div class="challenge-spinner" aria-hidden="true"></div>
+        <p class="tiny faint">Contacting your bank…</p>
+        <noscript>
+          <div class="alert alert-warn" style="margin-top:20px;text-align:left">
+            JavaScript is disabled. Press the button below to continue to your bank's verification page.
+          </div>
+          <button class="btn btn-solid" type="button" onclick="document.forms[0] && document.forms[0].submit()">
+            Continue to verification
+          </button>
+        </noscript>
+      <% } else { %>
+        <div class="alert alert-error" style="margin-top:22px;text-align:left">
+          This payment session has expired or the authentication form was not returned. Nothing has been charged —
+          return to the shop and try again.
+        </div>
+        <a class="btn btn-solid btn-block" href="/checkout" style="margin-top:20px">Back to checkout</a>
+      <% } %>
+
+      <p class="tiny faint" style="margin-top:26px">
+        Secured by OTT Pay · 3-D Secure 2 · <%= store.name %>
+      </p>
+    </div>
+  </div>
+
+  <% if (!(typeof askPassword !== 'undefined' && askPassword) && form) { %>
+    <script>
+      // Auto-submit the issuer form, the way a hosted ACS page does.
+      (function () {
+        function go() {
+          var f = document.querySelector('.challenge-card form');
+          if (f) f.submit();
+        }
+        if (document.readyState === 'complete') setTimeout(go, 250);
+        else window.addEventListener('load', function () { setTimeout(go, 250); });
+      })();
+    </script>
+  <% } %>
+</body>
+</html>
