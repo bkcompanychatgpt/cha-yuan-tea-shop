@@ -123,6 +123,41 @@ export const CATEGORY_PHOTOS = {
   'floral-blends': { pick: 'floral#34', grade: 'product' },
   'gift-sets': { pick: 'dianhong#1', grade: 'product' },
   teaware: { pick: 'teaware#3', grade: 'product' },
+  jade: { pick: 'jade-jadeite#8', grade: 'product' },
+  jewellery: { pick: 'jewellery#19', grade: 'product' },
+};
+
+/**
+ * Jade and jewellery photography.
+ *
+ * These entries were written the other way round from the teas: the photographs
+ * that actually exist were inventoried first, and the products in
+ * server/data-jade.mjs were written to describe those pieces. Several drafts —
+ * earrings, a chain pendant, a jade tea set — were dropped because the only
+ * candidates on Commons were museum artefacts of a different object entirely,
+ * and a photograph that does not show the product is worse than no photograph.
+ */
+export const JADE_PHOTOS = {
+  /* ------------------------------------------------------------------ jade */
+  'hetian-jade-buddha-pendant': { picks: ['jade-nephrite#23', 'jade-nephrite#24', 'jade-carving#12'], grade: 'product' },
+  'jadeite-bangle-classic-round': { picks: ['jade-jadeite#3', 'jade-jadeite#4', 'jade-jadeite#6'], grade: 'product' },
+  'jadeite-bangle-certified': { picks: ['jade-jadeite#7', 'jade-jadeite#3', 'jade-jadeite#12'], grade: 'product' },
+  'jadeite-bangle-imperial': { picks: ['jade-jadeite#8', 'jade-jadeite#7', 'jade-jadeite#13'], grade: 'product' },
+  'jade-carved-pendant-tiger': { picks: ['jade-jadeite#10', 'jade-nephrite#15', 'jade-nephrite#18'], grade: 'product' },
+  'jade-dragon-pendant': { picks: ['jade-nephrite#26', 'jade-nephrite#22', 'jade-carving#20'], grade: 'product' },
+  'jade-leaf-and-grape-pendant': { picks: ['jade-nephrite#22', 'jade-nephrite#17', 'jade-carving#12'], grade: 'product' },
+  'jade-deer-study': { picks: ['jade-carving#9', 'jade-carving#16', 'jade-carving#12'], grade: 'product' },
+  'jade-ruyi-sceptre': { picks: ['jade-carving#32', 'jade-carving#36', 'jade-carving#39'], grade: 'product' },
+  'jade-and-nephrite-pair': { picks: ['jade-nephrite#25', 'jade-carving#40', 'jade-nephrite#22'], grade: 'product' },
+
+  /* ------------------------------------------------------------- jewellery */
+  'pearl-strand-necklace': { picks: ['pearls#5', 'pearls#4', 'pearls#9'], grade: 'product' },
+  'jadeite-diamond-pendant': { picks: ['jade-jadeite#11', 'jewellery#19', 'pearls#10'], grade: 'product' },
+  'jade-gold-necklace-beads': { picks: ['jewellery#19', 'jewellery#24', 'jade-nephrite#22'], grade: 'product' },
+  'gold-filigree-cuff': { picks: ['jewellery#18', 'jewellery#16', 'jewellery#14'], grade: 'product' },
+  'gold-and-jade-ring': { picks: ['rings#3', 'rings#15', 'rings#2'], grade: 'product' },
+  'jadeite-and-gold-earrings': { picks: ['pearls#11', 'pearls#10', 'rings#20'], grade: 'product' },
+  'imperial-jadeite-earrings': { picks: ['jewellery#20', 'jade-jadeite#11', 'pearls#11'], grade: 'product' },
 };
 
 /**
@@ -154,6 +189,6 @@ export function englishLabel(value) {
   return original;
 }
 
-export const ALL_ASSIGNMENTS = { ...EDITORIAL_PHOTOS, ...PRODUCT_PHOTOS };
+export const ALL_ASSIGNMENTS = { ...EDITORIAL_PHOTOS, ...PRODUCT_PHOTOS, ...JADE_PHOTOS };
 
 export default { EDITORIAL_PHOTOS, PRODUCT_PHOTOS, CATEGORY_PHOTOS, englishLabel, ALL_ASSIGNMENTS };

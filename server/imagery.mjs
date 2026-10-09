@@ -22,6 +22,11 @@ export const FAMILY_PALETTE = {
   Floral: { bg1: '#2f2434', bg2: '#140f18', accent: '#ecc98f', leaf: '#9a7fa8', leaf2: '#6a5478', liquor: '#f0d3a6' },
   Teaware: { bg1: '#1d2624', bg2: '#0b100f', accent: '#d9c184', leaf: '#7f8f86', leaf2: '#4e5a54', liquor: '#cfd8d2' },
   Gift: { bg1: '#2a2318', bg2: '#100d07', accent: '#e6c98a', leaf: '#8d7a4c', leaf2: '#5d5030', liquor: '#e8d6a8' },
+  // Jade: the ground is a deep nephrite green, the accent a pale celadon, so the
+  // artwork sits alongside the tea families without looking like one of them.
+  Jade: { bg1: '#12302a', bg2: '#061713', accent: '#bfe0cf', leaf: '#5f9e86', leaf2: '#356b59', liquor: '#d8ece0' },
+  // Fine jewellery: warmer and brighter, built around gold and pearl.
+  Jewellery: { bg1: '#2e2718', bg2: '#120e06', accent: '#f0d9a0', leaf: '#b09455', leaf2: '#77612f', liquor: '#f5e6c4' },
 };
 
 const DEFAULT_PALETTE = FAMILY_PALETTE.Green;

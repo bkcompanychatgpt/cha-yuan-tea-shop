@@ -82,7 +82,11 @@ async function main() {
     const r = await request('/');
     const html = await r.text();
     record(r.status === 200, 'GET / returns 200', `status ${r.status}`);
-    record(html.includes('Tea, sourced'), 'homepage renders the hero headline');
+    record(html.includes('Single-origin Chinese tea'), 'homepage renders the hero headline');
+    // Products and the family links both have to be reachable in the first screen,
+    // which is the whole point of the compact hero and the shelf beneath it.
+    record(html.includes('cat-chips'), 'homepage shows the family quick links in the hero');
+    record((html.match(/class="shelf-item"/g) || []).length >= 4, 'homepage shows a shelf of products above the fold');
     record(html.includes('/tea/lion-peak-longjing'), 'homepage lists products');
     record(html.includes('id="cart-drawer"'), 'cart drawer is present in the layout');
   }

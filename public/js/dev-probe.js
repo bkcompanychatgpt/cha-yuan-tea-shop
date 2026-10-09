@@ -70,24 +70,24 @@
       cards: Array.prototype.slice.call(d.querySelectorAll('.tea-card')).filter(isVisible).length,
     };
 
-    // Which elements stick out past the viewport, and by how much. A single
-    // scrollWidth number says a page overflows; this says what to fix.
-    //
-    // Two legitimate cases are excluded, because flagging them would bury the
-    // real problems in noise: a marquee inside an `overflow: hidden` container
-    // is meant to be clipped, and an off-canvas drawer is parked outside the
-    // viewport until it opens. An element is only reported when it is actually
-    // reachable — that is, when nothing above it clips or contains it.
+    /**
+     * A class name as a string.
+     * On SVG elements `className` is an SVGAnimatedString, not a string, which is
+     * how "[object SVGAnimatedString]" ends up in reports.
+     */
+    function clsOf(el) {
+      return String(el.getAttribute && el.getAttribute('class') ? el.getAttribute('class') : '');
+    }
+
+    /**
+     * Containers that are outside the viewport on purpose: the marquee is meant to
+     * be clipped, and the cart drawer, mobile menu and search overlay park
+     * themselves off-canvas until opened. Everything inside them inherits the same
+     * position, so `closest()` covers descendants — testing only the element itself
+     * lets its children through and buries the real problems in noise.
+     */
     function isDeliberatelyOffscreen(el) {
-      var node = el.parentElement;
-      while (node && node !== d.body) {
-        var cs = window.getComputedStyle(node);
-        if (cs.overflowX === 'hidden' || cs.overflowX === 'clip' || cs.overflow === 'hidden') return true;
-        node = node.parentElement;
-      }
-      // Off-canvas panels park themselves outside the viewport with a transform.
-      if (/drawer|scrim|mobile-nav|search-panel|skip-link/.test(String(el.className || ''))) return true;
-      return false;
+      return Boolean(el.closest('.ticker, .shelf-track, .cart-drawer, .mobile-nav, .search-panel, .drawer-scrim, .skip-link, .toast-stack'));
     }
 
     var overflow = [];
@@ -98,13 +98,29 @@
       if (isDeliberatelyOffscreen(el)) return;
       overflow.push({
         tag: el.tagName.toLowerCase(),
-        cls: String(el.className || '').slice(0, 60),
+        cls: clsOf(el).slice(0, 60),
         right: Math.round(r.right),
         width: Math.round(r.width),
         over: Math.round(r.right - window.innerWidth),
       });
     });
     overflow.sort(function (a, b) { return b.over - a.over; });
+
+    // The widest element on the page, which usually points straight at the cause
+    // when the whole layout is being pushed sideways.
+    var widest = null;
+    Array.prototype.slice.call(d.querySelectorAll('body *')).forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.width <= 0) return;
+      if (!widest || r.width > widest.width) {
+        widest = {
+          tag: el.tagName.toLowerCase(),
+          cls: clsOf(el).slice(0, 60),
+          width: Math.round(r.width),
+          height: Math.round(r.height),
+        };
+      }
+    });
 
     // Images that have no natural size never render, which is what a broken or
     // blocked image looks like from the DOM's point of view.
@@ -141,6 +157,7 @@
       }).slice(0, 12),
       zeroSizedBlocks: zeroBox.slice(0, 12),
       overflow: overflow.slice(0, 15),
+      widest: widest,
       brokenImageDetail: brokenImages.slice(0, 10),
       // Section offsets, so the page's vertical length can be reasoned about
       // rather than eyeballed: which block sits how far down.

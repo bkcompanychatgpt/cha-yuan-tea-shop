@@ -14,39 +14,62 @@
 <% } %>
 
 <!-- ================================================================== hero -->
-<section class="hero">
+<%
+  // Families for the quick links, and a short shelf of lots to show directly
+  // under the hero. Both exist so a visitor meets products and categories without
+  // scrolling: the hero alone used to fill the whole first screen.
+  const familyLinks = categories.filter(c => c.kind === 'tea');
+  const shelf = featured.slice(0, 6);
+%>
+<section class="hero hero-compact">
   <div class="hero-bg">
     <img src="/img/photos/hero-wide.jpg" alt="" />
   </div>
   <div class="wrap hero-inner">
     <div class="hero-copy">
       <span class="eyebrow">Fujian &middot; Yunnan &middot; Anhui &middot; Guangdong</span>
-      <h1>Tea, sourced <em>at the mountain</em></h1>
-      <p class="lede">
-        Single-origin Chinese tea bought in small lots direct from growers. Dated by harvest,
-        brewed in a gaiwan before it is listed, and sent within a season of being picked.
+      <h1>Single-origin Chinese tea</h1>
+      <p class="hero-sub">
+        Bought in small lots direct from growers, dated by harvest, and brewed in a
+        gaiwan before it is listed. Free shipping over <%= money(store.freeShippingThreshold) %>.
       </p>
-
       <div class="hero-actions">
-        <a class="btn btn-solid btn-lg" href="/shop">Shop the tea</a>
-        <a class="btn btn-lg" href="/guides">How to brew it</a>
-      </div>
-
-      <div class="hero-marks">
-        <div class="hero-mark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2 4 6v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/></svg>
-          <span>3-D Secure 2 payments</span>
-        </div>
-        <div class="hero-mark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 7h13v10H3z"/><path d="M16 10h3l2 3v4h-5"/><circle cx="7" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg>
-          <span>Free shipping over <%= money(store.freeShippingThreshold) %></span>
-        </div>
-        <div class="hero-mark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3v18M5 8l7-5 7 5v8l-7 5-7-5z"/></svg>
-          <span><%= categories.filter(c => c.kind === 'tea').reduce((n, c) => n + c.product_count, 0) %> lots on the shelf</span>
-        </div>
+        <a class="btn btn-solid" href="/shop">Shop the tea</a>
+        <a class="btn btn-ghost" href="/guides">How to brew it</a>
       </div>
     </div>
+
+    <nav class="cat-chips" aria-label="Shop by family">
+      <% familyLinks.forEach(c => { %>
+        <a class="cat-chip" href="/shop?category=<%= encodeURIComponent(c.slug) %>">
+          <%= c.name %><span><%= c.product_count %></span>
+        </a>
+      <% }) %>
+      <% categories.filter(c => c.kind !== 'tea').forEach(c => { %>
+        <a class="cat-chip" href="/shop?category=<%= encodeURIComponent(c.slug) %>">
+          <%= c.name %><span><%= c.product_count %></span>
+        </a>
+      <% }) %>
+      <a class="cat-chip cat-chip-all" href="/shop">Everything &rarr;</a>
+    </nav>
+  </div>
+</section>
+
+<!-- ============================================================ quick shelf -->
+<section class="shelf" aria-label="Shop the range">
+  <div class="wrap shelf-head">
+    <span class="eyebrow">On the shelf now</span>
+    <a class="link-underline small" href="/shop">All <%= categories.reduce((n, c) => n + c.product_count, 0) %> products &rarr;</a>
+  </div>
+  <div class="shelf-track">
+    <% shelf.forEach(product => { %>
+      <% const dv = product.defaultVariant; %>
+      <a class="shelf-item" href="/tea/<%= product.slug %>">
+        <img src="<%= product.hero_image %>" alt="<%= product.name %>" loading="eager" />
+        <span class="shelf-name"><%= product.name %></span>
+        <span class="shelf-price"><%= money(product.priceFrom) %></span>
+      </a>
+    <% }) %>
   </div>
 </section>
 

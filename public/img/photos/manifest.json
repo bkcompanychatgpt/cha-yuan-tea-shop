@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-09T17:20:36.568Z",
+  "generatedAt": "2026-10-09T18:28:00.823Z",
   "counts": {
-    "products": 31,
-    "categories": 10,
+    "products": 48,
+    "categories": 12,
     "story": 7,
-    "files": 189
+    "files": 276
   },
   "hero": "/img/photos/hero-wide.jpg",
   "story": [
@@ -54,7 +54,9 @@
     "pu-erh": "/img/photos/category-pu-erh-tile.jpg",
     "floral-blends": "/img/photos/category-floral-blends-tile.jpg",
     "gift-sets": "/img/photos/category-gift-sets-tile.jpg",
-    "teaware": "/img/photos/category-teaware-tile.jpg"
+    "teaware": "/img/photos/category-teaware-tile.jpg",
+    "jade": "/img/photos/category-jade-tile.jpg",
+    "jewellery": "/img/photos/category-jewellery-tile.jpg"
   },
   "products": {
     "lion-peak-longjing": {
@@ -273,6 +275,125 @@
         "/img/photos/oolong-explorer-flight-alt.jpg",
         "/img/photos/oolong-explorer-flight-alt2.jpg"
       ]
+    },
+    "hetian-jade-buddha-pendant": {
+      "gallery": [
+        "/img/photos/hetian-jade-buddha-pendant-hero.jpg",
+        "/img/photos/hetian-jade-buddha-pendant-alt.jpg",
+        "/img/photos/hetian-jade-buddha-pendant-alt2.jpg"
+      ]
+    },
+    "jadeite-bangle-classic-round": {
+      "gallery": [
+        "/img/photos/jadeite-bangle-classic-round-hero.jpg",
+        "/img/photos/jadeite-bangle-classic-round-alt.jpg",
+        "/img/photos/jadeite-bangle-classic-round-alt2.jpg"
+      ]
+    },
+    "jadeite-bangle-certified": {
+      "gallery": [
+        "/img/photos/jadeite-bangle-certified-hero.jpg",
+        "/img/photos/jadeite-bangle-certified-alt.jpg",
+        "/img/photos/jadeite-bangle-certified-alt2.jpg"
+      ]
+    },
+    "jadeite-bangle-imperial": {
+      "gallery": [
+        "/img/photos/jadeite-bangle-imperial-hero.jpg",
+        "/img/photos/jadeite-bangle-imperial-alt.jpg",
+        "/img/photos/jadeite-bangle-imperial-alt2.jpg"
+      ]
+    },
+    "jade-carved-pendant-tiger": {
+      "gallery": [
+        "/img/photos/jade-carved-pendant-tiger-hero.jpg",
+        "/img/photos/jade-carved-pendant-tiger-alt.jpg",
+        "/img/photos/jade-carved-pendant-tiger-alt2.jpg"
+      ]
+    },
+    "jade-dragon-pendant": {
+      "gallery": [
+        "/img/photos/jade-dragon-pendant-hero.jpg",
+        "/img/photos/jade-dragon-pendant-alt.jpg",
+        "/img/photos/jade-dragon-pendant-alt2.jpg"
+      ]
+    },
+    "jade-leaf-and-grape-pendant": {
+      "gallery": [
+        "/img/photos/jade-leaf-and-grape-pendant-hero.jpg",
+        "/img/photos/jade-leaf-and-grape-pendant-alt.jpg",
+        "/img/photos/jade-leaf-and-grape-pendant-alt2.jpg"
+      ]
+    },
+    "jade-deer-study": {
+      "gallery": [
+        "/img/photos/jade-deer-study-hero.jpg",
+        "/img/photos/jade-deer-study-alt.jpg",
+        "/img/photos/jade-deer-study-alt2.jpg"
+      ]
+    },
+    "jade-ruyi-sceptre": {
+      "gallery": [
+        "/img/photos/jade-ruyi-sceptre-hero.jpg",
+        "/img/photos/jade-ruyi-sceptre-alt.jpg",
+        "/img/photos/jade-ruyi-sceptre-alt2.jpg"
+      ]
+    },
+    "jade-and-nephrite-pair": {
+      "gallery": [
+        "/img/photos/jade-and-nephrite-pair-hero.jpg",
+        "/img/photos/jade-and-nephrite-pair-alt.jpg",
+        "/img/photos/jade-and-nephrite-pair-alt2.jpg"
+      ]
+    },
+    "pearl-strand-necklace": {
+      "gallery": [
+        "/img/photos/pearl-strand-necklace-hero.jpg",
+        "/img/photos/pearl-strand-necklace-alt.jpg",
+        "/img/photos/pearl-strand-necklace-alt2.jpg"
+      ]
+    },
+    "jadeite-diamond-pendant": {
+      "gallery": [
+        "/img/photos/jadeite-diamond-pendant-hero.jpg",
+        "/img/photos/jadeite-diamond-pendant-alt.jpg",
+        "/img/photos/jadeite-diamond-pendant-alt2.jpg"
+      ]
+    },
+    "jade-gold-necklace-beads": {
+      "gallery": [
+        "/img/photos/jade-gold-necklace-beads-hero.jpg",
+        "/img/photos/jade-gold-necklace-beads-alt.jpg",
+        "/img/photos/jade-gold-necklace-beads-alt2.jpg"
+      ]
+    },
+    "gold-filigree-cuff": {
+      "gallery": [
+        "/img/photos/gold-filigree-cuff-hero.jpg",
+        "/img/photos/gold-filigree-cuff-alt.jpg",
+        "/img/photos/gold-filigree-cuff-alt2.jpg"
+      ]
+    },
+    "gold-and-jade-ring": {
+      "gallery": [
+        "/img/photos/gold-and-jade-ring-hero.jpg",
+        "/img/photos/gold-and-jade-ring-alt.jpg",
+        "/img/photos/gold-and-jade-ring-alt2.jpg"
+      ]
+    },
+    "jadeite-and-gold-earrings": {
+      "gallery": [
+        "/img/photos/jadeite-and-gold-earrings-hero.jpg",
+        "/img/photos/jadeite-and-gold-earrings-alt.jpg",
+        "/img/photos/jadeite-and-gold-earrings-alt2.jpg"
+      ]
+    },
+    "imperial-jadeite-earrings": {
+      "gallery": [
+        "/img/photos/imperial-jadeite-earrings-hero.jpg",
+        "/img/photos/imperial-jadeite-earrings-alt.jpg",
+        "/img/photos/imperial-jadeite-earrings-alt2.jpg"
+      ]
     }
   },
   "all": [
@@ -296,6 +417,8 @@
     "/img/photos/category-floral-blends-tile.jpg",
     "/img/photos/category-gift-sets-tile.jpg",
     "/img/photos/category-green-tea-tile.jpg",
+    "/img/photos/category-jade-tile.jpg",
+    "/img/photos/category-jewellery-tile.jpg",
     "/img/photos/category-oolong-tea-tile.jpg",
     "/img/photos/category-pu-erh-tile.jpg",
     "/img/photos/category-rock-oolong-tile.jpg",
@@ -321,6 +444,16 @@
     "/img/photos/glass-tea-tumbler-hero-thumb.jpg",
     "/img/photos/glass-tea-tumbler-hero-wide.jpg",
     "/img/photos/glass-tea-tumbler-hero.jpg",
+    "/img/photos/gold-and-jade-ring-alt.jpg",
+    "/img/photos/gold-and-jade-ring-alt2.jpg",
+    "/img/photos/gold-and-jade-ring-hero-thumb.jpg",
+    "/img/photos/gold-and-jade-ring-hero-wide.jpg",
+    "/img/photos/gold-and-jade-ring-hero.jpg",
+    "/img/photos/gold-filigree-cuff-alt.jpg",
+    "/img/photos/gold-filigree-cuff-alt2.jpg",
+    "/img/photos/gold-filigree-cuff-hero-thumb.jpg",
+    "/img/photos/gold-filigree-cuff-hero-wide.jpg",
+    "/img/photos/gold-filigree-cuff-hero.jpg",
     "/img/photos/gongfu-starter-kit-alt.jpg",
     "/img/photos/gongfu-starter-kit-alt2.jpg",
     "/img/photos/gongfu-starter-kit-hero-thumb.jpg",
@@ -329,11 +462,81 @@
     "/img/photos/hero-thumb.jpg",
     "/img/photos/hero-wide.jpg",
     "/img/photos/hero.jpg",
+    "/img/photos/hetian-jade-buddha-pendant-alt.jpg",
+    "/img/photos/hetian-jade-buddha-pendant-alt2.jpg",
+    "/img/photos/hetian-jade-buddha-pendant-hero-thumb.jpg",
+    "/img/photos/hetian-jade-buddha-pendant-hero-wide.jpg",
+    "/img/photos/hetian-jade-buddha-pendant-hero.jpg",
     "/img/photos/huangshan-maofeng-alt.jpg",
     "/img/photos/huangshan-maofeng-alt2.jpg",
     "/img/photos/huangshan-maofeng-hero-thumb.jpg",
     "/img/photos/huangshan-maofeng-hero-wide.jpg",
     "/img/photos/huangshan-maofeng-hero.jpg",
+    "/img/photos/imperial-jadeite-earrings-alt.jpg",
+    "/img/photos/imperial-jadeite-earrings-alt2.jpg",
+    "/img/photos/imperial-jadeite-earrings-hero-thumb.jpg",
+    "/img/photos/imperial-jadeite-earrings-hero-wide.jpg",
+    "/img/photos/imperial-jadeite-earrings-hero.jpg",
+    "/img/photos/jade-and-nephrite-pair-alt.jpg",
+    "/img/photos/jade-and-nephrite-pair-alt2.jpg",
+    "/img/photos/jade-and-nephrite-pair-hero-thumb.jpg",
+    "/img/photos/jade-and-nephrite-pair-hero-wide.jpg",
+    "/img/photos/jade-and-nephrite-pair-hero.jpg",
+    "/img/photos/jade-carved-pendant-tiger-alt.jpg",
+    "/img/photos/jade-carved-pendant-tiger-alt2.jpg",
+    "/img/photos/jade-carved-pendant-tiger-hero-thumb.jpg",
+    "/img/photos/jade-carved-pendant-tiger-hero-wide.jpg",
+    "/img/photos/jade-carved-pendant-tiger-hero.jpg",
+    "/img/photos/jade-deer-study-alt.jpg",
+    "/img/photos/jade-deer-study-alt2.jpg",
+    "/img/photos/jade-deer-study-hero-thumb.jpg",
+    "/img/photos/jade-deer-study-hero-wide.jpg",
+    "/img/photos/jade-deer-study-hero.jpg",
+    "/img/photos/jade-dragon-pendant-alt.jpg",
+    "/img/photos/jade-dragon-pendant-alt2.jpg",
+    "/img/photos/jade-dragon-pendant-hero-thumb.jpg",
+    "/img/photos/jade-dragon-pendant-hero-wide.jpg",
+    "/img/photos/jade-dragon-pendant-hero.jpg",
+    "/img/photos/jade-gold-necklace-beads-alt.jpg",
+    "/img/photos/jade-gold-necklace-beads-alt2.jpg",
+    "/img/photos/jade-gold-necklace-beads-hero-thumb.jpg",
+    "/img/photos/jade-gold-necklace-beads-hero-wide.jpg",
+    "/img/photos/jade-gold-necklace-beads-hero.jpg",
+    "/img/photos/jade-leaf-and-grape-pendant-alt.jpg",
+    "/img/photos/jade-leaf-and-grape-pendant-alt2.jpg",
+    "/img/photos/jade-leaf-and-grape-pendant-hero-thumb.jpg",
+    "/img/photos/jade-leaf-and-grape-pendant-hero-wide.jpg",
+    "/img/photos/jade-leaf-and-grape-pendant-hero.jpg",
+    "/img/photos/jade-ruyi-sceptre-alt.jpg",
+    "/img/photos/jade-ruyi-sceptre-alt2.jpg",
+    "/img/photos/jade-ruyi-sceptre-hero-thumb.jpg",
+    "/img/photos/jade-ruyi-sceptre-hero-wide.jpg",
+    "/img/photos/jade-ruyi-sceptre-hero.jpg",
+    "/img/photos/jadeite-and-gold-earrings-alt.jpg",
+    "/img/photos/jadeite-and-gold-earrings-alt2.jpg",
+    "/img/photos/jadeite-and-gold-earrings-hero-thumb.jpg",
+    "/img/photos/jadeite-and-gold-earrings-hero-wide.jpg",
+    "/img/photos/jadeite-and-gold-earrings-hero.jpg",
+    "/img/photos/jadeite-bangle-certified-alt.jpg",
+    "/img/photos/jadeite-bangle-certified-alt2.jpg",
+    "/img/photos/jadeite-bangle-certified-hero-thumb.jpg",
+    "/img/photos/jadeite-bangle-certified-hero-wide.jpg",
+    "/img/photos/jadeite-bangle-certified-hero.jpg",
+    "/img/photos/jadeite-bangle-classic-round-alt.jpg",
+    "/img/photos/jadeite-bangle-classic-round-alt2.jpg",
+    "/img/photos/jadeite-bangle-classic-round-hero-thumb.jpg",
+    "/img/photos/jadeite-bangle-classic-round-hero-wide.jpg",
+    "/img/photos/jadeite-bangle-classic-round-hero.jpg",
+    "/img/photos/jadeite-bangle-imperial-alt.jpg",
+    "/img/photos/jadeite-bangle-imperial-alt2.jpg",
+    "/img/photos/jadeite-bangle-imperial-hero-thumb.jpg",
+    "/img/photos/jadeite-bangle-imperial-hero-wide.jpg",
+    "/img/photos/jadeite-bangle-imperial-hero.jpg",
+    "/img/photos/jadeite-diamond-pendant-alt.jpg",
+    "/img/photos/jadeite-diamond-pendant-alt2.jpg",
+    "/img/photos/jadeite-diamond-pendant-hero-thumb.jpg",
+    "/img/photos/jadeite-diamond-pendant-hero-wide.jpg",
+    "/img/photos/jadeite-diamond-pendant-hero.jpg",
     "/img/photos/jasmine-pearls-nine-scent-alt.jpg",
     "/img/photos/jasmine-pearls-nine-scent-alt2.jpg",
     "/img/photos/jasmine-pearls-nine-scent-hero-thumb.jpg",
@@ -389,6 +592,11 @@
     "/img/photos/osmanthus-oolong-hero-thumb.jpg",
     "/img/photos/osmanthus-oolong-hero-wide.jpg",
     "/img/photos/osmanthus-oolong-hero.jpg",
+    "/img/photos/pearl-strand-necklace-alt.jpg",
+    "/img/photos/pearl-strand-necklace-alt2.jpg",
+    "/img/photos/pearl-strand-necklace-hero-thumb.jpg",
+    "/img/photos/pearl-strand-necklace-hero-wide.jpg",
+    "/img/photos/pearl-strand-necklace-hero.jpg",
     "/img/photos/porcelain-gaiwan-set-alt.jpg",
     "/img/photos/porcelain-gaiwan-set-alt2.jpg",
     "/img/photos/porcelain-gaiwan-set-hero-thumb.jpg",

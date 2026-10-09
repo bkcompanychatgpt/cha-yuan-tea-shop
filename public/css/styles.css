@@ -613,9 +613,12 @@ section { position: relative; }
   background: linear-gradient(180deg, rgba(6, 16, 11, 0.05) 30%, rgba(6, 16, 11, 0.9) 100%);
 }
 .cat-tile:hover img { transform: scale(1.06); }
-.cat-tile-inner { position: relative; z-index: 1; }
+.cat-tile-inner { position: relative; z-index: 1; width: 100%; min-width: 0; }
 .cat-tile h3 { font-size: 1.28rem; margin-bottom: 5px; }
 .cat-tile p { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-300); }
+/* Long family names must wrap inside the tile rather than push past its edge —
+   the tile has padding, and overflowing text was reaching the viewport edge. */
+.cat-tile h3, .cat-tile p, .cat-count { overflow-wrap: anywhere; }
 
 /* ------------------------------------------------------------ editorial */
 .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(232px, 1fr)); gap: 34px; }
@@ -1990,6 +1993,138 @@ select.select option { background: var(--ink-800); color: var(--text); }
 .pay-band-logos { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .pay-band-logos img { height: 24px; width: auto; opacity: 0.78; }
 .pay-band p { font-size: 0.82rem; color: var(--text-dim); flex: 1 1 320px; line-height: 1.65; }
+
+/* ------------------------------------------------------------ compact hero */
+/**
+ * The homepage hero is deliberately short. It used to stand 505px tall, which
+ * pushed the first product below the fold on a phone; a visitor had to scroll
+ * before seeing anything they could buy. The headline, one line of copy, the
+ * primary actions and the family links all fit here now.
+ */
+.hero-compact {
+  min-height: 0;
+  padding-block: clamp(16px, 2.2vw, 32px) clamp(14px, 1.8vw, 24px);
+  align-items: flex-start;
+}
+.hero-compact .hero-inner { display: block; }
+.hero-compact .hero-copy { max-width: 62ch; }
+.hero-compact h1 {
+  font-size: clamp(1.9rem, 4.4vw, 3.1rem);
+  margin: 10px 0 12px;
+}
+.hero-sub {
+  font-size: 0.96rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 56ch;
+}
+.hero-compact .hero-actions { margin-top: 20px; gap: 10px; }
+.hero-compact .hero-actions .btn { padding: 12px 24px; font-size: 0.72rem; }
+
+/* ------------------------------------------------------ family quick links */
+.cat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line-soft);
+}
+.cat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  border: 1px solid var(--line);
+  background: rgba(6, 16, 11, 0.55);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease), background 0.2s var(--ease);
+}
+.cat-chip span {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--text-faint);
+}
+.cat-chip:hover { border-color: var(--gold-400); color: var(--gold-100); background: rgba(220, 192, 122, 0.07); }
+.cat-chip-all { border-color: var(--gold-400); color: var(--gold-200); }
+
+/* ------------------------------------------------------------- quick shelf */
+/**
+ * A horizontal strip of lots directly under the hero, so real product
+ * photographs are on screen without scrolling. It scrolls sideways on a phone
+ * rather than wrapping, which keeps its height to a single row.
+ */
+.shelf {
+  border-block: 1px solid var(--line-soft);
+  background: linear-gradient(180deg, var(--ink-850), var(--ink-900));
+  padding-block: 22px 26px;
+}
+.shelf-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.shelf-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding-inline: var(--pad-x);
+  /* Room for the focus ring and the scrollbar, without a visible scrollbar. */
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+}
+.shelf-track::-webkit-scrollbar { height: 6px; }
+.shelf-track::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+.shelf-item {
+  flex: 0 0 auto;
+  width: 168px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.shelf-item img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 1px solid var(--line-soft);
+  transition: border-color 0.25s var(--ease), transform 0.5s var(--ease);
+}
+.shelf-item:hover img { border-color: var(--gold-400); transform: scale(1.02); }
+.shelf-name {
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  line-height: 1.25;
+  color: var(--text);
+}
+.shelf-item:hover .shelf-name { color: var(--gold-200); }
+.shelf-price { font-size: 0.78rem; color: var(--gold-300); }
+
+@media (max-width: 760px) {
+  /* On a phone the wordmark competes with the cart and menu for a 390px row and
+     wraps to three lines, which makes the header taller than its own height
+     variable. The seal alone reads as the logo and gives the actions room. */
+  .brand-text { display: none; }
+  .brand img { height: 40px; }
+  .header-inner { gap: 10px; }
+  .header-actions { gap: 2px; }
+  .hero-compact { padding-block: 12px 10px; }
+  .hero-compact h1 { margin: 6px 0 8px; font-size: clamp(1.7rem, 8vw, 2.2rem); }
+  .hero-sub { font-size: 0.86rem; line-height: 1.6; }
+  .hero-compact .hero-actions { margin-top: 12px; }
+  .hero-compact .hero-actions .btn { padding: 10px 18px; font-size: 0.68rem; }
+  .cat-chips { margin-top: 14px; padding-top: 12px; gap: 6px; }
+  .cat-chip { padding: 5px 9px; font-size: 0.68rem; }
+  .shelf { padding-block: 14px 16px; }
+  .shelf-track { gap: 10px; }
+  .shelf-item { width: 124px; }
+  .shelf-head { margin-bottom: 10px; }
+}
 
 @media (max-width: 1180px) {
   .footer-grid { grid-template-columns: 1.4fr 1fr 1fr; row-gap: 34px; }

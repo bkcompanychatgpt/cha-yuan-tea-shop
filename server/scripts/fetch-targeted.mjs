@@ -43,6 +43,16 @@ const TARGETS = {
   // street furniture, and it also has no place in an English-only codebase.
   'tea-tray': ['Chinese tea tray', 'tea tray bamboo', 'tea board gongfu', 'tea table bamboo'],
   teaware: ['gaiwan and cups', 'Chinese tea set porcelain', 'tea utensils Chinese', 'tea caddy Chinese'],
+  // Jade: nephrite and jadeite, carved objects and rough stone.
+  'jade-nephrite': ['Hetian jade', 'nephrite carving', 'Chinese jade pendant', 'white jade China'],
+  'jade-jadeite': ['jadeite bangle', 'jade bangle', 'jadeite jewellery', 'icy jadeite'],
+  'jade-carving': ['Chinese jade carving', 'jade figurine China', 'jade Buddha', 'jade ruyi'],
+  'jade-raw': ['jade stone rough', 'nephrite pebble', 'jadeite rough stone'],
+  // Jewellery
+  jewellery: ['Chinese gold jewellery', 'filigree silver bracelet', 'jade jewellery gold'],
+  pearls: ['South Sea pearl necklace', 'golden pearl strand', 'freshwater pearl jewellery'],
+  earrings: ['jade earrings', 'gold drop earrings', 'Chinese earrings gold'],
+  rings: ['jade ring gold', 'gemstone ring jade', 'Chinese gold ring'],
 };
 
 function licenceOk(shortName) {

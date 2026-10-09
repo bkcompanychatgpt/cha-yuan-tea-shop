@@ -99,6 +99,24 @@ export const CATEGORIES = [
     description:
       'Curated flights in a lacquered presentation box, with tasting notes and brewing cards. The easy answer for a birthday, a client, or a first step into Chinese tea.',
   },
+  {
+    slug: 'jade',
+    name: 'Jade & Stone',
+    kind: 'jade',
+    tagline: 'Nephrite and jadeite · hand-carved',
+    family: 'Jade',
+    description:
+      'Chinese jade is worked, not cut: a piece is ground and polished for weeks until the stone gives up its depth. Nephrite from Hetian and Xinjiang, jadeite from the Burmese border, and carvers who still work entirely by hand.',
+  },
+  {
+    slug: 'jewellery',
+    name: 'Fine Jewellery',
+    kind: 'jewellery',
+    tagline: 'Gold, jade, pearl and silver',
+    family: 'Jewellery',
+    description:
+      'Pieces built around the stone rather than the setting: 18k and 22k gold, South Sea pearls, and jade set the traditional way, with as little metal between you and the stone as the structure allows.',
+  },
 ];
 
 /**
@@ -1205,6 +1223,855 @@ export const PRODUCTS = [
       { label: 'Full kit + Tea Voyage', grams: 1700, price: 236, stock: 5 },
     ],
   },
+/* ===== BEGIN jade & jewellery (generated from server/data-jade.mjs) ===== */
+  {
+    slug: 'hetian-jade-buddha-pendant',
+    sku: 'CY-JD-001',
+    name: 'White Jade Buddha Pendant',
+    subtitle: 'Qing dynasty form · carved loose',
+    category: 'jade',
+    family: 'Jade',
+    seal: 'Buddha',
+    origin: 'Hetian, Xinjiang',
+    altitude: '—',
+    cultivar: 'Hetian white nephrite',
+    harvest: 'Carved in the Qing manner, hand-finished 2024',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['Hand-carved', 'Nephrite', 'Certificate'],
+    rating: 4.9,
+    review_count: 18,
+    is_featured: 1,
+    short_description: 'A seated Buddha in the restrained Qing manner, carved from one piece of white nephrite with the soft, waxy surface collectors look for.',
+    description: 'Hetian nephrite is the stone the Chinese have called jade for four thousand years. It is not the vivid green most Western buyers picture — that is jadeite, a harder and later arrival — but a dense white that carvers prize because it holds a fine edge and takes a soft polish without turning glassy.\n\nThis is cut from a single piece, with the figure following the shape of the stone rather than the stone being cut to fit a drawing. It arrives with a certificate of origin and a silk cord.',
+    tasting_notes: ['Compact white nephrite', 'Waxy surface', 'Solid stone', 'Single carving'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Wear against the skin; nephrite deepens with handling'
+  },
+    variants: [
+    {
+      label: 'Pendant, 34 mm',
+      grams: 18,
+      price: 310,
+      stock: 12,
+      default: true
+    },
+    {
+      label: 'Pendant, 45 mm',
+      grams: 34,
+      price: 520,
+      stock: 8
+    },
+    {
+      label: 'Pendant, 56 mm, finer stone',
+      grams: 62,
+      price: 880,
+      stock: 4
+    }
+  ],
+  },
+  {
+    slug: 'jadeite-bangle-classic-round',
+    sku: 'CY-JD-002',
+    name: 'Jadeite Bangle',
+    subtitle: 'Classic round profile',
+    category: 'jade',
+    family: 'Jade',
+    seal: 'Bangle',
+    origin: 'Hpakant, Kachin State, Myanmar',
+    altitude: '—',
+    cultivar: 'Jadeite, round section',
+    harvest: 'Cut and polished 2024',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['Full circle', 'Solid core', 'Certified'],
+    rating: 4.8,
+    review_count: 14,
+    is_featured: 1,
+    short_description: 'The classic round-section jadeite bangle, cut as a complete circle from a single core so the colour runs unbroken.',
+    description: 'A bangle is cut from a core drilled out of a boulder, which is why the colour runs continuously around it and why the size cannot be adjusted afterwards. The round profile is the traditional one: comfortable, and the form that shows the evenness of the stone best.\n\nJadeite is graded on transparency and on treatment before colour. This is a naturally coloured stone, neither bleached nor polymer-filled, and each bangle is photographed individually because no two are alike.',
+    tasting_notes: ['Round profile', 'Single core', 'Continuous colour', 'No treatment'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Measure your wrist against the inner diameter before ordering'
+  },
+    variants: [
+    {
+      label: 'Bangle, 54 mm inner',
+      grams: 54,
+      price: 460,
+      stock: 8,
+      default: true
+    },
+    {
+      label: 'Bangle, 57 mm inner',
+      grams: 62,
+      price: 720,
+      stock: 5
+    },
+    {
+      label: 'Bangle, 60 mm, deeper colour',
+      grams: 71,
+      price: 1150,
+      stock: 3
+    }
+  ],
+  },
+  {
+    slug: 'jadeite-bangle-certified',
+    sku: 'CY-JD-003',
+    name: 'Certified Jadeite Bangle',
+    subtitle: 'Laboratory report included',
+    category: 'jade',
+    family: 'Jade',
+    seal: 'Certified',
+    origin: 'Hpakant, Kachin State, Myanmar',
+    altitude: '—',
+    cultivar: 'Jadeite, Type A, laboratory certified',
+    harvest: 'Cut and polished 2024',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['Type A untreated', 'Lab report', 'Insurance valuation'],
+    rating: 4.9,
+    review_count: 9,
+    is_featured: 1,
+    short_description: 'An untreated jadeite bangle with an independent laboratory report and an insurance valuation — the two documents that make a jade purchase safe.',
+    description: 'At this level the paperwork matters as much as the stone. Most jadeite on the open market has been bleached and polymer-filled to improve its look, which is legal as long as it is disclosed and disastrous if it is not: treated stone is worth a fraction of natural stone and can discolour over years.\n\nThis bangle is Type A — natural, untreated — confirmed by an independent laboratory whose report travels with it. We also supply an insurance valuation, which is what an insurer actually asks for after a loss.',
+    tasting_notes: ['Type A untreated', 'Full laboratory report', 'Insurance valuation', 'Natural colour'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Keep the report with the piece; it is half the value'
+  },
+    variants: [
+    {
+      label: 'Bangle, 55 mm, certified',
+      grams: 58,
+      price: 890,
+      stock: 6,
+      default: true
+    },
+    {
+      label: 'Bangle, 58 mm, certified',
+      grams: 68,
+      price: 1420,
+      stock: 4
+    },
+    {
+      label: 'Bangle, 58 mm, deeper colour',
+      grams: 70,
+      price: 2350,
+      stock: 2
+    }
+  ],
+  },
+  {
+    slug: 'jadeite-bangle-imperial',
+    sku: 'CY-JD-004',
+    name: 'Imperial Green Bangle',
+    subtitle: 'The collector’s grade',
+    category: 'jade',
+    family: 'Jade',
+    seal: 'Imperial',
+    origin: 'Hpakant, Kachin State, Myanmar',
+    altitude: '—',
+    cultivar: 'Jadeite, imperial green, certified',
+    harvest: 'Cut and polished 2024, full documentation',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['Imperial green', 'Museum grade', 'Laboratory certified'],
+    rating: 5,
+    review_count: 6,
+    short_description: 'The colour that sets records at auction: saturated, slightly blue-leaning green, evenly present through the stone rather than patched into it.',
+    description: 'Imperial green is the rarest colour in jadeite and the most imitated. It has to be a deep, vivid green with a faint blue undertone that reads as luminous rather than merely coloured, and it has to run through the whole stone — colour concentrated in patches is worth a fraction of even colour.\n\nFewer than ten bangles at this grade pass through our hands in a year. The report is available before you commit, and we hold it on file afterwards.',
+    tasting_notes: ['Imperial green', 'Even throughout', 'Untreated', 'Full laboratory report'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Store in the supplied case; jadeite is hard but not unbreakable'
+  },
+    variants: [
+    {
+      label: 'Bangle, 54 mm, certified',
+      grams: 56,
+      price: 3900,
+      stock: 2,
+      default: true
+    },
+    {
+      label: 'Bangle, 56 mm, certified',
+      grams: 64,
+      price: 6800,
+      stock: 1
+    },
+    {
+      label: 'Bangle, 58 mm, imperial grade',
+      grams: 72,
+      price: 9600,
+      stock: 1
+    }
+  ],
+  },
+  {
+    slug: 'jade-carved-pendant-tiger',
+    sku: 'CY-JD-005',
+    name: 'Carved Nephrite Pendant',
+    subtitle: 'Crouching tiger · dark stone',
+    category: 'jade',
+    family: 'Jade',
+    seal: 'Tiger',
+    origin: 'Hetian, Xinjiang',
+    altitude: '—',
+    cultivar: 'Dark nephrite, hand-carved',
+    harvest: 'Carved 2024',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['Hand-carved', 'Deep relief', 'Dark nephrite'],
+    rating: 4.8,
+    review_count: 11,
+    short_description: 'A crouching tiger in deep relief on dark nephrite — the darker stone that shows incised detail better than white ever does.',
+    description: 'A tiger is carved for courage and protection, and it is traditionally shown crouching rather than roaring: the coiled posture is harder to carve and reads as restrained strength. Deep relief on a dark stone is the combination that shows the carving off, because shadow does the work that colour does on a paler piece.\n\nCut from a single slab of dark nephrite with the reverse left smooth so it sits flat against the chest.',
+    tasting_notes: ['Deep relief', 'Dark nephrite', 'Single slab', 'Flat reverse'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Wipe with a dry cloth; damp dulls dark nephrite'
+  },
+    variants: [
+    {
+      label: 'Pendant, 40 mm',
+      grams: 24,
+      price: 420,
+      stock: 9,
+      default: true
+    },
+    {
+      label: 'Pendant, 52 mm',
+      grams: 46,
+      price: 760,
+      stock: 6
+    },
+    {
+      label: 'Pendant, 64 mm',
+      grams: 78,
+      price: 1340,
+      stock: 3
+    }
+  ],
+  },
+  {
+    slug: 'jade-dragon-pendant',
+    sku: 'CY-JD-006',
+    name: 'Jade Dragon Pendant',
+    subtitle: 'Black nephrite · pierced carving',
+    category: 'jade',
+    family: 'Jade',
+    seal: 'Dragon',
+    origin: 'Hetian, Xinjiang',
+    altitude: '—',
+    cultivar: 'Black nephrite, pierced and carved',
+    harvest: 'Carved 2024',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['Pierced work', 'Hand-carved', 'Black nephrite'],
+    rating: 4.9,
+    review_count: 8,
+    is_new: 1,
+    short_description: 'A pierced dragon in black nephrite — openwork carving, where the stone between the forms is removed rather than drawn.',
+    description: 'Pierced work, or openwork, means cutting away the stone between the elements of the design so the dragon stands free within its own outline. It is where jade carving stops being relief and becomes sculpture, and it is unforgiving: the stone you remove cannot be put back, and thin bridges snap.\n\nBlack nephrite is the hardest colour to photograph and the most striking in the hand — it reads as near-black indoors and shows a green depth in daylight.',
+    tasting_notes: ['Openwork', 'Free-standing forms', 'Black nephrite', 'No repairs'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Handle by the outer ring, not the openwork'
+  },
+    variants: [
+    {
+      label: 'Pendant, 45 mm',
+      grams: 28,
+      price: 560,
+      stock: 7,
+      default: true
+    },
+    {
+      label: 'Pendant, 58 mm',
+      grams: 52,
+      price: 980,
+      stock: 4
+    },
+    {
+      label: 'Pendant, 70 mm',
+      grams: 86,
+      price: 1680,
+      stock: 2
+    }
+  ],
+  },
+  {
+    slug: 'jade-leaf-and-grape-pendant',
+    sku: 'CY-JD-007',
+    name: 'Jade Leaf and Grape Pendant',
+    subtitle: 'Heirloom form · carved both faces',
+    category: 'jade',
+    family: 'Jade',
+    seal: 'Leaf',
+    origin: 'Hetian, Xinjiang',
+    altitude: '—',
+    cultivar: 'Nephrite, carved on both faces',
+    harvest: 'Carved 2024',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['Carved both faces', 'Heirloom form', 'Hand-carved'],
+    rating: 4.7,
+    review_count: 13,
+    short_description: 'A leaf and a bunch of grapes carved into one piece in the round — the old family pendant form, and a rebus for abundance.',
+    description: 'The leaf-and-grape pendant is one of the oldest shapes in Chinese jade and one of the most given: the grape cluster stands for abundance and the leaf for continuity, so the whole piece reads as a wish for a large and prosperous family. Carvers like it because it is worked in the round rather than as a flat plaque.\n\nThis one is carved on both faces, with the grapes in relief down one side and the leaf veins incised on the other. It hangs from a silk cord and wears flat, and it is the sort of piece that gets handed down rather than replaced.',
+    tasting_notes: ['Carved in the round', 'Both faces worked', 'Neutral everyday weight', 'Heirloom form'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Hangs flat under clothing; no protrusions to catch'
+  },
+    variants: [
+    {
+      label: 'Pendant, 42 mm',
+      grams: 20,
+      price: 300,
+      stock: 15,
+      default: true
+    },
+    {
+      label: 'Pendant, 55 mm',
+      grams: 38,
+      price: 480,
+      stock: 10
+    },
+    {
+      label: 'Pendant, 68 mm',
+      grams: 64,
+      price: 820,
+      stock: 5
+    }
+  ],
+  },
+  {
+    slug: 'jade-deer-study',
+    sku: 'CY-JD-008',
+    name: 'Jade Deer Study',
+    subtitle: 'Qing dynasty form · desk piece',
+    category: 'jade',
+    family: 'Jade',
+    seal: 'Deer',
+    origin: 'Hetian, Xinjiang',
+    altitude: '—',
+    cultivar: 'Nephrite, solid block carving',
+    harvest: 'Carved 2024',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['Hand-carved', 'Substantial stone', 'Desk piece'],
+    rating: 4.8,
+    review_count: 6,
+    is_new: 1,
+    short_description: 'A deer at rest, the Qing emblem of a long career, carved from a solid block with the legs left whole.',
+    description: 'The deer is a rebus: the word sounds like "emolument", so a carved deer means a long and prosperous official career. Qing carvers made them in sets for desks, and the form has not changed much — a seated animal, head turned, legs folded under.\n\nThis is a desk-scale study in a solid block of nephrite, with the legs carved into the mass rather than left standing free. That is both stronger and harder to carve: the shape has to read from one continuous block with nothing bearing weight.',
+    tasting_notes: ['Seated pose', 'Solid block', 'Legs carved into mass', 'Desk scale'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Wipe with a soft dry cloth; never soak nephrite'
+  },
+    variants: [
+    {
+      label: 'Study, 9 cm',
+      grams: 210,
+      price: 890,
+      stock: 5,
+      default: true
+    },
+    {
+      label: 'Study, 13 cm',
+      grams: 460,
+      price: 1780,
+      stock: 3
+    },
+    {
+      label: 'Study, 18 cm',
+      grams: 920,
+      price: 3400,
+      stock: 2
+    }
+  ],
+  },
+  {
+    slug: 'jade-ruyi-sceptre',
+    sku: 'CY-JD-009',
+    name: 'Jade Ruyi Sceptre',
+    subtitle: 'Qing form · celadon nephrite',
+    category: 'jade',
+    family: 'Jade',
+    seal: 'Ruyi',
+    origin: 'Hetian, Xinjiang',
+    altitude: '—',
+    cultivar: 'Celadon nephrite, single shaft',
+    harvest: 'Carved 2024, fitted stand included',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['Display piece', 'Fitted stand', 'Qing form'],
+    rating: 4.9,
+    review_count: 5,
+    is_featured: 1,
+    short_description: 'The ruyi sceptre — "as you wish" — in celadon nephrite on a fitted stand. The classical Chinese gift for a person who needs nothing.',
+    description: 'A ruyi is a sceptre, an ornament and a rebus at once: the name means "as you wish", and the form — a cloud or lingzhi head on a long shaft — has been given for good fortune since the Ming. It is what you give someone who has everything, precisely because it is for looking at rather than using.\n\nCarved from a single piece of celadon-green nephrite with the grain of the stone running along the shaft, and supplied with a stand cut to this exact piece.',
+    tasting_notes: ['Single stone', 'Fitted stand', 'Celadon nephrite', 'Ming-dynasty form'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Keep out of direct sun; nephrite fades when bleached'
+  },
+    variants: [
+    {
+      label: 'Ruyi, 20 cm',
+      grams: 260,
+      price: 1650,
+      stock: 4,
+      default: true
+    },
+    {
+      label: 'Ruyi, 28 cm',
+      grams: 520,
+      price: 3200,
+      stock: 2
+    },
+    {
+      label: 'Ruyi, 36 cm, premium stone',
+      grams: 880,
+      price: 5400,
+      stock: 1
+    }
+  ],
+  },
+  {
+    slug: 'jade-and-nephrite-pair',
+    sku: 'CY-JD-010',
+    name: 'White and Green Jade Pair',
+    subtitle: 'Ming manner · flat sceptres',
+    category: 'jade',
+    family: 'Jade',
+    seal: 'Pair',
+    origin: 'Hetian, Xinjiang',
+    altitude: '—',
+    cultivar: 'White nephrite and green nephrite, matched',
+    harvest: 'Carved 2024 as a pair',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['Matched pair', 'Two stones', 'Hand-carved'],
+    rating: 5,
+    review_count: 4,
+    is_new: 1,
+    is_featured: 1,
+    short_description: 'A white and a green nephrite flat sceptre, carved as a pair — the contrast between the two stones is the whole idea.',
+    description: 'The Ming carvers made flat sceptres in pairs, one white and one green, and displayed them together: the two stones set each other off in a way neither does alone. It is an old idea and it still works, which is why matched pairs of anything survive less often than single pieces — one of the two gets lost.\n\nBoth plaques are cut from the same thickness of stone and finished identically, so the only difference between them is colour. The pair weighs within a few grams of each other.',
+    tasting_notes: ['Matched pair', 'White and green', 'Identical finish', 'Display or gift'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Display flat, out of direct light'
+  },
+    variants: [
+    {
+      label: 'Pair, 18 cm each',
+      grams: 480,
+      price: 2200,
+      stock: 3,
+      default: true
+    },
+    {
+      label: 'Pair, 24 cm each',
+      grams: 820,
+      price: 3850,
+      stock: 2
+    },
+    {
+      label: 'Pair, 30 cm each, premium stone',
+      grams: 1240,
+      price: 7300,
+      stock: 1
+    }
+  ],
+  },
+  {
+    slug: 'pearl-strand-necklace',
+    sku: 'CY-JW-001',
+    name: 'Pearl Strand Necklace',
+    subtitle: 'Hand-matched · knotted on silk',
+    category: 'jewellery',
+    family: 'Jewellery',
+    seal: 'Pearls',
+    origin: 'Pearls from Broome, Australia · strung in Hong Kong',
+    altitude: '—',
+    cultivar: 'South Sea pearls, 11–13 mm, AAA lustre',
+    harvest: 'Harvested 2024',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['AAA lustre', 'Hand-matched', 'Silk knotted'],
+    rating: 5,
+    review_count: 12,
+    is_featured: 1,
+    short_description: 'A strand of South Sea pearls matched by hand across forty-odd pearls, knotted on silk between every one.',
+    description: 'South Sea pearls come from the largest pearl oyster there is, which is why they are the biggest and carry the thickest nacre. Matching a strand is done entirely by eye: forty-odd pearls laid on a felt tray, sorted on colour, lustre and blemish together until no single pearl draws the eye.\n\nKnotted between each pearl, which is both the tradition and the practical answer — if the silk ever parts, you lose one pearl rather than all of them. AAA lustre, meaning a reflection sharp enough to read in.',
+    tasting_notes: ['AAA lustre', 'Hand-matched', 'Thick nacre', 'Silk knotted'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Wear often; pearls keep their lustre by being worn'
+  },
+    variants: [
+    {
+      label: 'Strand, 9–10 mm',
+      grams: 54,
+      price: 480,
+      stock: 6,
+      default: true
+    },
+    {
+      label: 'Strand, 11–12 mm',
+      grams: 82,
+      price: 980,
+      stock: 4
+    },
+    {
+      label: 'Strand, 12–13 mm, AAA',
+      grams: 108,
+      price: 2400,
+      stock: 2
+    }
+  ],
+  },
+  {
+    slug: 'jadeite-diamond-pendant',
+    sku: 'CY-JW-002',
+    name: 'Jadeite and Diamond Ring',
+    subtitle: '18k white gold · certified stone',
+    category: 'jewellery',
+    family: 'Jewellery',
+    seal: 'Ring',
+    origin: 'Stone from Myanmar · set in Guangzhou',
+    altitude: '—',
+    cultivar: '18k white gold, Type A jadeite, diamond surround',
+    harvest: 'Set 2024',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['18k white gold', 'Certified jadeite', 'Brilliant cut'],
+    rating: 4.9,
+    review_count: 10,
+    is_featured: 1,
+    short_description: 'A cabochon jadeite in a diamond surround — the setting that made jade wearable with Western dress, and the reason it reads as a jewel rather than a curio.',
+    description: 'Putting jade in a bright metal surround with diamonds is a Western idea and it works: one good cabochon, nothing else in the composition, and the stone carries the whole piece. The diamonds are not decoration so much as a light source — they lift the green.\n\nThis is a certified Type A jadeite cabochon in 18k white gold with a brilliant-cut diamond surround. A ring rather than a pendant, because a cabochon this size sits better on the hand than on a chain.',
+    tasting_notes: ['Type A jadeite', '18k white gold', 'Diamond surround', 'Certified'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Ultrasonic cleaning is safe for the metal, not for the stone'
+  },
+    variants: [
+    {
+      label: 'Ring, 10 mm stone',
+      grams: 6,
+      price: 340,
+      stock: 8,
+      default: true
+    },
+    {
+      label: 'Ring, 14 mm stone',
+      grams: 9,
+      price: 620,
+      stock: 5
+    },
+    {
+      label: 'Ring, 18 mm, imperial colour',
+      grams: 13,
+      price: 1150,
+      stock: 2
+    }
+  ],
+  },
+  {
+    slug: 'jade-gold-necklace-beads',
+    sku: 'CY-JW-003',
+    name: 'Jade Bead Necklace',
+    subtitle: '108 beads · 18k clasp',
+    category: 'jewellery',
+    family: 'Jewellery',
+    seal: 'Strand',
+    origin: 'Stone from Qinghai · strung in Beijing',
+    altitude: '—',
+    cultivar: '108 nephrite beads, 18k gold clasp',
+    harvest: 'Strung 2024 on silk',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['108 beads', 'Silk knotted', '18k clasp'],
+    rating: 4.8,
+    review_count: 16,
+    is_featured: 1,
+    short_description: 'One hundred and eight nephrite beads, knotted on silk between every one. Worn long, doubled, or wrapped as a bracelet.',
+    description: 'A hundred and eight is the count of a mala, and a jade strand of that length is the most versatile piece of Chinese jewellery there is: long over a coat, doubled, or wound three times around the wrist. Knotted at every bead, which is traditional and also the reason a broken strand costs you one bead rather than the whole necklace.\n\nBeads for a strand like this are sorted by hand from several times as many. What does not match becomes a bracelet or is sold loose, which is what makes a well-matched strand expensive.',
+    tasting_notes: ['108 matched beads', 'Hand-knotted silk', '18k clasp', 'Wear three ways'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Restringing recommended every three to five years'
+  },
+    variants: [
+    {
+      label: 'Strand, 6 mm beads',
+      grams: 42,
+      price: 460,
+      stock: 7,
+      default: true
+    },
+    {
+      label: 'Strand, 8 mm beads',
+      grams: 88,
+      price: 880,
+      stock: 4
+    },
+    {
+      label: 'Strand, 10 mm, premium match',
+      grams: 152,
+      price: 1780,
+      stock: 2
+    }
+  ],
+  },
+  {
+    slug: 'gold-filigree-cuff',
+    sku: 'CY-JW-004',
+    name: 'Gold Filigree Cuff',
+    subtitle: 'Hand-woven · jinsi craft',
+    category: 'jewellery',
+    family: 'Jewellery',
+    seal: 'Filigree',
+    origin: 'Dali, Yunnan',
+    altitude: '—',
+    cultivar: 'Sterling silver with 24k gold plating',
+    harvest: 'Hand-woven 2024',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['Hand-woven', 'Heritage craft', 'Adjustable'],
+    rating: 4.7,
+    review_count: 19,
+    short_description: 'Silver drawn to a third of a millimetre and woven by hand into a cuff, then gilded. A Dali craft unchanged in three hundred years.',
+    description: 'Jinsi — "gold thread" — is a Yunnan craft in which silver is drawn into wire finer than a human hair, twisted, then woven into openwork that weighs almost nothing. It is unforgiving work: the wire work-hardens as it bends and snaps if you go back over a section too often.\n\nThis cuff is woven from about forty metres of wire and then gilded in 24k gold, which gives the warmth of gold at a fraction of the weight. It is firm but adjustable, so it can be eased to fit rather than coming in fixed sizes.',
+    tasting_notes: ['Hand-woven', '40 m of wire', '24k gilding', 'Adjustable fit'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Reshape gently and rarely; work-hardened wire fatigues'
+  },
+    variants: [
+    {
+      label: 'Cuff, 16 mm wide',
+      grams: 18,
+      price: 320,
+      stock: 12,
+      default: true
+    },
+    {
+      label: 'Cuff, 24 mm wide',
+      grams: 32,
+      price: 560,
+      stock: 8
+    },
+    {
+      label: 'Cuff, 24 mm, heavier gauge',
+      grams: 48,
+      price: 890,
+      stock: 5
+    }
+  ],
+  },
+  {
+    slug: 'gold-and-jade-ring',
+    sku: 'CY-JW-005',
+    name: 'Gold and Jade Ring',
+    subtitle: 'Yellow gold · cabochon',
+    category: 'jewellery',
+    family: 'Jewellery',
+    seal: 'Ring',
+    origin: 'Stone from Myanmar · set in Shenzhen',
+    altitude: '—',
+    cultivar: '18k yellow gold, nephrite cabochon',
+    harvest: 'Set 2024',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['18k gold', 'Cabochon set', 'Sizes 5–9'],
+    rating: 4.8,
+    review_count: 13,
+    short_description: 'A deep green cabochon raised on a plain yellow gold band — the traditional setting, and the one that shows a stone off best.',
+    description: 'The Chinese setting for a ring stone is a cabochon raised clear of the band with no claws visible and nothing between the stone and the light. It is a simpler-looking solution than a diamond surround and harder to execute: the metal has to hold the stone invisibly, and the band has to be heavy enough not to twist.\n\n18k yellow gold, 4 mm at the top and tapered to 2.5 mm at the base of the finger. Made in half sizes from 5 to 9.',
+    tasting_notes: ['Raised cabochon', '18k yellow gold', 'No visible claws', 'Half sizes'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Remove before swimming; chlorine dulls the polish'
+  },
+    variants: [
+    {
+      label: 'Ring, 8 × 6 mm stone',
+      grams: 5,
+      price: 520,
+      stock: 10,
+      default: true
+    },
+    {
+      label: 'Ring, 10 × 8 mm stone',
+      grams: 7,
+      price: 940,
+      stock: 6
+    },
+    {
+      label: 'Ring, 12 × 10 mm, deeper green',
+      grams: 9,
+      price: 1720,
+      stock: 3
+    }
+  ],
+  },
+  {
+    slug: 'jadeite-and-gold-earrings',
+    sku: 'CY-JW-006',
+    name: 'Jadeite and Gold Earrings',
+    subtitle: 'Matched pair · white gold',
+    category: 'jewellery',
+    family: 'Jewellery',
+    seal: 'Earring',
+    origin: 'Stone from Myanmar · set in Guangzhou',
+    altitude: '—',
+    cultivar: '18k white gold, matched jadeite pair',
+    harvest: 'Set 2024',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['Matched pair', '18k white gold', 'Certified'],
+    rating: 4.9,
+    review_count: 11,
+    is_new: 1,
+    short_description: 'A matched pair of jadeite drops in white gold — the pairing is the hard part, not the setting.',
+    description: 'Earrings are the hardest piece to buy well because the two stones have to match: colour, translucency and size, and they have to come from the same rough. A mismatched pair is obvious across a room in a way a single stone never is.\n\nThese are cut from one piece of jadeite and set in 18k white gold, with posts for pierced ears and butterfly backs. The white metal is deliberate — a cool setting keeps pale green from going sallow.',
+    tasting_notes: ['Matched pair', 'Single rough', '18k white gold', 'Certified stones'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Store flat; the drops are thin and chip if knocked together'
+  },
+    variants: [
+    {
+      label: 'Earrings, 8 mm drops',
+      grams: 3,
+      price: 380,
+      stock: 8,
+      default: true
+    },
+    {
+      label: 'Earrings, 12 mm drops',
+      grams: 5,
+      price: 740,
+      stock: 5
+    },
+    {
+      label: 'Earrings, 14 mm, certified',
+      grams: 7,
+      price: 1980,
+      stock: 2
+    }
+  ],
+  },
+  {
+    slug: 'imperial-jadeite-earrings',
+    sku: 'CY-JW-007',
+    name: 'Imperial Jadeite Earrings',
+    subtitle: '18k white gold · diamond accents',
+    category: 'jewellery',
+    family: 'Jewellery',
+    seal: 'Imperial',
+    origin: 'Stone from Myanmar · set in Guangzhou',
+    altitude: '—',
+    cultivar: '18k white gold, imperial green jadeite, diamonds',
+    harvest: 'Set 2024, laboratory certified',
+    oxidation: '—',
+    roast: '—',
+    caffeine: '—',
+    liquor: '—',
+    badges: ['Imperial colour', 'Certified', 'Diamond set'],
+    rating: 5,
+    review_count: 5,
+    is_new: 1,
+    is_featured: 1,
+    short_description: 'Imperial green jadeite drops in white gold with a diamond accent each — the top of the range, in the one form that shows colour best.',
+    description: 'A drop earring hangs free, which means light passes through the stone from behind as well as in front. That is why the best jadeite in a collection usually ends up on the ear: the same stone reads deeper and brighter there than it does set flat against the skin.\n\nImperial green, untreated, certified, in 18k white gold with a small diamond at each post to lift the green. Fewer than five pairs a year at this grade.',
+    tasting_notes: ['Imperial green', 'Light through the stone', 'Certified untreated', 'Diamond accents'],
+    brewing: {
+    gaiwan: '—',
+    western: '—',
+    vessel: 'Store in the supplied case; the drops are irreplaceable'
+  },
+    variants: [
+    {
+      label: 'Earrings, 10 mm drops',
+      grams: 4,
+      price: 1280,
+      stock: 3,
+      default: true
+    },
+    {
+      label: 'Earrings, 14 mm drops',
+      grams: 7,
+      price: 2950,
+      stock: 2
+    },
+    {
+      label: 'Earrings, 14 mm, imperial grade',
+      grams: 7,
+      price: 4900,
+      stock: 1
+    }
+  ],
+  },
+/* ===== END jade & jewellery ===== */
 ];
 
 /** Short editorial copy used on the homepage and guide pages. */

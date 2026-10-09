@@ -22,7 +22,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
-import { ALL_ASSIGNMENTS, CATEGORY_PHOTOS, PRODUCT_PHOTOS, EDITORIAL_PHOTOS, englishLabel } from '../photo-selection.mjs';
+import { ALL_ASSIGNMENTS, CATEGORY_PHOTOS, PRODUCT_PHOTOS, JADE_PHOTOS, EDITORIAL_PHOTOS, englishLabel } from '../photo-selection.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -336,7 +336,10 @@ function buildManifest() {
   };
 
   const products = {};
-  for (const slug of Object.keys(PRODUCT_PHOTOS)) {
+  // Both curated sets: PRODUCT_PHOTOS holds the tea, teaware and gift sets;
+  // JADE_PHOTOS holds jade and jewellery. A slot missing from this loop produces
+  // images that nothing ever references, which is easy to miss.
+  for (const slug of [...Object.keys(PRODUCT_PHOTOS), ...Object.keys(JADE_PHOTOS)]) {
     const gallery = ['hero', 'alt', 'alt2']
       .map((suffix) => `/img/photos/${slug}-${suffix}.jpg`)
       .filter((rel) => fs.existsSync(path.join(ROOT, 'public', rel.replace(/^\//, ''))));
