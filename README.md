@@ -125,12 +125,19 @@ changes. Put your sandbox credentials in `.env`:
 
 ```ini
 PAYMENT_MODE=sandbox
-OTT_APP_ID=ON00000185
-OTT_APP_KEY=0e83678f102d188d8875e8e4c781b984
-OTT_SIGN_KEY=A8B5FE540E38A5A9
-OTT_MERCHANT_ID=CAMB006711
+OTT_APP_ID=your-app-id
+OTT_APP_KEY=your-app-key
+OTT_SIGN_KEY=your-sign-key
+OTT_MERCHANT_ID=your-merchant-id
 PUBLIC_BASE_URL=https://your-tunnel.example.com
 ```
+
+> The four `OTT_*` values come from your OTT Pay onboarding email. **Do not**
+> copy the identifiers out of OTT Pay's public API documentation — those are
+> their illustration values for a merchant that is not you, and pasting them here
+> will fail authorisation with error `10003`. The `OTT_SIGN_KEY` must be your own
+> too: it is what decrypts *your* callbacks, and the wrong one shows up as
+> undecryptable webhook rows in the admin rather than as an obvious failure.
 
 `PUBLIC_BASE_URL` **must be reachable from the internet**, because OTT Pay posts
 the payment result to `${PUBLIC_BASE_URL}/api/ottpay/callback`. While developing
@@ -227,6 +234,7 @@ tax and total from the database before an order exists.
 | `npm run assets` | Confirm every referenced asset resolves |
 | `npm run gaps` | List any remaining generated artwork and why |
 | `npm run lang` | Fail on non-English text or mojibake anywhere |
+| `npm run check:render` | Validate `render.yaml` before deploying |
 | `npm run audit` | Database inspection and card-data leak check |
 | `npm run shots` | Full-page screenshots into `_shots/` |
 | `npm run fonts` | Re-download and localise the webfonts |

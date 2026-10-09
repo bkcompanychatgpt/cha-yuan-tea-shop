@@ -27,10 +27,6 @@ services:
     healthCheckPath: /healthz
     autoDeploy: true
 
-    # Render restarts a service that fails its health check. One instance is all
-    # this needs; scaling horizontally would break SQLite.
-    numInstances: 1
-
     disk:
       name: cha-yuan-data
       mountPath: /var/data

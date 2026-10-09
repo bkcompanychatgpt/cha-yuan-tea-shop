@@ -50,6 +50,9 @@ needed.
 
 There is a [`render.yaml`](../render.yaml) blueprint in the repository root.
 Render reads it and creates the service, the disk and the environment variables.
+Validate it locally first — `npm run check:render` catches a database path outside
+the disk, a missing `HOST=0.0.0.0`, or a secret committed as a literal, all of
+which are easy to get wrong and expensive to discover after a deploy.
 
 1. Sign in at <https://dashboard.render.com>.
 2. **New → Blueprint**.
@@ -62,6 +65,10 @@ Render reads it and creates the service, the disk and the environment variables.
    - the four `OTT_*` values — leave blank while `PAYMENT_MODE=mock`
 5. **Apply**. The first build takes a few minutes.
 6. Note the URL Render assigns, e.g. `https://cha-yuan-tea-shop.onrender.com`.
+
+If the very first deploy fails on the disk with an error about the instance type,
+your account is on the Free plan — see the next section. Either upgrade, or switch
+the blueprint to the free configuration described there and re-apply.
 
 If you would rather create the service by hand instead of using the blueprint:
 
