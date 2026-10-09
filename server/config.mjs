@@ -128,12 +128,30 @@ const config = {
 };
 
 /**
+ * Credentials that ship in .env.example, which is a public file. If any of these
+ * reach a production deployment they are not defaults, they are published
+ * passwords: `/admin` would be open to anyone who has seen the repository.
+ */
+const PUBLIC_DEFAULTS = {
+  adminPassword: 'changeme-please',
+  adminEmail: 'owner@chayuan.test',
+  sessionSecret: 'change-me-to-a-long-random-string',
+};
+
+/** True when a value is empty, or is one of the documented placeholder values. */
+function isPlaceholder(value, known) {
+  const v = String(value ?? '').trim();
+  return v === '' || v.includes('change-me') || v === known;
+}
+
+/**
  * Configuration review.
  *
  * Returns two lists, and the distinction matters on a platform like Render:
  *
- *   `problems`  — the service cannot work at all. Missing gateway credentials
- *                 while a real payment mode is selected, for example. Fatal.
+ *   `problems`  — the service cannot work, or would be unsafe. A production
+ *                 deployment still using the published admin password, for
+ *                 example. Fatal.
  *   `warnings`  — the service runs but something is not right yet. A missing
  *                 `PUBLIC_BASE_URL` is the important case: on a first deploy you
  *                 cannot know the hostname until Render has created the service,
@@ -153,9 +171,30 @@ export function validateConfig(cfg = config) {
   }
 
   if (cfg.isProduction) {
-    if (cfg.server.sessionSecret.includes('change-me')) {
-      warnings.push('SESSION_SECRET is still the default — admin sessions are forgeable until you set a real one');
+    // ---------------------------------------------------------------- secrets
+    if (isPlaceholder(cfg.server.sessionSecret, PUBLIC_DEFAULTS.sessionSecret)) {
+      problems.push(
+        'SESSION_SECRET is empty or still the placeholder from .env.example. '
+          + 'Admin session cookies are signed with it, so anyone can forge one. '
+          + 'Render generates this automatically when it is omitted from the blueprint.',
+      );
     }
+
+    if (isPlaceholder(cfg.admin.password, PUBLIC_DEFAULTS.adminPassword)) {
+      problems.push(
+        'ADMIN_PASSWORD is empty or still "changeme-please", which is published in .env.example. '
+          + 'Set it in the Render dashboard before going live — until then /admin is open to anyone.',
+      );
+    }
+
+    if (isPlaceholder(cfg.admin.email, PUBLIC_DEFAULTS.adminEmail)) {
+      warnings.push(
+        'ADMIN_EMAIL is still the example address. It only has to be a login name, '
+          + 'but the browser will offer to save it as a password for that domain.',
+      );
+    }
+
+    // --------------------------------------------------------------- network
     if (!cfg.store.publicBaseUrl.startsWith('https://')) {
       warnings.push(
         `PUBLIC_BASE_URL is "${cfg.store.publicBaseUrl}", which OTT Pay cannot reach. `
