@@ -87,21 +87,48 @@
     </div>
   <% } %>
 
+  <%
+    /*
+     * A window of page numbers rather than one link per page.
+     *
+     * The catalogue is two hundred products, so a category runs to several
+     * pages: rendering every page number overflowed a phone viewport and gave
+     * the whole document a horizontal scrollbar. This keeps the current page
+     * centred with one neighbour either side and elides the rest.
+     */
+    const windowPages = [];
+    if (pages > 1) {
+      const span = 2;
+      const first = Math.max(1, page - span);
+      const last = Math.min(pages, page + span);
+      if (first > 1) windowPages.push(1, first > 2 ? '…' : 2);
+      for (let p = first; p <= last; p += 1) windowPages.push(p);
+      if (last < pages) windowPages.push(last < pages - 1 ? '…' : pages - 1, pages);
+      // Drop a stray ellipsis that sits where a real number already is.
+      for (let i = windowPages.length - 1; i > 0; i -= 1) {
+        if (windowPages[i] === '…' && windowPages[i - 1] === '…') windowPages.splice(i, 1);
+      }
+    }
+  %>
+
   <% if (pages > 1) { %>
     <nav class="pagination" aria-label="Pagination">
       <% if (page > 1) { %>
         <a href="?<%= new URLSearchParams({ ...filters, page: String(page - 1) }).toString() %>" aria-label="Previous page">←</a>
       <% } %>
-      <% for (let p = 1; p <= pages; p += 1) { %>
-        <% if (p === page) { %>
+      <% windowPages.forEach((p) => { %>
+        <% if (p === '…') { %>
+          <span class="is-gap" aria-hidden="true">…</span>
+        <% } else if (p === page) { %>
           <span class="is-current" aria-current="page"><%= p %></span>
         <% } else { %>
           <a href="?<%= new URLSearchParams({ ...filters, page: String(p) }).toString() %>"><%= p %></a>
         <% } %>
-      <% } %>
+      <% }) %>
       <% if (page < pages) { %>
         <a href="?<%= new URLSearchParams({ ...filters, page: String(page + 1) }).toString() %>" aria-label="Next page">→</a>
       <% } %>
+      <span class="pagination-total"><%= page %> / <%= pages %></span>
     </nav>
   <% } %>
 

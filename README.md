@@ -90,6 +90,12 @@ server/
   mock-ottpay.mjs     in-process acquirer that mirrors OTT Pay's 3DS2 state machine
   payments.mjs        facade that dispatches to OTT Pay or the mock
   imagery.mjs         generative SVG artwork (products, heroes, logo, badges)
+  data-lots.mjs       tea sub-lot definitions (grades, vintages, bushes)
+  build-lots.mjs      expands base teas into sub-lots
+  data-pieces.mjs     jade and jewellery definitions (form x material)
+  build-pieces.mjs    expands those into products and prices them
+  sku.mjs             the one SKU composition rule
+  fulfilment.mjs      the ship-by dates and handling promises the shop commits to
   security.mjs        password hashing, signed tokens, CSRF, rate limiting, validation
   scripts/            smoke test, visual probe, contrast audit, font + encoding tools
 views/                EJS templates (storefront, checkout, admin, 3DS challenge)
@@ -107,14 +113,52 @@ Product photography is real, openly-licensed tea photography (Creative Commons
 and public domain), sourced and graded by the pipeline documented in
 [`docs/PHOTOS.md`](docs/PHOTOS.md). Attribution is published at `/credits`.
 
-The brand artwork — the logo, seal marks, hero banners, payment badges and the two
-or three product tiles with no suitable photograph — is **generated as SVG** by
-`server/imagery.mjs` and served from `/img/...`, so the site has no binary assets
-it does not have the rights to and nothing to licence.
+The brand artwork — the logo, seal marks, hero banners, payment badges and every
+illustrated product tile — is **generated as SVG** by `server/imagery.mjs` and
+served from `/img/...`, so the site has no binary assets it does not have the
+rights to and nothing to licence.
 
 Pages only ever ask the database for `hero_image` and `images`, so swapping in
 your own commissioned photography touches no application logic — see
 `docs/PHOTOS.md` for the swap procedure.
+
+### Photographs, illustrations, and why they are kept apart
+
+Two hundred and seven products is more than the shop has photographs of, so the
+catalogue distinguishes the two cases in the database and says which is which on
+the storefront:
+
+| | count | how it is shown |
+|---|---|---|
+| **Photographed** | 124 | a real, openly-licensed photograph of that tea or piece |
+| **Illustrated** | 83 | house artwork, drawn by `server/imagery.mjs` |
+
+`products.image_kind` holds `photo` or `illustration`, and `applyPhotos()` in
+`server/seed.mjs` sets it on every boot from what the photo manifest actually
+claims. Anything the manifest does not cover is marked `illustration`.
+
+An illustrated product is labelled in three places, and all three matter:
+
+1. A mark on the image itself on the product card and in search results.
+2. The words `ILLUSTRATION · PHOTOGRAPHY PENDING` **baked into the artwork**, so
+   the disclosure survives the image being screenshotted, saved, or pasted into
+   a marketplace listing where a caption would be stripped.
+3. A note under the gallery on the product page, and a section on `/credits`.
+
+Illustrations are silhouettes of the *form* — a bangle is drawn as a ring, a
+pendant as a drop, earrings as a pair — driven by `products.art_unit`. They are
+not likenesses of a specific piece, and the product page says so.
+
+The tea department is 100 products and **every one carries a photograph**: the
+lots of one tea share that tea's photograph, because a photograph of Longjing is
+a photograph of Longjing whichever picking grade is in the tin. Jade and
+jewellery are 50 each, and the pieces with no photograph are drawn.
+
+**This is seed data.** The catalogue describes a plausible shop so the storefront,
+checkout and back office can be exercised end to end. Replace it with your own
+goods and your own photography before selling anything: drop files into
+`public/img/photos/`, run `npm run photos`, and the illustrated flag clears
+itself as real images arrive.
 
 ---
 

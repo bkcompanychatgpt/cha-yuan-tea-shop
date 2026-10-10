@@ -1,3 +1,15 @@
+<%
+  /*
+   * A tea is brewed; a piece of jade or jewellery is worn and looked after.
+   * The catalogue stores both in `brewing`, and the page has to know which it is
+   * before it can decide what to call things: a ring page headed "How to brew
+   * it" with "Gaiwan — / Western —" under it reads as unfinished.
+   */
+  const isTea = product.category_kind === 'tea'
+    || product.category_kind === 'teaware'
+    || product.category_kind === 'gift';
+%>
+
 <div class="wrap">
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="/">Home</a><span class="sep">/</span>
@@ -14,7 +26,7 @@
     <!-- ------------------------------------------------------- gallery -->
     <div class="pdp-gallery">
       <div class="pdp-main" data-pdp-main>
-        <img src="<%= product.hero_image %>" alt="<%= product.name %> — <%= product.subtitle %>" />
+        <img src="<%= product.hero_image %>" alt="<%= product.is_illustrated ? `${product.name} — house illustration, studio photography pending` : `${product.name} — ${product.subtitle}` %>" />
         <div class="tea-badges">
           <% if (product.is_new) { %><span class="badge badge-gold">New season</span><% } %>
           <% (product.badges || []).slice(0, 3).forEach(b => { %><span class="badge"><%= b %></span><% }) %>
@@ -22,11 +34,30 @@
       </div>
       <div class="pdp-thumbs">
         <% (product.images || []).slice(0, 3).forEach((img, i) => { %>
-          <button class="pdp-thumb <%= i === 0 ? 'is-active' : '' %>" type="button" data-pdp-thumb data-src="<%= img %>" data-alt="<%= product.name %> view <%= i + 1 %>" aria-label="View <%= i + 1 %>">
+          <button class="pdp-thumb <%= i === 0 ? 'is-active' : '' %>" type="button" data-pdp-thumb data-src="<%= img %>" data-alt="<%= product.is_illustrated ? `${product.name} illustration view ${i + 1}` : `${product.name} view ${i + 1}` %>" aria-label="View <%= i + 1 %>">
             <img src="<%= img %>" alt="" loading="lazy" />
           </button>
         <% }) %>
       </div>
+
+      <%# The image above is house artwork, not a photograph of the piece. Saying
+          so plainly and immediately is the whole point of storing image_kind:
+          a caption further down the page is not where a buyer looks. %>
+      <% if (product.is_illustrated) { %>
+        <div class="illus-note" role="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 4l1.5 14.5L11 20l7-7z"/><path d="M2 4l5.5 5.5"/></svg>
+          <div>
+            <strong>This is a house illustration, not a photograph.</strong>
+            <p>
+              Each piece is made by hand in small numbers, so we draw it rather than photograph a
+              duplicate. The illustration shows the form, the finish and the proportion — it is not a
+              likeness of the exact piece you will receive.
+              <a class="link-underline" href="/about">Write to us</a> and we will photograph the actual
+              piece in stock, with its weight and measurements, before you buy.
+            </p>
+          </div>
+        </div>
+      <% } %>
 
       <div class="secure-note" style="margin-top:6px">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
@@ -117,7 +148,8 @@
       <div class="row" style="gap:22px;margin-top:20px;flex-wrap:wrap">
         <span class="tiny faint">✓ Free shipping over <%= money(store.freeShippingThreshold) %></span>
         <span class="tiny faint">✓ Shipped within 1 business day</span>
-        <span class="tiny faint">✓ Sealed in a light-proof tin</span>
+        <%# "Sealed in a light-proof tin" is a promise about tea, not about a bangle. %>
+        <span class="tiny faint">✓ <%= (product.category_kind === 'tea' || product.category_kind === 'teaware' || product.category_kind === 'gift') ? 'Sealed in a light-proof tin' : 'Boxed with its certificate' %></span>
       </div>
 
       <!-- ------------------------------------------------------ metadata -->
@@ -140,7 +172,9 @@
       <!-- ---------------------------------------------------- accordions -->
       <div class="accordion">
         <div class="acc-item is-open">
-          <button class="acc-head" type="button" aria-expanded="true">Tasting &amp; provenance <span class="plus">+</span></button>
+          <%# A plain ampersand in the string: the escaped output tag escapes it,
+              so writing the HTML entity here would render it literally. %>
+          <button class="acc-head" type="button" aria-expanded="true"><%= isTea ? 'Tasting & provenance' : 'The piece & its provenance' %> <span class="plus">+</span></button>
           <div class="acc-body">
             <div class="acc-inner">
               <% String(product.description).split('\n\n').forEach(par => { %><p><%= par %></p><% }) %>
@@ -148,16 +182,26 @@
           </div>
         </div>
 
+        <%
+          // `isTea` is declared at the top of this view; only the care rows differ.
+          const careRows = isTea
+            ? [['Gaiwan', product.brewing.gaiwan], ['Western', product.brewing.western], ['Vessel', product.brewing.vessel]]
+            : [['Care', product.brewing.vessel]];
+        %>
         <div class="acc-item">
-          <button class="acc-head" type="button" aria-expanded="false">How to brew it <span class="plus">+</span></button>
+          <button class="acc-head" type="button" aria-expanded="false"><%= isTea ? 'How to brew it' : 'Care & wear' %> <span class="plus">+</span></button>
           <div class="acc-body">
             <div class="acc-inner">
               <dl class="brew-table">
-                <div class="brew-row"><dt>Gaiwan</dt><dd><%= product.brewing.gaiwan || '—' %></dd></div>
-                <div class="brew-row"><dt>Western</dt><dd><%= product.brewing.western || '—' %></dd></div>
-                <div class="brew-row"><dt>Vessel</dt><dd><%= product.brewing.vessel || '—' %></dd></div>
+                <% careRows.filter(([, value]) => value && value !== '—').forEach(([label, value]) => { %>
+                  <div class="brew-row"><dt><%= label %></dt><dd><%= value %></dd></div>
+                <% }) %>
               </dl>
-              <p style="margin-top:18px"><a class="link-underline" href="/guides/how-to-brew-gongfu">Read the full gongfu method →</a></p>
+              <% if (isTea) { %>
+                <p style="margin-top:18px"><a class="link-underline" href="/guides/how-to-brew-gongfu">Read the full gongfu method →</a></p>
+              <% } else { %>
+                <p style="margin-top:18px">We will photograph the piece in stock, with its weight and measurements, before you buy — write to us with the SKU.</p>
+              <% } %>
             </div>
           </div>
         </div>

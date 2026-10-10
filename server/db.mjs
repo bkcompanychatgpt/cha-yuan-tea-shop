@@ -50,6 +50,8 @@ CREATE TABLE IF NOT EXISTS products (
   brewing           TEXT NOT NULL DEFAULT '{}', -- JSON object
   images            TEXT NOT NULL DEFAULT '[]', -- JSON array of image paths
   hero_image        TEXT NOT NULL DEFAULT '',
+  image_kind        TEXT NOT NULL DEFAULT 'photo',  -- photo | illustration
+  art_unit          TEXT NOT NULL DEFAULT '',       -- Bangle | Earrings | Cup … for artwork
   badges            TEXT NOT NULL DEFAULT '[]',
   rating            REAL NOT NULL DEFAULT 0,
   review_count      INTEGER NOT NULL DEFAULT 0,
@@ -195,6 +197,15 @@ CREATE TABLE IF NOT EXISTS settings (
  */
 const ADDED_COLUMNS = [
   { table: 'products', column: 'seal', definition: "TEXT NOT NULL DEFAULT ''" },
+  // How this product's image came to exist. 'photo' is a real photograph under a
+  // commercial-use licence; 'illustration' is house-drawn artwork standing in
+  // until the piece can be photographed. The storefront must say which, so the
+  // distinction is stored rather than guessed from a file path.
+  { table: 'products', column: 'image_kind', definition: "TEXT NOT NULL DEFAULT 'photo'" },
+  // The unit a piece is sold in — "Bangle", "Earrings", "Cup". Generated artwork
+  // reads it to choose a silhouette, so an illustrated bangle is drawn as a ring
+  // rather than as the generic plaque that stood in for everything at first.
+  { table: 'products', column: 'art_unit', definition: "TEXT NOT NULL DEFAULT ''" },
 ];
 
 function migrate(database) {

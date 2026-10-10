@@ -35,8 +35,19 @@
         h: Math.round(r.height),
       };
     });
+    // An image with no natural size has either failed or not started yet.
+    //
+    // Those are different things and must not be conflated: a `loading="lazy"`
+    // image far below the fold has not begun loading, so it reports
+    // naturalWidth 0 while `complete` is still false. Counting those as broken
+    // made every long page report its footer badges as failures. A genuinely
+    // broken image fires an error, which finishes the load with a zero natural
+    // size — so `complete && !naturalWidth` is exactly "loaded and failed".
     var broken = images.filter(function (i) {
-      return !i.nw || !i.nh;
+      return i.complete && (!i.nw || !i.nh);
+    });
+    var pending = images.filter(function (i) {
+      return !i.complete;
     });
 
     var selectors = '.tea-card, .cat-tile, .guide-card, .panel, .summary-card, .btn, .stat, .receipt, .pillar, .variant, .pdp-main, .pdp-thumb';
@@ -145,6 +156,7 @@
         productCards: d.querySelectorAll('.tea-card').length,
         images: d.images.length,
         brokenImages: broken.length,
+        pendingImages: pending.length,
         zeroSizedBlocks: zeroBox.length,
         navLinks: d.querySelectorAll('.main-nav .nav-link').length,
         forms: d.forms.length,

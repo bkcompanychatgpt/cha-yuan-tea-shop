@@ -8,7 +8,7 @@ const productColumns = `
   p.id, p.slug, p.sku, p.name, p.subtitle, p.category_id, p.tea_family, p.origin, p.altitude,
   p.cultivar, p.harvest, p.oxidation, p.roast, p.caffeine, p.liquor, p.seal,
   p.short_description, p.description, p.tasting_notes, p.brewing, p.images, p.hero_image,
-  p.badges, p.rating, p.review_count, p.is_featured, p.is_new, p.sort_order,
+  p.image_kind, p.art_unit, p.badges, p.rating, p.review_count, p.is_featured, p.is_new, p.sort_order,
   c.slug AS category_slug, c.name AS category_name, c.kind AS category_kind
 `;
 
@@ -31,6 +31,10 @@ function hydrateProduct(row) {
     badges: parseJson(row.badges, []),
     is_featured: !!row.is_featured,
     is_new: !!row.is_new,
+    // True when the image the customer is looking at is house artwork rather
+    // than a photograph of the goods. Every surface that shows an image has to
+    // check this, so it is computed once here instead of in each view.
+    is_illustrated: row.image_kind === 'illustration',
   };
 }
 

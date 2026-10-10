@@ -122,16 +122,16 @@ function seed({ always = false } = {}) {
       run(
         `INSERT INTO products (
            slug, sku, name, subtitle, category_id, tea_family, origin, altitude, cultivar,
-           harvest, oxidation, roast, caffeine, liquor, seal, short_description, description,
+           harvest, oxidation, roast, caffeine, liquor, seal, art_unit, short_description, description,
            tasting_notes, brewing, images, hero_image, badges, rating, review_count,
            is_featured, is_new, is_active, sort_order
-         ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+         ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
          ON CONFLICT(slug) DO UPDATE SET
            name = excluded.name, subtitle = excluded.subtitle, category_id = excluded.category_id,
            tea_family = excluded.tea_family, origin = excluded.origin, altitude = excluded.altitude,
            cultivar = excluded.cultivar, harvest = excluded.harvest, oxidation = excluded.oxidation,
            roast = excluded.roast, caffeine = excluded.caffeine, liquor = excluded.liquor,
-           seal = excluded.seal,
+           seal = excluded.seal, art_unit = excluded.art_unit,
            short_description = excluded.short_description, description = excluded.description,
            tasting_notes = excluded.tasting_notes, brewing = excluded.brewing,
            images = excluded.images, hero_image = excluded.hero_image, badges = excluded.badges,
@@ -153,6 +153,7 @@ function seed({ always = false } = {}) {
         p.caffeine || '',
         p.liquor || '',
         p.seal || '',
+        p.artUnit || '',
         p.short_description || '',
         p.description || '',
         JSON.stringify(p.tasting_notes || []),
@@ -206,7 +207,7 @@ function seed({ always = false } = {}) {
 
   console.log(
     `Seeded ${CATEGORIES.length} categories, ${productCount} products, ${variantCount} variants`
-    + ` — ${photos.products} with photography, ${photos.categories} category tiles.`,
+    + ` — ${photos.products} with photography, ${photos.illustrated} illustrated, ${photos.categories} category tiles.`,
   );
   return { skipped: false, products: productCount, variants: variantCount, photos };
 }
@@ -261,13 +262,18 @@ function assertUniqueSkus() {
  */
 function applyPhotos() {
   const manifestFile = path.join(config.rootDir, 'public', 'img', 'photos', 'manifest.json');
-  const result = { products: 0, categories: 0, story: 0 };
+  const result = { products: 0, categories: 0, story: 0, illustrated: 0, inherited: 0, galleries: 0 };
 
   let manifest;
   try {
     manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
   } catch {
-    // No manifest means no photography yet; the catalogue keeps its artwork.
+    // No manifest means no photography yet. Every product then stands on its
+    // generated artwork, and must be labelled as such rather than left looking
+    // like a photograph that failed to load.
+    const marked = run("UPDATE products SET image_kind = 'illustration' WHERE hero_image = '' OR hero_image LIKE '/img/product/%'");
+    result.illustrated = Number(marked?.changes || 0);
+    result.galleries = giveIllustratedProductsAGallery();
     return result;
   }
 
@@ -284,7 +290,12 @@ function applyPhotos() {
     if (!gallery.length) continue;
     const product = get('SELECT id FROM products WHERE slug = ?', slug);
     if (!product) continue;
-    run('UPDATE products SET hero_image = ?, images = ? WHERE id = ?', gallery[0], JSON.stringify(gallery), product.id);
+    run(
+      "UPDATE products SET hero_image = ?, images = ?, image_kind = 'photo' WHERE id = ?",
+      gallery[0],
+      JSON.stringify(gallery),
+      product.id,
+    );
     result.products += 1;
   }
 
@@ -296,8 +307,65 @@ function applyPhotos() {
     result.categories += 1;
   }
 
+  // Generated tea lots inherit their base tea's photograph.
+  //
+  // A photograph of Longjing is a photograph of Longjing whichever picking grade
+  // is in the tin, so the lots of one tea share that tea's photography rather
+  // than being drawn. Jade and jewellery have no photograph to inherit, so they
+  // keep their artwork and carry the illustration disclosure.
+  const baseOf = new Map(PRODUCTS.map((p) => [p.slug, p.photoBase || '']));
+  const withPhotos = all("SELECT id, slug, hero_image, images FROM products WHERE image_kind = 'photo' AND hero_image <> ''");
+  const photoFor = new Map(withPhotos.map((p) => [p.slug, { hero: p.hero_image, images: p.images }]));
+
+  for (const [slug, baseSlug] of baseOf) {
+    if (!baseSlug) continue;
+    const source = photoFor.get(baseSlug);
+    if (!source) continue;
+    const lot = get('SELECT id FROM products WHERE slug = ?', slug);
+    if (!lot) continue;
+    run(
+      "UPDATE products SET hero_image = ?, images = ?, image_kind = 'photo' WHERE id = ?",
+      source.hero,
+      source.images,
+      lot.id,
+    );
+    result.products += 1;
+    result.inherited = (result.inherited || 0) + 1;
+  }
+
+  // Anything still without a photograph keeps its generated artwork, and has to
+  // say so on the storefront.
+  const rest = run("UPDATE products SET image_kind = 'illustration' WHERE hero_image = '' OR hero_image LIKE '/img/product/%'");
+  result.illustrated = Number(rest?.changes || 0);
+  result.galleries = giveIllustratedProductsAGallery();
+
   result.story = (manifest.story || []).length;
   return result;
+}
+
+/**
+ * A gallery for every illustrated product.
+ *
+ * A product with no photograph still needs three images on its page, or the
+ * gallery renders empty and the thumbnail strip collapses. These point at the
+ * generated detail views, which carry the same illustration notice as the main
+ * artwork, so nothing in the strip can be mistaken for photography.
+ *
+ * Products that do have photography are left alone: their real gallery came from
+ * the manifest, and mixing artwork into it would be worse than having none.
+ */
+function giveIllustratedProductsAGallery() {
+  const rows = all("SELECT id, slug FROM products WHERE image_kind = 'illustration'");
+  for (const row of rows) {
+    const gallery = ['vessel', 'layout', 'profile'].map((style) => `/img/product/${row.slug}/${style}.svg`);
+    run(
+      'UPDATE products SET hero_image = ?, images = ? WHERE id = ?',
+      `/img/product/${row.slug}.svg`,
+      JSON.stringify(gallery),
+      row.id,
+    );
+  }
+  return rows.length;
 }
 
 // Run when invoked directly.

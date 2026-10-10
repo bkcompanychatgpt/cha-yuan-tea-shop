@@ -290,25 +290,60 @@ function sendSvg(res, svg, { immutable = false } = {}) {
   res.send(svg);
 }
 
-app.get('/img/product/:slug.svg', (req, res) => {
-  const product = catalog.getProduct(req.params.slug);
-  if (!product) return res.status(404).send('Not found');
-  sendSvg(res, imagery.productArtwork({
+/**
+ * Whether a jewellery piece should be drawn as metal or as stone, and what
+ * colour that stone is.
+ *
+ * A metal piece is drawn in the metal gradient; a gemstone piece is drawn in its
+ * own material colour, so a ruby ring is red and a sapphire ring is blue. The
+ * material is already recorded as the product's `cultivar`, which is where the
+ * catalogue stores "18k yellow gold" or "jadeite cabochons".
+ */
+const METAL_MATERIAL = /^(1[0-9]|2[0-9])k|gold|silver|filigree|platinum|sterling/i;
+
+/**
+ * The department an artwork should be drawn for, and whether it must carry the
+ * illustration disclosure.
+ *
+ * `notice` follows the stored image_kind rather than the department: a jade
+ * piece that has been photographed gets no notice, and a tea without a
+ * photograph would get one.
+ *
+ * `shape` comes from the stored `art_unit` — the unit the piece is sold in, such
+ * as "Bangle" or "Earrings" — so a generated drawing of a bangle is a ring and
+ * not the generic plaque every illustrated piece used to get.
+ */
+function artworkArgs(product) {
+  const kind = product.category_kind || 'tea';
+  const material = String(product.cultivar || '');
+  return {
     slug: product.slug,
     name: product.name,
     family: product.tea_family,
     // The English chop label, stored as `seal` in the catalogue.
     seal: product.seal || 'Tea',
-    kind: product.category_kind === 'teaware' ? 'teaware' : 'tea',
-  }));
+    kind,
+    notice: product.image_kind === 'illustration',
+    shape: imagery.shapeForUnit(product.art_unit),
+    material,
+    // Jade is always drawn in its own stone colour — spinach green, mutton fat,
+    // lavender jadeite — and jewellery in metal unless it is a gemstone piece.
+    fill: kind === 'jewellery' && METAL_MATERIAL.test(material) ? 'metal' : 'material',
+  };
+}
+
+app.get('/img/product/:slug.svg', (req, res) => {
+  const product = catalog.getProduct(req.params.slug);
+  if (!product) return res.status(404).send('Not found');
+  sendSvg(res, imagery.productArtwork(artworkArgs(product)));
 });
 
 /**
  * Detail views for a product with no photograph.
  *
  * Three deliberately composed variants so a gallery never mixes a generated main
- * image with leftover placeholder files: the brewed vessel, the dry leaf laid
- * out, and the vessel in profile.
+ * image with leftover placeholder files. Which three depends on the department:
+ * water and leaf for tea, carving and finish for jade, setting for jewellery.
  */
 const PRODUCT_DETAIL_STYLES = new Set(['vessel', 'layout', 'profile']);
 
@@ -317,14 +352,7 @@ app.get('/img/product/:slug/:style.svg', (req, res) => {
   if (!PRODUCT_DETAIL_STYLES.has(style)) return res.status(404).send('Not found');
   const product = catalog.getProduct(req.params.slug);
   if (!product) return res.status(404).send('Not found');
-  sendSvg(res, imagery.productDetailArtwork({
-    slug: product.slug,
-    name: product.name,
-    family: product.tea_family,
-    seal: product.seal || 'Tea',
-    kind: product.category_kind === 'teaware' ? 'teaware' : 'tea',
-    style,
-  }));
+  sendSvg(res, imagery.productDetailArtwork({ ...artworkArgs(product), style }));
 });
 
 app.get('/img/editorial/:slug.svg', (req, res) => {
@@ -531,8 +559,8 @@ app.get('/credits', (req, res) => {
   }
   renderPage(res, 'credits', {
     page: 'credits',
-    title: `Photography credits — ${config.store.name}`,
-    description: 'Attribution for the openly-licensed photography used on this site.',
+    title: `Photography & illustrations — ${config.store.name}`,
+    description: 'Attribution for the openly-licensed photography used on this site, and how to tell an illustration from a photograph.',
     photoCredits,
   });
 });

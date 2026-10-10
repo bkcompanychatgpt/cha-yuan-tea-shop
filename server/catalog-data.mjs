@@ -1,12 +1,20 @@
 /**
  * The product catalogue.
  *
+ * The hand-written core is `BASE_PRODUCTS`; `PRODUCTS` at the foot of this file
+ * is the core plus everything generated from it. The derived entries are built
+ * by code rather than pasted in as literals, so a change to a base tea — its
+ * origin, its photograph, its price — flows through to its lots automatically
+ * instead of leaving a stale copy behind.
+ *
  * Kept as structured data so it is readable and editable without touching
  * application code. `server/seed.mjs` turns this into database rows.
  *
  * Prices are written in dollars and converted to integer cents on seeding —
  * every amount that reaches OTT Pay or the database is cents.
  */
+import { buildTeaLots } from './build-lots.mjs';
+import { buildPieces } from './build-pieces.mjs';
 
 export const CATEGORIES = [
   {
@@ -123,7 +131,7 @@ export const CATEGORIES = [
  * Products. `family` drives the artwork palette (see server/imagery.mjs).
  * `variants` carry the price; the first is the default.
  */
-export const PRODUCTS = [
+const BASE_PRODUCTS = [
   /* ------------------------------------------------------------ GREEN TEA */
   {
     slug: 'lion-peak-longjing',
@@ -2073,6 +2081,30 @@ export const PRODUCTS = [
   },
 /* ===== END jade & jewellery ===== */
 ];
+
+/**
+ * The full catalogue: the hand-written core, then everything derived from it.
+ *
+ * Ordering matters. Tea lots are built from the base teas, and the jade and
+ * jewellery pieces are built last so their slugs and SKUs are checked against
+ * everything that already exists — the first attempt at this produced two
+ * different pieces both claiming the slug "gold-filigree-cuff".
+ *
+ * A problem here is thrown rather than logged: a catalogue with a duplicate slug
+ * or a lot pointing at a tea that no longer exists is a broken shop, and it
+ * should fail at boot rather than quietly seed something wrong.
+ */
+const _tea = buildTeaLots(BASE_PRODUCTS);
+const _pieces = buildPieces([...BASE_PRODUCTS, ..._tea.products]);
+
+const _catalogueProblems = [..._tea.problems, ..._pieces.problems];
+if (_catalogueProblems.length) {
+  throw new Error(
+    `The generated catalogue is inconsistent — refusing to load:\n${_catalogueProblems.map((p) => `  - ${p}`).join('\n')}`,
+  );
+}
+
+export const PRODUCTS = [...BASE_PRODUCTS, ..._tea.products, ..._pieces.products];
 
 /** Short editorial copy used on the homepage and guide pages. */
 export const EDITORIAL = {
