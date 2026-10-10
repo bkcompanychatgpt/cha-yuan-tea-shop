@@ -423,6 +423,33 @@ export const JADE_ROWS = [
     hook: 'A plain cabochon with no carving at all: at this grade the stone is the work, and any cut would remove colour.' },
   { form: 'pendant_guanyin', material: 'jadeite_imperial', name: 'Imperial Green Guanyin Pendant', seal: 'Imperial',
     hook: 'Imperial green spent on a face rather than a cabochon — the rarest combination in the department.' },
+  // Added so the department total is a number that reflects the range rather
+  // than a round one, and because these are the combinations left in the
+  // repertoire: Buddha in two stones it is rarely carved from, a disc in honey
+  // jade, a mala in floating-flower, and the working forms in stone that suits
+  // them.
+  { form: 'pendant_buddha', material: 'jadeite_ice', name: 'Ice Jade Buddha Pendant', seal: 'Buddha',
+    hook: 'A seated Buddha in near-colourless ice jadeite, where the carving has nothing to hide behind.' },
+  { form: 'pendant_buddha', material: 'yellow_nephrite', name: 'Honey Jade Buddha Pendant', seal: 'Buddha',
+    hook: 'A Buddha in honey nephrite, warm enough that the figure reads at arm\'s length.' },
+  { form: 'bi_disc', material: 'yellow_nephrite', name: 'Honey Jade Bi Disc', seal: 'Disc',
+    hook: 'The oldest form in the repertoire, cut in the rarest of the nephrite colours.' },
+  { form: 'bead_strand', material: 'jadeite_moss', name: 'Moss-in-Snow Jade Mala', seal: 'Mala',
+    hook: 'A hundred and eight beads of floating-flower jadeite, each one carrying a different pattern.' },
+  { form: 'figure_horse', material: 'black_nephrite', name: 'Black Jade Horse', seal: 'Horse',
+    hook: 'A horse in black nephrite, where the whole carving is line because there is no colour to carry it.' },
+  { form: 'figure_crane', material: 'jadeite_ice', name: 'Ice Jade Crane', seal: 'Crane',
+    hook: 'Legs cut thin enough to read as a crane, which only translucent flawless stone allows.' },
+  { form: 'cup', material: 'jadeite_apple', name: 'Apple-Green Jade Cup', seal: 'Cup',
+    hook: 'Thin-walled jadeite that glows at the rim when you hold it up to the light.' },
+  { form: 'bangle_round', material: 'yellow_nephrite', name: 'Honey Jade Round Bangle', seal: 'Bangle',
+    hook: 'A round bangle in honey nephrite — one core, so the colour runs the whole way round.' },
+  { form: 'pendant_coin', material: 'jadeite_imperial', name: 'Imperial Green Coin Pendant', seal: 'Coin',
+    hook: 'Heaven and earth cut from imperial green, which is a great deal of colour for a small object.' },
+  { form: 'signet_seal', material: 'jadeite_apple', name: 'Apple-Green Jade Seal', seal: 'Seal',
+    hook: 'Bright jadeite cut flat for a seal face, where a flaw would show in every impression.' },
+  { form: 'dragon_hook', material: 'jadeite_lavender', name: 'Lavender Jade Dragon Hook', seal: 'Hook',
+    hook: 'A belt hook in lavender jadeite, which only shows its colour in daylight.' },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -808,4 +835,11 @@ export const JEWELLERY_ROWS = [
     hook: 'A hinged case with a proper hinge and a catch that closes flush, which is what separates a locket that lasts from one that does not.' },
   { form: 'locket', material: 'silver', name: 'Silver Locket', seal: 'Locket',
     hook: 'Hand-worked sterling with a tested hinge, built to be opened often rather than once.' },
+  // Three more, for the same reason as the jade additions above.
+  { form: 'necklace_pendant', material: 'pearl_southsea', name: 'South Sea Pearl Pendant', seal: 'Pearl',
+    hook: 'A single large South Sea pearl on a fine chain, where the whole piece is the bead.' },
+  { form: 'bracelet_bangle', material: 'silver', name: 'Sterling Silver Bangle', seal: 'Bangle',
+    hook: 'A closed circle in hand-worked sterling, with no hinge and nothing to work loose.' },
+  { form: 'ring_signet', material: 'gold22', name: '22k Gold Signet Ring', seal: 'Signet',
+    hook: 'Twenty-two carat, the traditional Chinese standard: soft enough to engrave deeply by hand.' },
 ];

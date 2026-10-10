@@ -483,8 +483,16 @@ section { position: relative; }
 /* ------------------------------------------------------------ tea cards */
 .tea-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
-  gap: 30px 24px;
+  /*
+   * Five across on a desktop rather than four.
+   *
+   * The catalogue is two hundred products and the cards were 292px wide, so a
+   * page of them read as a wall of oversized squares rather than as a shop.
+   * Narrower columns put more of the range on one screen without shrinking the
+   * type, because the card is an image plus three short lines.
+   */
+  grid-template-columns: repeat(auto-fill, minmax(212px, 1fr));
+  gap: 26px 20px;
 }
 
 .tea-card {
@@ -499,6 +507,13 @@ section { position: relative; }
   position: relative;
   overflow: hidden;
   background: var(--ink-800);
+  /*
+   * Square, because the source images are: the photographs are graded to 1200²
+   * and the generated artwork is drawn at 1200². It also matters that it stays
+   * square — the illustration disclosure is baked into the bottom edge of the
+   * artwork, and a landscape crop would cut it off, which is exactly the caption
+   * that must never be the thing that falls outside the frame.
+   */
   aspect-ratio: 1;
   border: 1px solid var(--line-soft);
 }
@@ -1585,8 +1600,7 @@ select.select option { background: var(--ink-800); color: var(--text); }
 }
 
 /* ------------------------------------------------------------ tea-card plus */
-.tea-notes { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }
-.tea-note {
+.tea-notes { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }.tea-note {
   font-size: 0.63rem;
   letter-spacing: 0.06em;
   color: var(--text-faint);
@@ -2039,8 +2053,21 @@ select.select option { background: var(--ink-800); color: var(--text); }
   gap: 10px;
   flex: 1;
 }
-.dept-body h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); margin-top: 2px; }
+.dept-body h2,
+.dept-body h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); margin-top: 2px; font-weight: 400; }
 .dept-body p { font-size: 0.87rem; color: var(--text-dim); line-height: 1.68; }
+
+/* The count sits directly under the name, so three departments of very
+   different size do not look like a mistake. */
+.dept-count {
+  font-family: var(--font-mono);
+  font-size: 0.72rem !important;
+  letter-spacing: 0.1em;
+  color: var(--gold-400) !important;
+  margin: -4px 0 0;
+}
+
+.dept-blurb { margin: 0; }
 
 .dept-links {
   display: grid;
@@ -2069,6 +2096,68 @@ select.select option { background: var(--ink-800); color: var(--text); }
   color: var(--gold-300);
 }
 .dept:hover .dept-cta { color: var(--gold-100); }
+
+/* --------------------------------------------------------------------------
+   Shop chooser and sub-navigation
+
+   /shop opens on three department cards and nothing else. Tea's eight
+   categories appear only once you are inside Tea, as a chip row with counts,
+   which is what stops the first screen reading as a wall of filters.
+   -------------------------------------------------------------------------- */
+
+.also-row {
+  margin-top: clamp(26px, 3.5vw, 40px);
+  padding-top: clamp(20px, 2.5vw, 28px);
+  border-top: 1px solid var(--line-soft);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.chip-n {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--text-faint);
+  margin-left: 5px;
+}
+.chip.is-active .chip-n { color: var(--gold-200); }
+
+.chip-quiet { border-style: dashed; color: var(--text-faint); }
+
+.subnav {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.subnav-label {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  flex: none;
+}
+
+@media (max-width: 900px) {
+  .subnav { gap: 10px; padding-bottom: 16px; }
+  .subnav-label { width: 100%; }
+  /* The chip row scrolls sideways on a phone rather than wrapping into five
+     ragged lines, which is what pushed the first product off the screen. */
+  .subnav .chip-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .subnav .chip-row::-webkit-scrollbar { display: none; }
+}
 
 /* -------------------------------------------------------------- case strip */
 .case-strip {
@@ -2305,6 +2394,20 @@ select.select option { background: var(--ink-800); color: var(--text); }
 
 @media (max-width: 760px) {
   :root { --pad-x: 18px; --header-h: 66px; }
+  /*
+   * Department cards go single-column and landscape on a phone. Two narrow
+   * columns wrapped every blurb over six lines and left the third card floating
+   * alone beside an empty cell, which read as a layout fault rather than a
+   * design.
+   */
+  .dept-grid { grid-template-columns: 1fr; gap: 13px; }
+  .dept-media { aspect-ratio: 16 / 9; }
+  .dept-body { padding: 17px 17px 19px; gap: 8px; }
+  .dept-body h2, .dept-body h3 { font-size: 1.28rem; }
+  .dept-blurb { font-size: 0.83rem; }
+  .dept-cta { padding-top: 11px; }
+  .chip-row { gap: 7px; }
+  .chip { padding: 6px 11px; font-size: 0.69rem; }
   /* Tighter rhythm on phones, where every wasted 40px is a real swipe. */
   .section-tight { padding-block: 30px; }
   .section { padding-block: 44px; }
@@ -2317,7 +2420,43 @@ select.select option { background: var(--ink-800); color: var(--text); }
   .form-grid.cols-2, .form-grid.cols-3 { grid-template-columns: 1fr; }
   .span-2 { grid-column: auto; }
   .card-row { grid-template-columns: 1fr; }
-  .tea-grid { grid-template-columns: repeat(auto-fill, minmax(152px, 1fr)); gap: 22px 12px; }
+  .tea-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 11px; }
+  /*
+   * The card is designed for a 236px column and has to survive a 175px one.
+   * At that width the note chips collided with the badges, "CAD 41.00$" wrapped
+   * onto two lines, and the meta row pushed the price off the bottom — so each
+   * of those is dropped or clamped rather than allowed to reflow badly.
+   */
+  .tea-card:hover { transform: none; }
+  .tea-badges { top: 8px; left: 8px; gap: 4px; }
+  .tea-badges .badge { font-size: 0.56rem; padding: 3px 6px; letter-spacing: 0.08em; }
+  /* One badge only: two of them stacked cover a third of a small image. */
+  .tea-badges .badge:nth-child(n + 2) { display: none; }
+  .illus-mark { top: 40px; right: 7px; font-size: 0.5rem; padding: 3px 6px 3px 5px; gap: 4px; }
+  .illus-mark svg { width: 10px; height: 10px; }
+
+  .tea-body { gap: 6px; padding-top: 10px; }
+  .tea-origin { font-size: 0.56rem; letter-spacing: 0.14em; }
+  .tea-name { font-size: 0.98rem; line-height: 1.2; }
+  /* Two lines, then ellipsis: a three-line title pushes every price down the
+     page by a row and the grid stops lining up. */
+  .tea-name a {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  /* The tasting-note chips are the first thing to go: four of them wrap to
+     three lines in a narrow column and say less than the name above them. */
+  .tea-notes { display: none; }
+  .tea-desc { font-size: 0.75rem; -webkit-line-clamp: 2; }
+  /* Sizes and harvest are useful on the product page, not here. */
+  .tea-meta-row { display: none; }
+  .tea-foot { padding-top: 9px; gap: 8px; align-items: center; }
+  .tea-foot .price { font-size: 0.92rem; white-space: nowrap; }
+  .tea-foot .price small { display: none; }
+  .tea-foot > .link-underline { display: none; }
+  .tea-quick .btn { font-size: 0.66rem; padding: 7px 8px; letter-spacing: 0.06em; }
   .cart-line { grid-template-columns: 84px 1fr; row-gap: 10px; }
   .cart-line-price { text-align: left; grid-column: 2; }
   .footer-grid { grid-template-columns: 1fr 1fr; }

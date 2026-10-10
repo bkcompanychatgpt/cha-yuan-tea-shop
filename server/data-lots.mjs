@@ -388,45 +388,52 @@ export const LOT_STYLES = {
 /**
  * The lots to build, grouped by the base tea they extend.
  *
- * `base` is an existing product slug. `seal` is omitted when the lot shares the
- * base tea's chop word, so the artwork keeps one identity per tea.
+ * The count per tea is not arbitrary. It is bounded by how many genuinely
+ * different photographs exist for that kind of tea, because no two products may
+ * share an image — so a tea with six usable photographs supports six products
+ * (the base plus five lots) and no more. The uneven totals across categories are
+ * the honest result of that, not a target picked in advance.
  */
 export const TEA_LOT_ROWS = [
-  /* green tea — +10 */
+  /* green tea — 18 products, 14 lots */
   { base: 'lion-peak-longjing', lot: 'yuqian', name: 'Lion Peak Longjing — Yuqian' },
   { base: 'lion-peak-longjing', lot: 'guyu', name: 'Lion Peak Longjing — Late Spring' },
   { base: 'lion-peak-longjing', lot: 'autumn', name: 'Lion Peak Longjing — Autumn' },
+  { base: 'lion-peak-longjing', lot: 'competition', name: 'Lion Peak Longjing — Competition Lot' },
   { base: 'biluochun-spring-snail', lot: 'yuqian', name: 'Biluochun — Yuqian' },
   { base: 'biluochun-spring-snail', lot: 'guyu', name: 'Biluochun — Late Spring' },
   { base: 'biluochun-spring-snail', lot: 'autumn', name: 'Biluochun — Autumn' },
+  { base: 'biluochun-spring-snail', lot: 'competition', name: 'Biluochun — Competition Lot' },
   { base: 'huangshan-maofeng', lot: 'yuqian', name: 'Huangshan Maofeng — Yuqian' },
   { base: 'huangshan-maofeng', lot: 'guyu', name: 'Huangshan Maofeng — Late Spring' },
+  { base: 'huangshan-maofeng', lot: 'autumn', name: 'Huangshan Maofeng — Autumn' },
   { base: 'taiping-houkou', lot: 'yuqian', name: 'Taiping Houkui — Yuqian' },
+  { base: 'taiping-houkou', lot: 'guyu', name: 'Taiping Houkui — Late Spring' },
   { base: 'taiping-houkou', lot: 'autumn', name: 'Taiping Houkui — Autumn' },
 
-  /* white tea — +9 */
-  { base: 'silver-needle-baihao', lot: 'aged', name: 'Silver Needle — Aged', vintage: 2021, seal: 'Silver' },
-  { base: 'silver-needle-baihao', lot: 'aged', name: 'Silver Needle — Library', vintage: 2016, seal: 'Silver' },
-  { base: 'white-peony-yueguangbai', lot: 'aged', name: 'White Peony — Aged', vintage: 2021, seal: 'Peony' },
-  { base: 'white-peony-yueguangbai', lot: 'aged', name: 'White Peony — Library', vintage: 2015, seal: 'Peony' },
-  { base: 'white-peony-yueguangbai', lot: 'gongmei', name: 'White Peony — Gongmei Grade', seal: 'Peony' },
-  { base: 'aged-white-2019-shoumei', lot: 'aged', name: 'Shoumei — Library', vintage: 2013, seal: 'Aged' },
-  { base: 'aged-white-2019-shoumei', lot: 'gongmei', name: 'Shoumei — Gongmei Grade', seal: 'Aged' },
+  /* white tea — 15 products, 12 lots */
+  { base: 'silver-needle-baihao', lot: 'aged', name: 'Silver Needle — Aged 2021', vintage: 2021, seal: 'Silver' },
+  { base: 'silver-needle-baihao', lot: 'aged', name: 'Silver Needle — Aged 2018', vintage: 2018, seal: 'Silver' },
   { base: 'silver-needle-baihao', lot: 'gongmei', name: 'Silver Needle — Gongmei Grade', seal: 'Silver' },
-  { base: 'aged-white-2019-shoumei', lot: 'aged', name: 'Shoumei — Aged', vintage: 2020, seal: 'Aged' },
+  { base: 'silver-needle-baihao', lot: 'old_vintage', name: 'Silver Needle — Library', vintage: 2014, seal: 'Silver' },
+  { base: 'silver-needle-baihao', lot: 'competition', name: 'Silver Needle — Competition Lot', seal: 'Silver' },
+  { base: 'silver-needle-baihao', lot: 'autumn', name: 'Silver Needle — Autumn Pick', seal: 'Silver' },
+  { base: 'white-peony-yueguangbai', lot: 'aged', name: 'White Peony — Aged 2021', vintage: 2021, seal: 'Peony' },
+  { base: 'white-peony-yueguangbai', lot: 'gongmei', name: 'White Peony — Gongmei Grade', seal: 'Peony' },
+  { base: 'white-peony-yueguangbai', lot: 'old_vintage', name: 'White Peony — Library', vintage: 2015, seal: 'Peony' },
+  { base: 'aged-white-2019-shoumei', lot: 'old_vintage', name: 'Shoumei — Library', vintage: 2013, seal: 'Aged' },
+  { base: 'aged-white-2019-shoumei', lot: 'gongmei', name: 'Shoumei — Gongmei Grade', seal: 'Aged' },
+  { base: 'aged-white-2019-shoumei', lot: 'aged', name: 'Shoumei — Aged 2020', vintage: 2020, seal: 'Aged' },
 
-  /* oolong — +9 */
+  /* oolong — 9 products, 6 lots */
   { base: 'tieguanyin-iron-goddess', lot: 'light_roast', name: 'Tieguanyin — Light Roast' },
   { base: 'tieguanyin-iron-goddess', lot: 'charcoal', name: 'Tieguanyin — Charcoal-baked' },
   { base: 'tieguanyin-iron-goddess', lot: 'aged_oolong', name: 'Tieguanyin — Aged' },
-  { base: 'tieguanyin-iron-goddess', lot: 'competition', name: 'Tieguanyin — Competition Lot' },
-  { base: 'milk-oolong-jinxuan', lot: 'light_roast', name: 'Jin Xuan Milk Oolong — Light Roast' },
   { base: 'milk-oolong-jinxuan', lot: 'charcoal', name: 'Jin Xuan Milk Oolong — Charcoal-baked' },
-  { base: 'dong-ding-oolong', lot: 'light_roast', name: 'Dong Ding — Light Roast' },
   { base: 'dong-ding-oolong', lot: 'charcoal', name: 'Dong Ding — Charcoal-baked' },
   { base: 'dong-ding-oolong', lot: 'aged_oolong', name: 'Dong Ding — Aged' },
 
-  /* dan cong — +8, each a different single bush */
+  /* dan cong — 11 products, 9 lots; each aroma type is a different single bush */
   { base: 'mi-lan-xiang-dan-cong', lot: 'competition', name: 'Huang Zhi Xiang Dan Cong', seal: 'Gardenia', rename: true, subtitle: 'Gardenia aroma · single bush' },
   { base: 'mi-lan-xiang-dan-cong', lot: 'competition', name: 'Gui Hua Xiang Dan Cong', seal: 'Osmanthus', rename: true, subtitle: 'Osmanthus aroma · single bush' },
   { base: 'mi-lan-xiang-dan-cong', lot: 'competition', name: 'Xing Ren Xiang Dan Cong', seal: 'Apricot', rename: true, subtitle: 'Apricot kernel aroma · single bush' },
@@ -435,47 +442,45 @@ export const TEA_LOT_ROWS = [
   { base: 'ya-shi-xiang-dan-cong', lot: 'charcoal', name: 'Mo Li Xiang Dan Cong', seal: 'Jasmine', rename: true, subtitle: 'Jasmine aroma · charcoal-baked' },
   { base: 'ya-shi-xiang-dan-cong', lot: 'aged_oolong', name: 'Zhi Lan Xiang Dan Cong', seal: 'Orchid', rename: true, subtitle: 'Orchid aroma · aged' },
   { base: 'ya-shi-xiang-dan-cong', lot: 'aged_oolong', name: 'Bai Ye Dan Cong', seal: 'White Leaf', rename: true, subtitle: 'White leaf cultivar · aged' },
+  { base: 'ya-shi-xiang-dan-cong', lot: 'charcoal', name: 'Ju Duo Zai Dan Cong', seal: 'Almond', rename: true, subtitle: 'Almond aroma · charcoal-baked' },
 
-  /* rock oolong — +10 */
+  /* rock oolong — 11 products, 9 lots */
   { base: 'wuyi-shuixian', lot: 'lao_cong', name: 'Lao Cong Shuixian', seal: 'Old Bush', rename: true, subtitle: 'Sixty-year-old bushes · old bush' },
   { base: 'wuyi-shuixian', lot: 'charcoal', name: 'Wuyi Shuixian — Charcoal-baked' },
   { base: 'wuyi-shuixian', lot: 'aged_oolong', name: 'Wuyi Shuixian — Aged' },
+  { base: 'wuyi-shuixian', lot: 'competition', name: 'Wuyi Shuixian — Competition Lot' },
   { base: 'da-hong-pao', lot: 'rou_gui', name: 'Rou Gui', rename: true },
   { base: 'da-hong-pao', lot: 'rou_gui', name: 'Rou Gui — Heavy Roast', subtitle: 'Rou Gui bush · heavy charcoal roast' },
   { base: 'da-hong-pao', lot: 'shui_jin_gui', name: 'Shui Jin Gui', rename: true },
   { base: 'da-hong-pao', lot: 'tie_luo_han', name: 'Tie Luo Han', rename: true },
   { base: 'da-hong-pao', lot: 'bai_ji_guan', name: 'Bai Ji Guan', rename: true },
-  { base: 'da-hong-pao', lot: 'competition', name: 'Da Hong Pao — Competition Lot' },
-  { base: 'wuyi-shuixian', lot: 'competition', name: 'Wuyi Shuixian — Competition Lot' },
 
-  /* black tea — +9 */
+  /* black tea — 17 products, 13 lots */
   { base: 'lapsang-souchong-tongmuguan', lot: 'unsmoked', name: 'Tongmu Souchong — Unsmoked' },
   { base: 'lapsang-souchong-tongmuguan', lot: 'ancient_tree', name: 'Tongmu Souchong — Ancient Tree' },
+  { base: 'lapsang-souchong-tongmuguan', lot: 'vintage_black', name: 'Tongmu Souchong — Vintage' },
+  { base: 'lapsang-souchong-tongmuguan', lot: 'mao_feng', name: 'Tongmu Souchong — Leaf Grade' },
+  { base: 'lapsang-souchong-tongmuguan', lot: 'competition', name: 'Tongmu Souchong — Reserve' },
   { base: 'yunnan-dianhong-golden-bud', lot: 'ancient_tree', name: 'Dian Hong — Ancient Tree' },
   { base: 'yunnan-dianhong-golden-bud', lot: 'mao_feng', name: 'Dian Hong — Mao Feng Grade' },
   { base: 'yunnan-dianhong-golden-bud', lot: 'vintage_black', name: 'Dian Hong — Vintage' },
+  { base: 'yunnan-dianhong-golden-bud', lot: 'competition', name: 'Dian Hong — Reserve' },
+  { base: 'jin-jun-mei', lot: 'vintage_black', name: 'Jin Jun Mei — Vintage' },
   { base: 'keemun-hao-ya', lot: 'mao_feng', name: 'Keemun — Mao Feng Grade' },
   { base: 'keemun-hao-ya', lot: 'vintage_black', name: 'Keemun — Vintage' },
-  { base: 'jin-jun-mei', lot: 'vintage_black', name: 'Jin Jun Mei — Vintage' },
-  { base: 'jin-jun-mei', lot: 'competition', name: 'Jin Jun Mei — Tongmu Reserve' },
+  { base: 'keemun-hao-ya', lot: 'competition', name: 'Keemun — Reserve' },
 
-  /* pu-erh — +10 */
+  /* pu-erh — 8 products, 5 lots */
   { base: 'menghai-7572-shou-cake', lot: 'shou_vintage', name: 'Menghai 7572 — 2015 Vintage', vintage: 2015, seal: 'Ripe' },
   { base: 'menghai-7572-shou-cake', lot: 'old_vintage', name: 'Menghai 7572 — Library', vintage: 2005, seal: 'Ripe' },
-  { base: 'menghai-7572-shou-cake', lot: 'mountain_sheng', name: 'Bulang Shan Sheng', seal: 'Bulang', rename: true, subtitle: 'Bulang mountain · raw cake' },
   { base: 'jingmai-raw-sheng-cake', lot: 'sheng_vintage', name: 'Jingmai Sheng — 2018 Vintage', vintage: 2018, seal: 'Raw' },
-  { base: 'jingmai-raw-sheng-cake', lot: 'sheng_vintage', name: 'Jingmai Sheng — 2016 Vintage', vintage: 2016, seal: 'Raw' },
-  { base: 'jingmai-raw-sheng-cake', lot: 'sheng_vintage', name: 'Jingmai Sheng — 2014 Vintage', vintage: 2014, seal: 'Raw' },
-  { base: 'jingmai-raw-sheng-cake', lot: 'mountain_sheng', name: 'Yiwu Shan Sheng', seal: 'Yiwu', rename: true, subtitle: 'Yiwu mountain · raw cake' },
-  { base: 'jingmai-raw-sheng-cake', lot: 'mountain_sheng', name: 'Lao Man E Sheng', seal: 'Man E', rename: true, subtitle: 'Lao Man E mountain · raw cake' },
-  { base: 'aged-shou-tuocha-2008', lot: 'old_vintage', name: 'Aged Shou Tuocha — Library', vintage: 2003, seal: 'Vintage' },
+  { base: 'jingmai-raw-sheng-cake', lot: 'mountain_sheng', name: 'Bulang Shan Sheng', seal: 'Bulang', rename: true, subtitle: 'Bulang mountain · raw cake' },
   { base: 'aged-shou-tuocha-2008', lot: 'shou_vintage', name: 'Aged Shou Tuocha — 2012 Vintage', vintage: 2012, seal: 'Vintage' },
 
-  /* floral — +10 */
+  /* floral — 14 products, 10 lots */
   { base: 'jasmine-pearls-nine-scent', lot: 'seven_scent', name: 'Jasmine Pearls — Seven Scent', seal: 'Jasmine' },
   { base: 'jasmine-pearls-nine-scent', lot: 'five_scent', name: 'Jasmine Pearls — Five Scent', seal: 'Jasmine' },
   { base: 'jasmine-pearls-nine-scent', lot: 'seven_scent', name: 'Jasmine Silver Needle — Seven Scent', seal: 'Jasmine', subtitle: 'Silver needle base · seven nights of jasmine' },
-  { base: 'osmanthus-oolong', lot: 'osmanthus_dan_cong', name: 'Osmanthus Dan Cong', seal: 'Osmanthus' },
   { base: 'osmanthus-oolong', lot: 'osmanthus_black', name: 'Osmanthus Black Tea', seal: 'Osmanthus' },
   { base: 'rose-black-tea', lot: 'rose_white', name: 'Rose White Peony', seal: 'Rose' },
   { base: 'rose-black-tea', lot: 'rose_green', name: 'Rose Green Tea', seal: 'Rose' },

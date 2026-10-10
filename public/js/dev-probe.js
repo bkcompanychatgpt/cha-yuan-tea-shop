@@ -101,12 +101,34 @@
       return Boolean(el.closest('.ticker, .shelf-track, .cart-drawer, .mobile-nav, .search-panel, .drawer-scrim, .skip-link, .toast-stack'));
     }
 
+    /**
+     * True when an ancestor scrolls horizontally, so an element sticking out
+     * past the viewport is inside a scroller rather than breaking the page.
+     *
+     * The tea chip row on a phone is deliberately a horizontal scroller: it holds
+     * nine categories and wrapping them stacked five ragged lines above the first
+     * product. Its chips extend well past 390px by design, and the page itself
+     * does not scroll sideways — `document.scrollWidth` stays at the viewport. So
+     * the test is the document, not each element, plus this exemption for
+     * anything a scroller is clipping.
+     */
+    function isInsideScroller(el) {
+      var node = el.parentElement;
+      while (node && node !== d.body) {
+        var ox = window.getComputedStyle(node).overflowX;
+        if (ox === 'auto' || ox === 'scroll' || ox === 'hidden') return true;
+        node = node.parentElement;
+      }
+      return false;
+    }
+
     var overflow = [];
     Array.prototype.slice.call(d.querySelectorAll('body *')).forEach(function (el) {
       var r = el.getBoundingClientRect();
       if (r.width <= 0) return;
       if (r.right <= window.innerWidth + 1) return;
       if (isDeliberatelyOffscreen(el)) return;
+      if (isInsideScroller(el)) return;
       overflow.push({
         tag: el.tagName.toLowerCase(),
         cls: clsOf(el).slice(0, 60),

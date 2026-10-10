@@ -131,7 +131,15 @@ export const CATEGORIES = [
  * Products. `family` drives the artwork palette (see server/imagery.mjs).
  * `variants` carry the price; the first is the default.
  */
-const BASE_PRODUCTS = [
+/**
+ * The hand-written catalogue, before any generated lots or pieces are added.
+ *
+ * Exported because tooling has to reason about the two separately: the photo
+ * pools assign lots from their base tea, and the lot builder checks for slug
+ * collisions against the hand-written entries only. Everything downstream of the
+ * storefront wants `PRODUCTS` at the foot of this file instead.
+ */
+export const BASE_PRODUCTS = [
   /* ------------------------------------------------------------ GREEN TEA */
   {
     slug: 'lion-peak-longjing',

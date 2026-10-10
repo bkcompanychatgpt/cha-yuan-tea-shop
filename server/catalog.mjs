@@ -104,6 +104,7 @@ export function listProducts(opts = {}) {
     limit = 60,
     offset = 0,
     ids = null,
+    kinds = null,
   } = opts;
 
   const where = ['p.is_active = 1'];
@@ -112,6 +113,13 @@ export function listProducts(opts = {}) {
   if (category) {
     where.push('(c.slug = ? OR c.kind = ?)');
     params.push(category, category);
+  }
+  // Explicit kind filter, for the department landing pages. Distinct from
+  // `category` because department "tea" means the eight tea categories only —
+  // not teaware and gift sets, which are their own group.
+  if (Array.isArray(kinds) && kinds.length) {
+    where.push(`c.kind IN (${kinds.map(() => '?').join(',')})`);
+    params.push(...kinds);
   }
   if (family) {
     where.push('p.tea_family = ?');
@@ -168,6 +176,104 @@ export function getProduct(slug) {
     String(slug),
   );
   return withVariants(hydrateProduct(row));
+}
+
+/**
+ * The three departments the shop is organised around, and the small group that
+ * sits outside them.
+ *
+ * A flat row of twelve category chips made the shop page read as a wall of
+ * filters. The owner's instruction was that the main split is Tea / Jade /
+ * Jewellery, and that tea's own divisions belong one level down: you choose Tea
+ * first, then choose the kind of tea. This is that structure, in one place, so
+ * the shop page, the homepage and the breadcrumbs cannot disagree about it.
+ */
+export const DEPARTMENTS = [
+  {
+    slug: 'tea',
+    name: 'Tea',
+    kinds: ['tea'],
+    eyebrow: 'Leaf',
+    blurb: 'Single-origin lots from Fujian, Yunnan, Anhui, Zhejiang and Guangdong, dated by harvest.',
+  },
+  {
+    slug: 'jade',
+    name: 'Jade & Stone',
+    kinds: ['jade'],
+    eyebrow: 'Stone',
+    blurb: 'Nephrite and jadeite, hand-carved and polished until the stone gives up its depth.',
+  },
+  {
+    slug: 'jewellery',
+    name: 'Fine Jewellery',
+    kinds: ['jewellery'],
+    eyebrow: 'Metal',
+    blurb: 'Gold, pearls and set stones, worked by hand rather than cast.',
+  },
+];
+
+/** Teaware and gift sets: real departments, but not among the three. */
+export const ALSO = { slug: 'also', name: 'Teaware & gifts', kinds: ['teaware', 'gift'] };
+
+/**
+ * Department cards, ready to render.
+ *
+ * Each department is represented by its largest category's photograph, because
+ * a department has no image of its own — the cover is borrowed from the category
+ * with the most in it, which is the one most likely to have good photography.
+ *
+ * Shared by the homepage and the shop chooser so the two cannot disagree about
+ * what the departments are called, how many pieces are in them, or which picture
+ * stands for each.
+ */
+export function departmentCards() {
+  const categories = listCategories();
+  const toCard = (dept) => {
+    const members = categories.filter((c) => dept.kinds.includes(c.kind));
+    if (!members.length) return null;
+    const hero = members.reduce((a, b) => (b.product_count > a.product_count ? b : a));
+    return {
+      slug: dept.slug,
+      name: dept.name,
+      eyebrow: dept.eyebrow,
+      blurb: dept.blurb,
+      href: `/shop?department=${dept.slug}`,
+      count: members.reduce((n, c) => n + c.product_count, 0),
+      hero,
+      members,
+    };
+  };
+  return {
+    departments: DEPARTMENTS.map(toCard).filter(Boolean),
+    also: toCard(ALSO),
+  };
+}
+
+export function getDepartment(slug) {
+  const key = String(slug || '');
+  return DEPARTMENTS.find((d) => d.slug === key) || (key === ALSO.slug ? ALSO : null);
+}
+
+/**
+ * Product counts per department, for the chooser cards.
+ *
+ * Counted rather than hard-coded, so the numbers on the landing page cannot go
+ * stale when the catalogue changes.
+ */
+export function departmentCounts() {
+  const rows = all(
+    `SELECT c.kind AS kind, COUNT(*) AS n
+       FROM products p JOIN categories c ON c.id = p.category_id
+      WHERE p.is_active = 1
+      GROUP BY c.kind`,
+  );
+  const byKind = Object.fromEntries(rows.map((r) => [r.kind, r.n]));
+  const sum = (kinds) => kinds.reduce((total, k) => total + (byKind[k] || 0), 0);
+  return {
+    ...Object.fromEntries(DEPARTMENTS.map((d) => [d.slug, sum(d.kinds)])),
+    [ALSO.slug]: sum(ALSO.kinds),
+    all: rows.reduce((total, r) => total + r.n, 0),
+  };
 }
 
 export function getProductById(id) {

@@ -39,10 +39,26 @@ const JADE = products.filter((p) => p.kind === 'jade');
 const JEWELLERY = products.filter((p) => p.kind === 'jewellery');
 const ALL_PIECES = [...JADE, ...JEWELLERY];
 
-console.log('\nCatalogue targets\n');
-check(`tea department holds 100 products`, TEAS.length === 100, `got ${TEAS.length}`);
-check(`jade department holds 50 products`, JADE.length === 50, `got ${JADE.length}`);
-check(`jewellery department holds 50 products`, JEWELLERY.length === 50, `got ${JEWELLERY.length}`);
+/**
+ * What each department should hold.
+ *
+ * Deliberately uneven. The owner asked for counts that do not look like a round
+ * number picked in advance, and the totals are bounded by the photographs that
+ * exist anyway: a tea with six usable photographs supports six products and no
+ * more, so the real numbers were never going to be 100/50/50. These are the
+ * measured results rather than targets, and they are asserted so a change to the
+ * catalogue has to be a deliberate one.
+ */
+const EXPECTED = { tea: 102, jade: 61, jewellery: 53 };
+
+console.log('\nCatalogue\n');
+check(`tea department holds ${EXPECTED.tea} products`, TEAS.length === EXPECTED.tea, `got ${TEAS.length}`);
+check(`jade department holds ${EXPECTED.jade} products`, JADE.length === EXPECTED.jade, `got ${JADE.length}`);
+check(`jewellery department holds ${EXPECTED.jewellery} products`, JEWELLERY.length === EXPECTED.jewellery, `got ${JEWELLERY.length}`);
+
+// A round number in every department is the thing to avoid, so make it explicit.
+const round = [TEAS.length, JADE.length, JEWELLERY.length].filter((n) => n % 10 === 0);
+check('no department count is a round ten', round.length === 0, round.join(', '));
 
 /* ------------------------------------------------------------------ images */
 console.log('\nImagery\n');
@@ -81,6 +97,40 @@ check('every illustrated product has a three-view gallery', gallery.length === 0
 const drawnTea = TEAS.filter((p) => p.image_kind !== 'photo');
 check('every tea is shown with a photograph', drawnTea.length === 0, drawnTea.map((p) => p.slug).join(', '));
 
+/* ------------------------------------------------------------- uniqueness */
+// The owner's rule: no two products may share an image. Checked against the
+// database rather than the selection files, because the database is what the
+// storefront actually renders.
+const byHero = new Map();
+for (const p of products) {
+  if (!byHero.has(p.hero_image)) byHero.set(p.hero_image, []);
+  byHero.get(p.hero_image).push(p.slug);
+}
+const sharedHeroes = [...byHero.entries()].filter(([, list]) => list.length > 1);
+check(
+  `no two products share a main image (${byHero.size} distinct across ${products.length})`,
+  sharedHeroes.length === 0,
+  sharedHeroes.slice(0, 4).map(([img, list]) => `${img} ×${list.length}`).join('; '),
+);
+
+// The hover image on a card is the second gallery entry, so it must be unique
+// too — otherwise two cards swap to the same picture.
+const bySecond = new Map();
+for (const p of products) {
+  let gallery = [];
+  try { gallery = JSON.parse(p.images || '[]'); } catch { gallery = []; }
+  const second = gallery[1];
+  if (!second) continue;
+  if (!bySecond.has(second)) bySecond.set(second, []);
+  bySecond.get(second).push(p.slug);
+}
+const sharedSeconds = [...bySecond.entries()].filter(([, list]) => list.length > 1);
+check(
+  'no two products share a hover image',
+  sharedSeconds.length === 0,
+  sharedSeconds.slice(0, 4).map(([img, list]) => `${img} ×${list.length}`).join('; '),
+);
+
 /* ------------------------------------------------------------------ prices */
 console.log('\nPrices\n');
 for (const [name, list] of [['jade', JADE], ['jewellery', JEWELLERY]]) {
@@ -104,7 +154,7 @@ check('no two products share a SKU', dupeSkus.length === 0, dupeSkus.map((r) => 
 // Every generated lot must differ from its base by more than a name: the price
 // or the picking window has to move, or it is the same product twice.
 const generated = TEAS.filter((p) => /-L\d\d$/.test(p.sku));
-check(`tea lots are generated from base teas (${generated.length} lots)`, generated.length === 75, `got ${generated.length}`);
+check(`tea lots are generated from base teas (${generated.length} lots)`, generated.length === 77, `got ${generated.length}`);
 
 const emptyDesc = products.filter((p) => String(p.description || '').trim().length < 120);
 check('every product has a real description', emptyDesc.length === 0, emptyDesc.slice(0, 6).map((p) => p.slug).join(', '));

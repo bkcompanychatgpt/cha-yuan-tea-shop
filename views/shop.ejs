@@ -1,143 +1,229 @@
+<%
+  /*
+   * The shop page has two shapes.
+   *
+   *   chooser — three departments, nothing else. This is what /shop shows when
+   *             nothing has been chosen, because opening on twelve category
+   *             chips made the shop read as a wall of filters.
+   *   listing — one department, with that department's own categories as chips
+   *             above the grid. Tea's eight divisions appear here and nowhere
+   *             else.
+   */
+%>
+
 <div class="wrap">
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="/">Home</a><span class="sep">/</span>
-    <% if (activeCategory) { %>
+    <% if (activeCategory && activeDepartment) { %>
+      <a href="/shop?department=<%= activeDepartment.slug %>"><%= activeDepartment.name %></a><span class="sep">/</span>
+      <span><%= activeCategory.name %></span>
+    <% } else if (activeCategory) { %>
       <a href="/shop">Shop</a><span class="sep">/</span>
       <span><%= activeCategory.name %></span>
+    <% } else if (activeDepartment) { %>
+      <a href="/shop">Shop</a><span class="sep">/</span>
+      <span><%= activeDepartment.name %></span>
+    <% } else if (filters.q) { %>
+      <a href="/shop">Shop</a><span class="sep">/</span>
+      <span>Search</span>
     <% } else { %>
-      <span>All products</span>
+      <span>Shop</span>
     <% } %>
   </nav>
 </div>
 
-<section class="wrap" style="padding-bottom:34px">
-  <span class="eyebrow"><%= activeCategory ? activeCategory.tagline : 'The full catalogue' %></span>
-  <h1 style="margin:14px 0 18px"><%= activeCategory ? activeCategory.name : 'All tea and teaware' %></h1>
-  <p class="lede">
-    <%= activeCategory
-      ? activeCategory.description
-      : 'Single-origin Chinese tea bought in small lots, plus the vessels that brew it best. Every lot is dated by harvest and brewed before it is listed.' %>
-  </p>
+<% if (chooser) { %>
+  <!-- ------------------------------------------------------------ chooser -->
+  <section class="wrap" style="padding-bottom:clamp(60px,8vw,110px)">
+    <span class="eyebrow">The full catalogue</span>
+    <h1 style="margin:14px 0 18px">Shop</h1>
+    <p class="lede" style="max-width:62ch">
+      Three departments, <%= counts.all %> pieces in total. Choose one to see what is in it.
+    </p>
 
-  <div style="margin-top:34px">
-    <form method="get" action="/shop">
-      <% if (filters.q) { %><input type="hidden" name="q" value="<%= filters.q %>" /><% } %>
-      <% if (filters.stock) { %><input type="hidden" name="stock" value="<%= filters.stock %>" /><% } %>
+    <div class="dept-grid" style="margin-top:clamp(30px,4vw,48px)">
+      <%
+        /*
+         * One anchor per card, and no anchors inside it.
+         *
+         * The category names are listed as plain text rather than links: the
+         * owner's instruction was that you choose Tea first and pick the kind of
+         * tea afterwards, so a shortcut straight to Green Tea from here is not
+         * wanted. It is also what keeps the markup legal — an <a> inside an <a>
+         * is forbidden, and the parser silently breaks the outer one apart,
+         * which is exactly what a first attempt at this did.
+         */
+      %>
+      <% cards.departments.forEach((dept) => { %>
+        <a class="dept dept-<%= dept.slug %>" href="<%= dept.href %>">
+          <div class="dept-media"><img src="<%= dept.hero.hero_image %>" alt="" loading="lazy" /></div>
+          <div class="dept-body">
+            <span class="eyebrow"><%= dept.eyebrow %></span>
+            <h2><%= dept.name %></h2>
+            <p class="dept-count"><%= dept.count %> <%= dept.count === 1 ? 'piece' : 'pieces' %></p>
+            <p class="dept-blurb"><%= dept.blurb %></p>
+            <ul class="dept-links">
+              <% dept.members.slice(0, 8).forEach(c => { %>
+                <li><%= c.name %> <span><%= c.product_count %></span></li>
+              <% }) %>
+            </ul>
+            <span class="dept-cta">Enter <%= dept.name %> &rarr;</span>
+          </div>
+        </a>
+      <% }) %>
+    </div>
 
-      <div class="toolbar">
-        <span class="tiny faint" style="letter-spacing:0.16em;text-transform:uppercase">Filter</span>
+    <% if (cards.also) { %>
+      <div class="also-row">
+        <span class="tiny faint" style="letter-spacing:0.16em;text-transform:uppercase">Also in the shop</span>
+        <div class="chip-row" style="margin-top:12px">
+          <% cards.also.members.forEach(c => { %>
+            <a class="chip" href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %> <span class="chip-n"><%= c.product_count %></span></a>
+          <% }) %>
+          <a class="chip chip-quiet" href="<%= cards.also.href %>">All <%= cards.also.name.toLowerCase() %> <span class="chip-n"><%= cards.also.count %></span></a>
+        </div>
+        <p class="tiny faint" style="margin-top:16px">
+          Or <a class="link-underline" href="/shop?department=tea&amp;sort=name">start with the tea</a> —
+          <%= counts.tea %> lots, each dated by harvest.
+        </p>
+      </div>
+    <% } %>
+  </section>
 
-        <a class="chip <%= !filters.category && !filters.family ? 'is-active' : '' %>" href="/shop<%= filters.q ? `?q=${encodeURIComponent(filters.q)}` : '' %>">All</a>
-        <% categories.filter(c => c.kind === 'tea').forEach(c => { %>
-          <a class="chip <%= filters.category === c.slug ? 'is-active' : '' %>" href="/shop?category=<%= encodeURIComponent(c.slug) %><%= filters.sort && filters.sort !== 'featured' ? `&sort=${filters.sort}` : '' %>"><%= c.name %></a>
-        <% }) %>
-        <% categories.filter(c => c.kind !== 'tea').forEach(c => { %>
-          <a class="chip <%= filters.category === c.slug ? 'is-active' : '' %>" href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %></a>
-        <% }) %>
+<% } else { %>
+  <!-- ------------------------------------------------------------ listing -->
+  <section class="wrap" style="padding-bottom:30px">
+    <span class="eyebrow"><%= activeCategory ? activeCategory.tagline : (activeDepartment ? activeDepartment.eyebrow : (filters.q ? 'Search results' : 'Everything')) %></span>
+    <h1 style="margin:14px 0 18px">
+      <%= activeCategory ? activeCategory.name : (activeDepartment ? activeDepartment.name : (filters.q ? `“${filters.q}”` : 'All products')) %>
+    </h1>
+    <p class="lede">
+      <%= activeCategory
+        ? activeCategory.description
+        : (activeDepartment
+          ? activeDepartment.blurb
+          : 'Every piece in the shop, tea and stone and metal together.') %>
+    </p>
+  </section>
 
-        <div class="right row" style="gap:12px">
-          <a class="chip <%= filters.stock === '1' ? 'is-active' : '' %>" href="/shop?<%= new URLSearchParams({ ...filters, stock: filters.stock === '1' ? '' : '1' }).toString() %>">In stock only</a>
-          <% if (filters.category) { %><input type="hidden" name="category" value="<%= filters.category %>" /><% } %>
-          <% if (filters.family) { %><input type="hidden" name="family" value="<%= filters.family %>" /><% } %>
+  <section class="wrap" style="padding-bottom:clamp(60px,8vw,110px)">
+    <% if (subCategories.length) { %>
+      <%
+        /*
+         * Tea's own divisions, shown only once you are inside Tea. Each chip
+         * keeps the department in the URL so the context survives the click.
+         */
+      %>
+      <div class="subnav">
+        <span class="tiny faint subnav-label">Kind of tea</span>
+        <div class="chip-row">
+          <a class="chip <%= !filters.category && !filters.family ? 'is-active' : '' %>"
+             href="/shop?department=<%= activeDepartment.slug %>">All tea <span class="chip-n"><%= counts.tea %></span></a>
+          <% subCategories.forEach(c => { %>
+            <a class="chip <%= filters.category === c.slug ? 'is-active' : '' %>"
+               href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %> <span class="chip-n"><%= c.product_count %></span></a>
+          <% }) %>
         </div>
       </div>
-    </form>
-  </div>
-</section>
+    <% } %>
 
-<section class="wrap" style="padding-bottom:clamp(60px,8vw,110px)">
-  <div class="result-bar">
-    <div>
-      <div class="rb-count">
-        <%= total %> <%= total === 1 ? 'product' : 'products' %>
-        <small><% if (filters.q) { %>matching “<%= filters.q %>”<% } else if (activeCategory) { %>in <%= activeCategory.name %><% } else { %>in the whole shop<% } %></small>
+    <div class="result-bar">
+      <div>
+        <div class="rb-count">
+          <%= total %> <%= total === 1 ? 'piece' : 'pieces' %>
+          <small>
+            <% if (filters.q) { %>matching “<%= filters.q %>”
+            <% } else if (activeCategory) { %>in <%= activeCategory.name %>
+            <% } else if (activeDepartment) { %>in <%= activeDepartment.name %>
+            <% } else { %>in the whole shop<% } %>
+          </small>
+        </div>
       </div>
-    </div>
-    <div class="rb-actions">
-      <span class="tiny faint">Showing <%= products.length ? (page - 1) * perPage + 1 : 0 %>–<%= (page - 1) * perPage + products.length %></span>
-      <% if (filters.q || filters.category || filters.family || filters.stock) { %>
-        <a class="chip" href="/shop">✕ Clear filters</a>
-      <% } %>
-      <div class="row" style="gap:8px">
-        <span class="tiny faint">Sort</span>
-        <form method="get" action="/shop" style="display:inline">
-          <% ['q','category','family','stock'].forEach(k => { if (filters[k]) { %><input type="hidden" name="<%= k %>" value="<%= filters[k] %>" /><% } }) %>
-          <select class="select" name="sort" data-auto-submit style="width:auto;padding:8px 12px;font-size:0.78rem">
-            <% [['featured','Featured'],['newest','Newest'],['price-asc','Price ↑'],['price-desc','Price ↓'],['rating','Highest rated'],['name','A – Z']].forEach(([v, label]) => { %>
-              <option value="<%= v %>" <%= filters.sort === v ? 'selected' : '' %>><%= label %></option>
-            <% }) %>
-          </select>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <% if (!products.length) { %>
-    <div class="panel" style="text-align:center;padding:70px 30px">
-      <p class="gold" style="font-family:var(--font-display);font-size:3rem;line-height:1">Nothing found</p>
-      <h3 style="margin:20px 0 10px">No tea matches that</h3>
-      <p class="muted">Try a broader search, or browse the whole catalogue.</p>
-      <a class="btn" href="/shop" style="margin-top:24px">Browse all products</a>
-    </div>
-  <% } else { %>
-    <div class="tea-grid">
-      <% products.forEach(product => { %>
-        <%- include('partials/tea-card', { product, money }) %>
-      <% }) %>
-    </div>
-  <% } %>
-
-  <%
-    /*
-     * A window of page numbers rather than one link per page.
-     *
-     * The catalogue is two hundred products, so a category runs to several
-     * pages: rendering every page number overflowed a phone viewport and gave
-     * the whole document a horizontal scrollbar. This keeps the current page
-     * centred with one neighbour either side and elides the rest.
-     */
-    const windowPages = [];
-    if (pages > 1) {
-      const span = 2;
-      const first = Math.max(1, page - span);
-      const last = Math.min(pages, page + span);
-      if (first > 1) windowPages.push(1, first > 2 ? '…' : 2);
-      for (let p = first; p <= last; p += 1) windowPages.push(p);
-      if (last < pages) windowPages.push(last < pages - 1 ? '…' : pages - 1, pages);
-      // Drop a stray ellipsis that sits where a real number already is.
-      for (let i = windowPages.length - 1; i > 0; i -= 1) {
-        if (windowPages[i] === '…' && windowPages[i - 1] === '…') windowPages.splice(i, 1);
-      }
-    }
-  %>
-
-  <% if (pages > 1) { %>
-    <nav class="pagination" aria-label="Pagination">
-      <% if (page > 1) { %>
-        <a href="?<%= new URLSearchParams({ ...filters, page: String(page - 1) }).toString() %>" aria-label="Previous page">←</a>
-      <% } %>
-      <% windowPages.forEach((p) => { %>
-        <% if (p === '…') { %>
-          <span class="is-gap" aria-hidden="true">…</span>
-        <% } else if (p === page) { %>
-          <span class="is-current" aria-current="page"><%= p %></span>
-        <% } else { %>
-          <a href="?<%= new URLSearchParams({ ...filters, page: String(p) }).toString() %>"><%= p %></a>
+      <div class="rb-actions">
+        <span class="tiny faint rb-showing">Showing <%= products.length ? (page - 1) * perPage + 1 : 0 %>–<%= (page - 1) * perPage + products.length %></span>
+        <% if (filters.q || filters.category || filters.family || filters.stock) { %>
+          <a class="chip" href="/shop<%= activeDepartment ? `?department=${activeDepartment.slug}` : '' %>">✕ Clear filters</a>
         <% } %>
-      <% }) %>
-      <% if (page < pages) { %>
-        <a href="?<%= new URLSearchParams({ ...filters, page: String(page + 1) }).toString() %>" aria-label="Next page">→</a>
-      <% } %>
-      <span class="pagination-total"><%= page %> / <%= pages %></span>
-    </nav>
-  <% } %>
+        <div class="row" style="gap:8px">
+          <span class="tiny faint rb-sort-label">Sort</span>
+          <form method="get" action="/shop" style="display:inline">
+            <% ['q','category','family','stock','department'].forEach(k => { if (filters[k]) { %><input type="hidden" name="<%= k %>" value="<%= filters[k] %>" /><% } }) %>
+            <select class="select" name="sort" data-auto-submit style="width:auto;padding:8px 12px;font-size:0.78rem">
+              <% [['featured','Featured'],['newest','Newest'],['price-asc','Price ↑'],['price-desc','Price ↓'],['rating','Highest rated'],['name','A – Z']].forEach(([v, label]) => { %>
+                <option value="<%= v %>" <%= filters.sort === v ? 'selected' : '' %>><%= label %></option>
+              <% }) %>
+            </select>
+          </form>
+        </div>
+      </div>
+    </div>
 
-  <div class="band" style="margin-top:44px">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 7h13v10H3z"/><path d="M16 10h3l2 3v4h-5"/><circle cx="7" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg>
-    <p>
-      <strong>Free shipping over <%= money(store.freeShippingThreshold) %></strong> ·
-      flat <%= money(store.flatShippingFee) %> below that · parcels leave our tea room in Canada within one business day ·
-      <a class="link-underline" href="/shipping">shipping &amp; returns</a>
-    </p>
-  </div>
-</section>
+    <% if (!products.length) { %>
+      <div class="panel" style="text-align:center;padding:70px 30px">
+        <p class="gold" style="font-family:var(--font-display);font-size:3rem;line-height:1">Nothing found</p>
+        <h3 style="margin:20px 0 10px">No piece matches that</h3>
+        <p class="muted">Try a broader search, or start again from the departments.</p>
+        <a class="btn" href="/shop" style="margin-top:24px">Back to the departments</a>
+      </div>
+    <% } else { %>
+      <div class="tea-grid">
+        <% products.forEach(product => { %>
+          <%- include('partials/tea-card', { product, money }) %>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <%
+      /*
+       * A window of page numbers rather than one link per page.
+       *
+       * The catalogue is two hundred products, so a category runs to several
+       * pages: rendering every page number overflowed a phone viewport and gave
+       * the whole document a horizontal scrollbar. This keeps the current page
+       * centred with one neighbour either side and elides the rest.
+       */
+      const windowPages = [];
+      if (pages > 1) {
+        const span = 2;
+        const first = Math.max(1, page - span);
+        const last = Math.min(pages, page + span);
+        if (first > 1) windowPages.push(1, first > 2 ? '…' : 2);
+        for (let p = first; p <= last; p += 1) windowPages.push(p);
+        if (last < pages) windowPages.push(last < pages - 1 ? '…' : pages - 1, pages);
+        for (let i = windowPages.length - 1; i > 0; i -= 1) {
+          if (windowPages[i] === '…' && windowPages[i - 1] === '…') windowPages.splice(i, 1);
+        }
+      }
+    %>
+
+    <% if (pages > 1) { %>
+      <nav class="pagination" aria-label="Pagination">
+        <% if (page > 1) { %>
+          <a href="?<%= new URLSearchParams({ ...filters, page: String(page - 1) }).toString() %>" aria-label="Previous page">←</a>
+        <% } %>
+        <% windowPages.forEach((p) => { %>
+          <% if (p === '…') { %>
+            <span class="is-gap" aria-hidden="true">…</span>
+          <% } else if (p === page) { %>
+            <span class="is-current" aria-current="page"><%= p %></span>
+          <% } else { %>
+            <a href="?<%= new URLSearchParams({ ...filters, page: String(p) }).toString() %>"><%= p %></a>
+          <% } %>
+        <% }) %>
+        <% if (page < pages) { %>
+          <a href="?<%= new URLSearchParams({ ...filters, page: String(page + 1) }).toString() %>" aria-label="Next page">→</a>
+        <% } %>
+        <span class="pagination-total"><%= page %> / <%= pages %></span>
+      </nav>
+    <% } %>
+
+    <div class="band" style="margin-top:44px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 7h13v10H3z"/><path d="M16 10h3l2 3v4h-5"/><circle cx="7" cy="19" r="1.6"/><circle cx="18" cy="19" r="1.6"/></svg>
+      <p>
+        <strong>Free shipping over <%= money(store.freeShippingThreshold) %></strong> ·
+        flat <%= money(store.flatShippingFee) %> below that · parcels leave our tea room in Canada within one business day ·
+        <a class="link-underline" href="/shipping">shipping &amp; returns</a>
+      </p>
+    </div>
+  </section>
+<% } %>

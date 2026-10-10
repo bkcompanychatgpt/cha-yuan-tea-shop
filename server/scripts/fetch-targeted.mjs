@@ -62,7 +62,48 @@ const TARGETS = {
   pearls: ['South Sea pearl necklace', 'golden pearl strand', 'freshwater pearl jewellery'],
   earrings: ['jade earrings', 'gold drop earrings', 'Chinese earrings gold'],
   rings: ['jade ring gold', 'gemstone ring jade', 'Chinese gold ring'],
+  // Pu-erh had only eleven tiles across every earlier survey, against thirteen
+  // products in the department, so two cakes would have had to reuse a
+  // neighbour's photograph. These are the spellings the earlier queries missed:
+  // the cake itself, the wrapper, the tuo, and the two production states.
+  puerh: [
+    'pu-erh cake', 'puer tea cake', 'beeng cha', 'pu erh tea brick',
+    'raw pu-erh tea', 'ripe pu-erh tea', 'tuo cha tea', 'Yunnan tea cake',
+    'aged pu-erh', 'tea cake wrapper', 'Menghai tea', 'pressed tea cake',
+  ],
+  'puerh-brewed': [
+    'pu-erh tea cup', 'pu erh brewed tea', 'Chinese dark tea cup', 'dark tea liquor',
+  ],
+  // Second pass, for the departments where the first survey did not reach two
+  // usable photographs per product. The owner's requirement is that no product
+  // shares an image with another, and the tea department is a hundred products,
+  // so the binding constraint is supply rather than shelf space.
+  'green-more': [
+    'Longjing tea', 'Dragon well tea leaves', 'Chinese green tea leaves',
+    'green tea loose leaf', 'gunpowder green tea', 'Biluochun tea',
+    'Huangshan Maofeng', 'Taiping Houkui tea', 'Anji white tea', 'green tea cup China',
+    'matcha powder bowl', 'green tea brewing glass',
+  ],
+  'white-more': [
+    'white tea leaves', 'Bai Mudan tea', 'Gongmei white tea', 'white tea cake',
+    'aged white tea', 'white tea brewing', 'Baihao Yinzhen tea', 'white peony tea',
+  ],
+  'floral-more': [
+    'jasmine tea', 'jasmine pearls tea', 'chrysanthemum tea', 'osmanthus tea',
+    'rose tea China', 'flower tea cup', 'dried jasmine flowers', 'dried rose buds tea',
+  ],
+  'oolong-more': [
+    'Tieguanyin tea', 'oolong tea leaves', 'Taiwan oolong tea', 'Dong Ding oolong',
+    'milk oolong tea', 'oolong tea brewing',
+  ],
+  'rock-more': [
+    'Wuyi rock tea', 'Da Hong Pao tea', 'yancha oolong', 'Rou Gui tea',
+    'roasted oolong tea', 'Wuyi Mountains tea', 'rock oolong leaves',
+  ],
 };
+
+/** Groups added after the first pass, listed so their names are easy to find. */
+export const EXTRA_GROUPS = ['puerh', 'puerh-brewed', 'green-more', 'white-more', 'floral-more', 'oolong-more', 'rock-more'];
 
 function licenceOk(shortName) {
   if (!shortName) return false;

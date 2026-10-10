@@ -4,13 +4,13 @@
  *
  *   node server/scripts/preview-lots.mjs
  */
-import { PRODUCTS, CATEGORIES } from '../catalog-data.mjs';
+import { BASE_PRODUCTS, CATEGORIES } from '../catalog-data.mjs';
 import { buildTeaLots } from '../build-lots.mjs';
 
 const kindOf = Object.fromEntries(CATEGORIES.map((c) => [c.slug, c.kind]));
-const existingTea = PRODUCTS.filter((p) => kindOf[p.category] === 'tea');
+const existingTea = BASE_PRODUCTS.filter((p) => kindOf[p.category] === 'tea');
 
-const { products, problems } = buildTeaLots(PRODUCTS);
+const { products, problems } = buildTeaLots(BASE_PRODUCTS);
 
 console.log(`Generated ${products.length} tea lots from ${existingTea.length} base teas\n`);
 
@@ -58,7 +58,7 @@ for (const p of products.slice(0, 4)) {
 const allSlugs = new Set();
 const allSkus = new Set();
 let dupes = 0;
-for (const p of [...PRODUCTS, ...products]) {
+for (const p of [...BASE_PRODUCTS, ...products]) {
   if (allSlugs.has(p.slug)) { console.log(`  DUPLICATE SLUG ${p.slug}`); dupes += 1; }
   if (allSkus.has(p.sku)) { console.log(`  DUPLICATE SKU  ${p.sku}`); dupes += 1; }
   allSlugs.add(p.slug);

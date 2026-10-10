@@ -97,7 +97,46 @@ async function main() {
     const r = await request('/shop');
     const html = await r.text();
     record(r.status === 200, 'GET /shop returns 200');
-    record((html.match(/class="tea-card"/g) || []).length >= 6, 'shop lists at least 6 products');
+    // /shop opens on the three departments and nothing else: tea's own
+    // divisions appear only once you are inside Tea.
+    record(!html.includes('class="tea-card"'), 'shop opens on the department chooser, not a product grid');
+    record((html.match(/class="dept /g) || []).length === 3, 'the chooser offers exactly three departments');
+    record(!html.includes('Kind of tea'), 'tea sub-categories are not shown on the chooser');
+  }
+
+  {
+    const r = await request('/shop?department=tea');
+    const html = await r.text();
+    record(r.status === 200, 'GET /shop?department=tea returns 200');
+    record(html.includes('Kind of tea'), 'tea sub-categories appear once inside Tea');
+    record((html.match(/class="tea-card"/g) || []).length >= 6, 'the tea department lists products');
+  }
+
+  {
+    const r = await request('/shop?department=jade');
+    const html = await r.text();
+    record(r.status === 200 && html.includes('Jade'), 'the jade department renders');
+    record(!html.includes('Kind of tea'), 'the jade department shows no tea sub-categories');
+  }
+
+  {
+    /*
+     * An <a> inside an <a> is invalid HTML, and the parser silently breaks the
+     * outer anchor apart rather than complaining — which turned each department
+     * card into four stray grid items and made the page look broken with no
+     * error anywhere. This catches it at the source.
+     */
+    const pages = ['/', '/shop', '/shop?department=tea', '/shop?category=jade', '/cart', '/checkout'];
+    const offenders = [];
+    for (const p of pages) {
+      const html = await (await request(p)).text();
+      // Crude but sufficient: within any single anchor's text, no second anchor
+      // may open before the first closes.
+      for (const m of html.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/gi)) {
+        if (/<a\b/i.test(m[1])) { offenders.push(p); break; }
+      }
+    }
+    record(offenders.length === 0, 'no anchor is nested inside another anchor', offenders.join(', '));
   }
 
   {

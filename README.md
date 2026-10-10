@@ -124,18 +124,36 @@ your own commissioned photography touches no application logic — see
 
 ### Photographs, illustrations, and why they are kept apart
 
-Two hundred and seven products is more than the shop has photographs of, so the
-catalogue distinguishes the two cases in the database and says which is which on
-the storefront:
+Two hundred and twenty-three products is more than the shop has photographs of,
+so the catalogue distinguishes the two cases in the database and says which is
+which on the storefront:
 
 | | count | how it is shown |
 |---|---|---|
-| **Photographed** | 124 | a real, openly-licensed photograph of that tea or piece |
-| **Illustrated** | 83 | house artwork, drawn by `server/imagery.mjs` |
+| **Photographed** | 126 | a real, openly-licensed photograph of that tea or piece |
+| **Illustrated** | 97 | house artwork, drawn by `server/imagery.mjs` |
 
 `products.image_kind` holds `photo` or `illustration`, and `applyPhotos()` in
 `server/seed.mjs` sets it on every boot from what the photo manifest actually
 claims. Anything the manifest does not cover is marked `illustration`.
+
+**No photograph is used by two products.** That is enforced, not intended: tea
+photographs are assigned from pools in `server/photo-pools.mjs` by
+`server/build-tea-photos.mjs`, which strikes each tile off as it hands it out and
+fails loudly rather than reusing one. `server/scripts/check-catalogue.mjs`
+asserts the result against the database — 223 distinct main images across 223
+products — and also checks the hover image, since a card swaps to its second
+gallery entry.
+
+Tiles that survived a contact-sheet review but read as the wrong product at card
+size are listed in `REJECTED_TILES` with the reason. That list exists because a
+pile of dried rose buds passes a "floral tea" filter and a photograph of a bag of
+tea passes a "white tea" one; the only reliable test was rendering every
+assignment next to its product name (`check-photo-fit.mjs`) and looking at it.
+
+Department totals are uneven — 102 tea, 61 jade, 53 jewellery — because they are
+bounded by how many genuinely different photographs exist for each kind of tea,
+not chosen in advance.
 
 An illustrated product is labelled in three places, and all three matter:
 
@@ -146,19 +164,23 @@ An illustrated product is labelled in three places, and all three matter:
 3. A note under the gallery on the product page, and a section on `/credits`.
 
 Illustrations are silhouettes of the *form* — a bangle is drawn as a ring, a
-pendant as a drop, earrings as a pair — driven by `products.art_unit`. They are
-not likenesses of a specific piece, and the product page says so.
-
-The tea department is 100 products and **every one carries a photograph**: the
-lots of one tea share that tea's photograph, because a photograph of Longjing is
-a photograph of Longjing whichever picking grade is in the tin. Jade and
-jewellery are 50 each, and the pieces with no photograph are drawn.
+pendant as a drop, earrings as a pair — driven by `products.art_unit`, and filled
+with the *material's* colour, so a ruby ring is drawn red and a sapphire ring
+blue. They are not likenesses of a specific piece, and the product page says so.
 
 **This is seed data.** The catalogue describes a plausible shop so the storefront,
 checkout and back office can be exercised end to end. Replace it with your own
 goods and your own photography before selling anything: drop files into
 `public/img/photos/`, run `npm run photos`, and the illustrated flag clears
 itself as real images arrive.
+
+### How the shop is organised
+
+Three departments, and tea's own divisions live one level down. `/shop` opens on
+the three of them and nothing else; the eight kinds of tea appear only once you
+are inside Tea. The structure is declared once, in `DEPARTMENTS` in
+`server/catalog.mjs`, so the homepage, the shop chooser and the breadcrumbs
+cannot disagree about it.
 
 ---
 

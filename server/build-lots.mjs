@@ -66,8 +66,15 @@ function badgesFor(base, style) {
   return [style.badge, ...inherited].slice(0, 3);
 }
 
-/** Slug from the full product name, so two lots of one tea cannot collide. */
-function slugFor(row) {
+/**
+ * Slug from the full product name, so two lots of one tea cannot collide.
+ *
+ * Exported because the photo pools have to key their assignments by the same
+ * slug the catalogue will use. Recomputing it separately is how the first
+ * attempt at this silently assigned seventy-seven lots to the single key
+ * `undefined`.
+ */
+export function lotSlug(row) {
   return String(row.name)
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -107,7 +114,7 @@ export function buildTeaLots(products) {
       continue;
     }
 
-    const slug = slugFor(row);
+    const slug = lotSlug(row);
     if (seenSlugs.has(slug)) {
       problems.push(`lot "${row.name}" would reuse slug "${slug}"`);
       continue;

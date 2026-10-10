@@ -4,17 +4,17 @@
  *
  *   node server/scripts/preview-pieces.mjs
  */
-import { PRODUCTS, CATEGORIES } from '../catalog-data.mjs';
+import { BASE_PRODUCTS, CATEGORIES } from '../catalog-data.mjs';
 import { buildTeaLots } from '../build-lots.mjs';
 import { buildPieces } from '../build-pieces.mjs';
 
 const kindOf = Object.fromEntries(CATEGORIES.map((c) => [c.slug, c.kind]));
-const existingTea = PRODUCTS.filter((p) => kindOf[p.category] === 'tea');
-const existingJade = PRODUCTS.filter((p) => p.category === 'jade');
-const existingJewellery = PRODUCTS.filter((p) => p.category === 'jewellery');
+const existingTea = BASE_PRODUCTS.filter((p) => kindOf[p.category] === 'tea');
+const existingJade = BASE_PRODUCTS.filter((p) => p.category === 'jade');
+const existingJewellery = BASE_PRODUCTS.filter((p) => p.category === 'jewellery');
 
-const lots = buildTeaLots(PRODUCTS);
-const pieces = buildPieces([...PRODUCTS, ...lots.products]);
+const lots = buildTeaLots(BASE_PRODUCTS);
+const pieces = buildPieces([...BASE_PRODUCTS, ...lots.products]);
 
 const problems = [...lots.problems, ...pieces.problems];
 if (problems.length) {
@@ -75,7 +75,7 @@ for (const p of jewellery.slice(0, 3)) {
 /* ------------------------------------------------------------- uniqueness */
 const seen = { slug: new Set(), sku: new Set() };
 let dupes = 0;
-for (const p of [...PRODUCTS, ...lots.products, ...pieces.products]) {
+for (const p of [...BASE_PRODUCTS, ...lots.products, ...pieces.products]) {
   if (seen.slug.has(p.slug)) { console.log(`  DUPLICATE SLUG ${p.slug}`); dupes += 1; }
   if (seen.sku.has(p.sku)) { console.log(`  DUPLICATE SKU  ${p.sku}`); dupes += 1; }
   seen.slug.add(p.slug);

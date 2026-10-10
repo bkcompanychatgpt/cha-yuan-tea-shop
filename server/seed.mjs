@@ -307,18 +307,22 @@ function applyPhotos() {
     result.categories += 1;
   }
 
-  // Generated tea lots inherit their base tea's photograph.
+  // Generated tea lots inherit their base tea's photograph, but only when the
+  // manifest has nothing of its own for that lot.
   //
-  // A photograph of Longjing is a photograph of Longjing whichever picking grade
-  // is in the tin, so the lots of one tea share that tea's photography rather
-  // than being drawn. Jade and jewellery have no photograph to inherit, so they
-  // keep their artwork and carry the illustration disclosure.
+  // Every tea lot now has photographs of its own, drawn from the pools in
+  // photo-pools.mjs so that no two products share an image. This inheritance is
+  // the older mechanism and is kept as a fallback: without the `claimed` guard
+  // it ran second and overwrote each lot's own photographs with its base tea's,
+  // which put the same picture on five products and defeated the whole exercise.
+  const claimed = new Set(Object.keys(manifest.products || {}));
   const baseOf = new Map(PRODUCTS.map((p) => [p.slug, p.photoBase || '']));
   const withPhotos = all("SELECT id, slug, hero_image, images FROM products WHERE image_kind = 'photo' AND hero_image <> ''");
   const photoFor = new Map(withPhotos.map((p) => [p.slug, { hero: p.hero_image, images: p.images }]));
 
   for (const [slug, baseSlug] of baseOf) {
     if (!baseSlug) continue;
+    if (claimed.has(slug)) continue;
     const source = photoFor.get(baseSlug);
     if (!source) continue;
     const lot = get('SELECT id FROM products WHERE slug = ?', slug);

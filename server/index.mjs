@@ -26,6 +26,7 @@ import * as security from './security.mjs';
 // Named import, not `import * as`: views call this as a function, and a module
 // namespace object is not callable.
 import { fulfilment } from './fulfilment.mjs';
+import { englishLabel } from './photo-selection.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(config.rootDir, 'public');
@@ -449,12 +450,63 @@ app.get('/', (req, res) => {
   });
 });
 
+/**
+ * The shop page.
+ *
+ * Three states, and keeping them distinct is the whole point:
+ *
+ *   /shop                      the chooser: three departments and nothing else
+ *   /shop?department=tea       that department, with its own categories as chips
+ *   /shop?category=green-tea   one category, still inside its department
+ *
+ * The owner's complaint was that /shop opened with twelve category chips at
+ * once — tea's eight internal divisions, jade, jewellery, teaware and gifts all
+ * presented as peers — which made the page read as a wall of filters rather than
+ * as a shop with three things in it. Tea's divisions now appear only once you
+ * are inside Tea.
+ */
 app.get('/shop', (req, res) => {
-  const { category = '', family = '', q = '', sort = 'featured', stock = '' } = req.query;
+  const { category = '', family = '', q = '', sort = 'featured', stock = '', department = '' } = req.query;
   const page = Math.max(1, Number.parseInt(req.query.page, 10) || 1);
-  const perPage = 12;
+  const perPage = 20;
+
+  const activeCategory = category ? catalog.getCategory(String(category)) : null;
+  const activeDepartment = catalog.getDepartment(String(department));
+
+  // A category URL implies its department, so breadcrumbs and the chip row stay
+  // consistent whichever way the customer arrived.
+  const departmentForView = activeDepartment
+    || (activeCategory ? catalog.DEPARTMENTS.find((d) => d.kinds.includes(activeCategory.kind)) : null);
+
+  const searching = Boolean(String(q).trim());
+  // The chooser is only shown when nothing at all has been chosen.
+  const showChooser = !departmentForView && !activeCategory && !searching && !family && !stock;
+
+  if (showChooser) {
+    return renderPage(res, 'shop', {
+      page: 'shop',
+      title: `Shop — ${config.store.name}`,
+      description: 'Three departments: single-origin Chinese tea, jade and stone, and fine jewellery.',
+      chooser: true,
+      cards: catalog.departmentCards(),
+      counts: catalog.departmentCounts(),
+      categories: catalog.listCategories(),
+      products: [],
+      total: 0,
+      page: 1,
+      perPage,
+      pages: 1,
+      filters: { category: '', family: '', q: '', sort, stock: '' },
+      activeCategory: null,
+      activeDepartment: null,
+      subCategories: [],
+      families: catalog.listTeaFamilies(),
+    });
+  }
+
   const { products, total } = catalog.listProducts({
     category: String(category),
+    kinds: !activeCategory && departmentForView ? departmentForView.kinds : null,
     family: String(family),
     q: String(q),
     sort: String(sort),
@@ -462,20 +514,31 @@ app.get('/shop', (req, res) => {
     limit: perPage,
     offset: (page - 1) * perPage,
   });
+
+  // Sub-categories are shown for the tea department only: jade and jewellery are
+  // single categories, so a chip row for them would be one chip.
+  const subCategories = departmentForView && departmentForView.slug === 'tea'
+    ? catalog.listCategories().filter((c) => c.kind === 'tea')
+    : [];
+
   renderPage(res, 'shop', {
     page: 'shop',
-    title: category
-      ? `${catalog.getCategory(String(category))?.name || 'Shop'} — ${config.store.name}`
-      : `All tea and teaware — ${config.store.name}`,
+    title: `${activeCategory?.name || departmentForView?.name || 'All products'} — ${config.store.name}`,
+    description: activeCategory?.description || departmentForView?.blurb || '',
+    chooser: false,
+    cards: catalog.departmentCards(),
+    counts: catalog.departmentCounts(),
     products,
     total,
     page: Number(page),
     perPage,
     pages: Math.max(1, Math.ceil(total / perPage)),
-    filters: { category: String(category), family: String(family), q: String(q), sort: String(sort), stock: String(stock) },
+    filters: { category: String(category), family: String(family), q: String(q), sort: String(sort), stock: String(stock), department: String(department) },
     categories: catalog.listCategories(),
     families: catalog.listTeaFamilies(),
-    activeCategory: category ? catalog.getCategory(String(category)) : null,
+    activeCategory,
+    activeDepartment: departmentForView,
+    subCategories,
   });
 });
 
@@ -536,7 +599,16 @@ app.get('/terms', (req, res) => {
   try {
     const raw = fs.readFileSync(path.join(PUBLIC_DIR, 'img', 'credits.json'), 'utf8');
     const parsed = JSON.parse(raw);
-    photoCredits = Object.entries(parsed.credits || {}).map(([slot, credit]) => ({ slot, ...credit }));
+    photoCredits = Object.entries(parsed.credits || {}).map(([slot, credit]) => ({
+      slot,
+      ...credit,
+      // Attribution has to name the author, and a number of Commons titles and
+      // authors are written in Chinese or Russian. The English label is shown
+      // here and the original stays in credits.json, so the credit is still
+      // traceable to the file it came from.
+      title: englishLabel(credit.title),
+      author: englishLabel(credit.author),
+    }));
   } catch {
     photoCredits = [];
   }
@@ -553,7 +625,12 @@ app.get('/credits', (req, res) => {
   let photoCredits = [];
   try {
     const parsed = JSON.parse(fs.readFileSync(path.join(PUBLIC_DIR, 'img', 'credits.json'), 'utf8'));
-    photoCredits = Object.entries(parsed.credits || {}).map(([slot, credit]) => ({ slot, ...credit }));
+    photoCredits = Object.entries(parsed.credits || {}).map(([slot, credit]) => ({
+      slot,
+      ...credit,
+      title: englishLabel(credit.title),
+      author: englishLabel(credit.author),
+    }));
   } catch {
     photoCredits = [];
   }

@@ -18,6 +18,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { BASE_PRODUCTS } from './catalog-data.mjs';
+import { TEA_LOT_ROWS } from './data-lots.mjs';
+import { buildTeaPhotos } from './build-tea-photos.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -46,46 +49,21 @@ export const EDITORIAL_PHOTOS = {
  * roughly a third of the tiles show the tea as a drink or in the vessel it is
  * brewed in.
  */
+/**
+ * Product photography for the products that are not tea.
+ *
+ * The tea department is deliberately absent. With a hundred teas and a rule that
+ * no two products may share an image, hand-picking each one is how duplicates
+ * crept in — `white#13` and `white#22` were each used twice, and every tea
+ * category tile then collided with a product. Tea photographs are now drawn from
+ * the pools in ./photo-pools.mjs by ./build-tea-photos.mjs, which hands out each
+ * tile exactly once; `CATEGORY_PHOTOS` below still quotes tiles of its own, and
+ * the pool skips anything already claimed.
+ *
+ * The teaware and gift-set entries stay hand-picked because there are only seven
+ * of them and they are not part of the pooling problem.
+ */
 export const PRODUCT_PHOTOS = {
-  /* ------------------------------------------------------------- green tea */
-  'lion-peak-longjing': { picks: ['green-flat#2', 'green-flat#4', 'green-flat#8'], grade: 'product' },
-  'biluochun-spring-snail': { picks: ['green-curly#4', 'green-curly#5', 'green-curly#6'], grade: 'product' },
-  'huangshan-maofeng': { picks: ['green-leafy#4', 'green-leafy#8', 'green-leafy#7'], grade: 'product' },
-  'taiping-houkou': { picks: ['green-leafy#20', 'green-leafy#7', 'green-leafy#19'], grade: 'product' },
-
-  /* ------------------------------------------------------------- white tea */
-  'silver-needle-baihao': { picks: ['silver-needle#2', 'silver-needle#3', 'silver-needle#14'], grade: 'product' },
-  'white-peony-yueguangbai': { picks: ['white#15', 'white#13', 'white#22'], grade: 'product' },
-  'aged-white-2019-shoumei': { picks: ['white#22', 'white#13', 'shoumei#1'], grade: 'product' },
-
-  /* ---------------------------------------------------------------- oolong */
-  'tieguanyin-iron-goddess': { picks: ['oolong#2', 'oolong#3', 'oolong#16'], grade: 'product' },
-  'wuyi-shuixian': { picks: ['oolong#15', 'oolong#21', 'oolong#20'], grade: 'product' },
-  'da-hong-pao': { picks: ['oolong#13', 'oolong#19', 'oolong#4'], grade: 'product' },
-  'milk-oolong-jinxuan': { picks: ['oolong#22', 'oolong#10', 'oolong#26'], grade: 'product' },
-  'dong-ding-oolong': { picks: ['oolong#28', 'oolong#20', 'oolong#10'], grade: 'product' },
-
-  /* --------------------------------------------------- phoenix dan cong */
-  'mi-lan-xiang-dan-cong': { picks: ['dancong#3', 'dancong#1', 'dan-cong#10'], grade: 'product' },
-  'ya-shi-xiang-dan-cong': { picks: ['dancong#5', 'dancong#8', 'dan-cong#3'], grade: 'product' },
-
-  /* ------------------------------------------------------------- black tea */
-  'lapsang-souchong-tongmuguan': { picks: ['black#14', 'lapsang#7', 'lapsang#11'], grade: 'product' },
-  'yunnan-dianhong-golden-bud': { picks: ['dianhong#1', 'dianhong#9', 'dianhong#10'], grade: 'product' },
-  'keemun-hao-ya': { picks: ['black#13', 'black#18', 'black#20'], grade: 'product' },
-  'jin-jun-mei': { picks: ['jinjunmei#3', 'jinjunmei#1', 'jinjunmei#2'], grade: 'product' },
-
-  /* ----------------------------------------------------------------- puerh */
-  'menghai-7572-shou-cake': { picks: ['puerh#1', 'puerh#8', 'puerh#10'], grade: 'product' },
-  'jingmai-raw-sheng-cake': { picks: ['puerh#5', 'puerh#3', 'puerh#2'], grade: 'product' },
-  'aged-shou-tuocha-2008': { picks: ['puerh#11', 'puerh#4', 'puerh#10'], grade: 'product' },
-
-  /* ---------------------------------------------------------------- floral */
-  'jasmine-pearls-nine-scent': { picks: ['floral#8', 'floral#7', 'floral#9'], grade: 'product' },
-  'osmanthus-oolong': { picks: ['floral#18', 'floral#23', 'floral#21'], grade: 'product' },
-  'rose-black-tea': { picks: ['floral#34', 'floral#30', 'floral#25'], grade: 'product' },
-  'chrysanthemum-tai-ju': { picks: ['floral#22', 'silver-needle#6', 'floral#23'], grade: 'product' },
-
   /* --------------------------------------------------------------- teaware */
   'porcelain-gaiwan-set': { picks: ['gaiwan-good#6', 'teaware#1', 'teaware#5'], grade: 'product' },
   'glass-tea-tumbler': { picks: ['teaware#32', 'gaiwan-good#8', 'teaware#8'], grade: 'product' },
@@ -94,11 +72,13 @@ export const PRODUCT_PHOTOS = {
   'yixing-zisha-shi-piao-pot': { picks: ['yixing#7', 'yixing#12', 'yixing#3'], grade: 'product' },
 
   /* ------------------------------------------------------------ gift sets */
-  'gongfu-starter-kit': { picks: ['bamboo-tray#1', 'gaiwan-good#6', 'yixing#12'], grade: 'product' },
+  'gongfu-starter-kit': { picks: ['bamboo-tray#1', 'gaiwan-good#1', 'yixing#4'], grade: 'product' },
   // No studio shot of a bamboo tea tray exists under an open licence, so the box
-  // is represented by its contents: the six teas inside it.
-  'the-tea-voyage-gift-box': { picks: ['dianhong#1', 'silver-needle#2', 'puerh#2'], grade: 'product' },
-  'oolong-explorer-flight': { picks: ['oolong#2', 'oolong#15', 'oolong#22'], grade: 'product' },
+  // is represented by its contents: three of the teas inside it.
+  'the-tea-voyage-gift-box': { picks: ['black#32', 'white#17', 'puerh#12'], grade: 'product' },
+  // A flight of oolongs is presented in the vessels it is brewed in, because
+  // the three teas inside it are already used as product photographs elsewhere.
+  'oolong-explorer-flight': { picks: ['gaiwan-good#3', 'teaware#14', 'teaware#21'], grade: 'product' },
 
   // The last product without a photograph. A slatted bamboo tray, photographed
   // straight on, which is what the product is.
@@ -140,25 +120,25 @@ export const CATEGORY_PHOTOS = {
  */
 export const JADE_PHOTOS = {
   /* ------------------------------------------------------------------ jade */
-  'hetian-jade-buddha-pendant': { picks: ['jade-nephrite#23', 'jade-nephrite#24', 'jade-carving#12'], grade: 'product' },
+  'hetian-jade-buddha-pendant': { picks: ['jade-nephrite#23', 'jade-nephrite#24', 'jade-carving#2'], grade: 'product' },
   'jadeite-bangle-classic-round': { picks: ['jade-jadeite#3', 'jade-jadeite#4', 'jade-jadeite#6'], grade: 'product' },
-  'jadeite-bangle-certified': { picks: ['jade-jadeite#7', 'jade-jadeite#3', 'jade-jadeite#12'], grade: 'product' },
-  'jadeite-bangle-imperial': { picks: ['jade-jadeite#8', 'jade-jadeite#7', 'jade-jadeite#13'], grade: 'product' },
+  'jadeite-bangle-certified': { picks: ['jade-jadeite#7', 'jade-jadeite#5', 'jade-jadeite#12'], grade: 'product' },
+  'jadeite-bangle-imperial': { picks: ['jade-jadeite#8', 'jade-jadeite#9', 'jade-jadeite#13'], grade: 'product' },
   'jade-carved-pendant-tiger': { picks: ['jade-jadeite#10', 'jade-nephrite#15', 'jade-nephrite#18'], grade: 'product' },
-  'jade-dragon-pendant': { picks: ['jade-nephrite#26', 'jade-nephrite#22', 'jade-carving#20'], grade: 'product' },
+  'jade-dragon-pendant': { picks: ['jade-nephrite#26', 'jade-nephrite#27', 'jade-carving#20'], grade: 'product' },
   'jade-leaf-and-grape-pendant': { picks: ['jade-nephrite#22', 'jade-nephrite#17', 'jade-carving#12'], grade: 'product' },
-  'jade-deer-study': { picks: ['jade-carving#9', 'jade-carving#16', 'jade-carving#12'], grade: 'product' },
+  'jade-deer-study': { picks: ['jade-carving#9', 'jade-carving#16', 'jade-carving#6'], grade: 'product' },
   'jade-ruyi-sceptre': { picks: ['jade-carving#32', 'jade-carving#36', 'jade-carving#39'], grade: 'product' },
-  'jade-and-nephrite-pair': { picks: ['jade-nephrite#25', 'jade-carving#40', 'jade-nephrite#22'], grade: 'product' },
+  'jade-and-nephrite-pair': { picks: ['jade-nephrite#25', 'jade-carving#40', 'jade-nephrite#29'], grade: 'product' },
 
   /* ------------------------------------------------------------- jewellery */
   'pearl-strand-necklace': { picks: ['pearls#5', 'pearls#4', 'pearls#9'], grade: 'product' },
-  'jadeite-diamond-pendant': { picks: ['jade-jadeite#11', 'jewellery#19', 'pearls#10'], grade: 'product' },
-  'jade-gold-necklace-beads': { picks: ['jewellery#19', 'jewellery#24', 'jade-nephrite#22'], grade: 'product' },
+  'jadeite-diamond-pendant': { picks: ['jade-jadeite#11', 'jewellery#19', 'jewellery#5'], grade: 'product' },
+  'jade-gold-necklace-beads': { picks: ['jewellery#12', 'jewellery#24', 'jewellery#7'], grade: 'product' },
   'gold-filigree-cuff': { picks: ['jewellery#18', 'jewellery#16', 'jewellery#14'], grade: 'product' },
   'gold-and-jade-ring': { picks: ['rings#3', 'rings#15', 'rings#2'], grade: 'product' },
-  'jadeite-and-gold-earrings': { picks: ['pearls#11', 'pearls#10', 'rings#20'], grade: 'product' },
-  'imperial-jadeite-earrings': { picks: ['jewellery#20', 'jade-jadeite#11', 'pearls#11'], grade: 'product' },
+  'jadeite-and-gold-earrings': { picks: ['earrings#4', 'earrings#9', 'rings#20'], grade: 'product' },
+  'imperial-jadeite-earrings': { picks: ['jewellery#20', 'earrings#14', 'earrings#2'], grade: 'product' },
 };
 
 /**
@@ -190,6 +170,35 @@ export function englishLabel(value) {
   return original;
 }
 
-export const ALL_ASSIGNMENTS = { ...EDITORIAL_PHOTOS, ...PRODUCT_PHOTOS, ...JADE_PHOTOS };
+/**
+ * The complete photo assignment.
+ *
+ * The generated tea lots are added here rather than pasted in, so the pools
+ * remain the single place that decides which photograph goes to which tea. The
+ * pools are seeded with everything the hand-written entries already claim, so a
+ * tile can never be handed to two products.
+ */
+const _teaPhotos = buildTeaPhotos(BASE_PRODUCTS, TEA_LOT_ROWS, {
+  ...EDITORIAL_PHOTOS,
+  ...PRODUCT_PHOTOS,
+  ...JADE_PHOTOS,
+});
+export const TEA_PHOTOS = _teaPhotos.photos;
+export const TEA_PHOTO_PROBLEMS = _teaPhotos.problems;
 
-export default { EDITORIAL_PHOTOS, PRODUCT_PHOTOS, CATEGORY_PHOTOS, englishLabel, ALL_ASSIGNMENTS };
+export const ALL_ASSIGNMENTS = {
+  ...EDITORIAL_PHOTOS,
+  ...PRODUCT_PHOTOS,
+  ...JADE_PHOTOS,
+  ...TEA_PHOTOS,
+};
+
+export default {
+  EDITORIAL_PHOTOS,
+  PRODUCT_PHOTOS,
+  CATEGORY_PHOTOS,
+  JADE_PHOTOS,
+  TEA_PHOTOS,
+  englishLabel,
+  ALL_ASSIGNMENTS,
+};
