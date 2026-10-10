@@ -103,7 +103,28 @@ async function main() {
     console.log('  \u001b[32mEvery referenced asset resolved.\u001b[0m');
   }
 
-  const failed = broken.length + pageErrors;
+  /*
+   * Every photograph URL must carry the asset version.
+   *
+   * A photograph is replaced in place, under the same filename, so its URL has
+   * to change for the browser to notice. When it does not, the corrected image
+   * sits on the server and the customer keeps seeing the old one — which is what
+   * happened, and which no other check here can see, because a stale image is a
+   * perfectly valid 200.
+   */
+  const unversioned = [...seen.entries()].filter(
+    ([ref]) => /^\/img\/photos\/[^?]+\.(jpe?g|png|webp)$/i.test(ref),
+  );
+  if (unversioned.length) {
+    console.log(`  \u001b[31m${unversioned.length} photograph URL(s) without a cache-busting version:\u001b[0m`);
+    for (const [ref, page] of unversioned.slice(0, 20)) {
+      console.log(`    ${ref}   (first seen on ${page})`);
+    }
+  } else {
+    console.log('  \u001b[32mEvery photograph URL carries the asset version.\u001b[0m');
+  }
+
+  const failed = broken.length + pageErrors + unversioned.length;
   console.log(`\n${'-'.repeat(58)}`);
   console.log(`  ${failed === 0 ? 'PASS' : 'FAIL'}  ${failed} problem(s)\n`);
   process.exit(failed ? 1 : 0);

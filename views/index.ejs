@@ -62,7 +62,7 @@
    * unmistakably tea production, has nobody in it, and leaves the left third
    * plain enough for the headline to sit on.
    */
-  const heroShot = '/img/photos/home-hero-hero-wide.jpg';
+  const heroShot = img('/img/photos/home-hero-hero-wide.jpg');
 %>
 
 <section class="hero hero-banner">
@@ -235,11 +235,11 @@
     <div class="story-layout">
       <div class="story-media">
         <figure class="story-media-main">
-          <img src="<%= storyHero.src %>" alt="Tea terraces" loading="lazy" />
+          <img src="<%= img(storyHero.src) %>" alt="Tea terraces" loading="lazy" />
         </figure>
         <div class="story-media-side">
           <% storyPicks.slice(1, 4).forEach((shot) => { %>
-            <figure><img src="<%= shot.src %>" alt="" loading="lazy" /></figure>
+            <figure><img src="<%= img(shot.src) %>" alt="" loading="lazy" /></figure>
           <% }) %>
         </div>
       </div>
@@ -269,7 +269,7 @@
       <div class="photo-row">
         <% ed.photos.story.slice(4, 8).forEach((shot, i) => { %>
           <figure class="photo-row-item">
-            <img src="<%= shot.wide || shot.src %>" alt="" loading="lazy" />
+            <img src="<%= img(shot.wide || shot.src) %>" alt="" loading="lazy" />
             <figcaption>
               <%= ['Spring plucking', 'Withering beds', 'The tasting room', 'Glazed and gilded'][i] || 'From the source' %>
             </figcaption>

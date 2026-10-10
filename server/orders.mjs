@@ -6,6 +6,7 @@ import config from './config.mjs';
 import { all, get, run, transaction } from './db.mjs';
 import * as payments from './payments.mjs';
 import { variantSku } from './sku.mjs';
+import { photoUrl } from './asset-version.mjs';
 
 /* ------------------------------------------------------------------ pricing */
 
@@ -58,7 +59,7 @@ export function priceCart(lines, { shippingMethod = 'standard' } = {}) {
       unitPriceCents: row.price_cents,
       quantity: qty,
       lineTotalCents: row.price_cents * qty,
-      image: row.hero_image,
+      image: photoUrl(row.hero_image),
       weightGrams: (row.weight_grams || 0) * qty,
     });
   }

@@ -3,6 +3,7 @@
  * render products, categories and filters.
  */
 import { all, get, getSetting } from './db.mjs';
+import { photoUrl } from './asset-version.mjs';
 
 const productColumns = `
   p.id, p.slug, p.sku, p.name, p.subtitle, p.category_id, p.tea_family, p.origin, p.altitude,
@@ -23,11 +24,24 @@ function parseJson(value, fallback) {
 
 function hydrateProduct(row) {
   if (!row) return null;
+  const images = parseJson(row.images, []);
   return {
     ...row,
+    /*
+     * Photograph URLs carry the asset version.
+     *
+     * A re-shoot replaces `<slug>-hero.jpg` in place, so without a change to the
+     * URL a browser keeps serving the previous picture for as long as its cache
+     * says it may — which is how a corrected set of sixteen jade and jewellery
+     * pieces stayed invisible while sitting correctly on the server. Versioning
+     * here rather than in each template means the shop grid, the product page,
+     * the API and the admin tables cannot disagree, and a template that forgets
+     * is not possible.
+     */
+    hero_image: photoUrl(row.hero_image),
+    images: images.map((url) => photoUrl(url)),
     tasting_notes: parseJson(row.tasting_notes, []),
     brewing: parseJson(row.brewing, {}),
-    images: parseJson(row.images, []),
     badges: parseJson(row.badges, []),
     is_featured: !!row.is_featured,
     is_new: !!row.is_new,
@@ -62,11 +76,15 @@ export function listCategories({ includeEmpty = false } = {}) {
      WHERE c.is_active = 1
      ORDER BY c.sort_order, c.name
   `);
-  return includeEmpty ? rows : rows.filter((c) => c.product_count > 0);
+  // Category tiles are photographed too, so they need the same versioning the
+  // product rows get.
+  const versioned = rows.map((c) => ({ ...c, hero_image: photoUrl(c.hero_image) }));
+  return includeEmpty ? versioned : versioned.filter((c) => c.product_count > 0);
 }
 
 export function getCategory(slug) {
-  return get('SELECT * FROM categories WHERE slug = ? AND is_active = 1', String(slug));
+  const row = get('SELECT * FROM categories WHERE slug = ? AND is_active = 1', String(slug));
+  return row ? { ...row, hero_image: photoUrl(row.hero_image) } : row;
 }
 
 export function listTeaFamilies() {
@@ -264,7 +282,7 @@ export function departmentCards() {
       href: `/shop?department=${dept.slug}`,
       count: members.reduce((n, c) => n + c.product_count, 0),
       hero,
-      coverSrc: dept.cover || hero.hero_image,
+      coverSrc: photoUrl(dept.cover || hero.hero_image),
       members,
     };
   };
@@ -380,7 +398,7 @@ export function searchIndex() {
   );
   const cats = listCategories();
   return {
-    products: rows,
+    products: rows.map((r) => ({ ...r, hero_image: photoUrl(r.hero_image) })),
     categories: cats.map((c) => ({ slug: c.slug, name: c.name, kind: c.kind })),
     guides: getEditorial().guides.map((g) => ({ slug: g.slug, title: g.title, summary: g.summary })),
   };

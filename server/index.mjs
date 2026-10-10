@@ -27,42 +27,10 @@ import * as security from './security.mjs';
 // namespace object is not callable.
 import { fulfilment } from './fulfilment.mjs';
 import { englishLabel } from './photo-selection.mjs';
+import { ASSET_VERSION, photoUrl } from './asset-version.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(config.rootDir, 'public');
-
-/**
- * A content version for the assets that must never survive a change.
- *
- * `express.static` serves `public/` with `max-age=7d`, and the payment marks are
- * served `immutable` for a year on top of that. Neither URL changes when the
- * file does, so a browser that has fetched an earlier copy keeps it and never
- * asks again. That is not theoretical: it is how the footer ended up showing the
- * generated fallback pills — gold outline, brand name as text — long after the
- * real Visa and Mastercard artwork had been deployed, because the browser had
- * cached the fallback that the route produced at a moment when the mark files
- * were missing from the image directory.
- *
- * The fix is a query-string version, which is the standard one: same file, new
- * URL, cache bypassed. The hash is computed from the files themselves at boot,
- * so there is no build step to forget to run and no version constant to bump.
- * It covers the stylesheet and the brand marks, which are the two things whose
- * content changes without their path changing.
- */
-const ASSET_VERSION = (() => {
-  const hash = crypto.createHash('sha1');
-  const css = path.join(PUBLIC_DIR, 'css', 'styles.css');
-  if (fs.existsSync(css)) hash.update(fs.readFileSync(css));
-  const badgeDir = path.join(PUBLIC_DIR, 'img', 'badge');
-  if (fs.existsSync(badgeDir)) {
-    // Name and size, not bytes: two marks changing is caught, and it stays cheap.
-    for (const file of fs.readdirSync(badgeDir).sort()) {
-      const st = fs.statSync(path.join(badgeDir, file));
-      hash.update(`${file}:${st.size};`);
-    }
-  }
-  return hash.digest('hex').slice(0, 10);
-})();
 
 /* -------------------------------------------------------------------------- */
 /*  Boot                                                                       */
@@ -291,11 +259,17 @@ app.locals.payment = {
 app.locals.year = new Date().getFullYear();
 app.locals.escapeHtml = security.escapeHtml;
 /*
- * Templates append this to the two asset URLs that can change without their path
+ * Templates append this to the asset URLs that can change without their path
  * changing: `/css/styles.css?v=…` and `/img/badge/<brand>.svg?v=…`. Without it a
  * returning visitor keeps a week-old stylesheet and a year-old brand mark.
+ *
+ * Photographs are versioned in the data layer instead, by `photoUrl` in
+ * catalog.mjs, so that every surface gets the same URL without each template
+ * having to remember. `img` is exposed as well for the handful of image paths
+ * that are written directly into a template.
  */
 app.locals.assetVersion = ASSET_VERSION;
+app.locals.img = photoUrl;
 // Fulfilment promises, so any view can render the same deadlines the customer
 // was shown. Callable from a template as fulfilment(order); the partial that
 // does so lives at views/partials/order-progress.ejs.
