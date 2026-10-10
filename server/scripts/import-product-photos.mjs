@@ -1,12 +1,13 @@
 /**
  * Import generated product images.
  *
- * Point it at a folder of images named after the product slug (the filename is in
- * docs/image-prompts.json, so nothing has to be typed) and it grades each one to
- * the shop's house style, writes the same derivatives the photographic pipeline
- * writes, records the credit, and flags the product as photographed.
+ * Point it at a folder **or a zip file** of images named after the product slug
+ * (the filenames are in docs/image-prompts.json, so nothing has to be typed) and
+ * it grades each one to the shop's house style, writes the same derivatives the
+ * photographic pipeline writes, records the credit, and flags the product as
+ * photographed.
  *
- *   node server/scripts/import-product-photos.mjs <folder> [--dry-run]
+ *   node server/scripts/import-product-photos.mjs <folder | .zip> [--dry-run]
  *
  * Derivatives per product, matching build-photos.mjs:
  *   <slug>-hero.jpg   1200 sq   card, gallery, spotlight
@@ -19,10 +20,12 @@
  * `<slug>-3.jpg` alongside to use real second and third views instead.
  */
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import { getDb } from '../db.mjs';
+import { extractFlat } from './lib/zip.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..');
@@ -35,10 +38,34 @@ const arg = process.argv[2];
 const DRY = process.argv.includes('--dry-run');
 
 if (!arg) {
-  console.error('usage: node server/scripts/import-product-photos.mjs <folder> [--dry-run]');
+  console.error('usage: node server/scripts/import-product-photos.mjs <folder | .zip> [--dry-run]');
   process.exitCode = 2;
 } else {
-  const SRC_DIR = path.resolve(arg);
+  /*
+   * A zip is unpacked into a temporary directory first, flat, and removed
+   * afterwards. Whoever generates the images will hand back an archive, and
+   * asking them to unpack it first is a step that only exists to be got wrong.
+   */
+  const given = path.resolve(arg);
+  let SRC_DIR = given;
+  let tempDir = null;
+
+  if (/\.zip$/i.test(given)) {
+    if (!fs.existsSync(given)) {
+      console.error(`no such file: ${given}`);
+      process.exitCode = 1;
+    } else {
+      tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cy-import-'));
+      const { written, skipped } = extractFlat(fs.readFileSync(given), tempDir, { fs, path });
+      SRC_DIR = tempDir;
+      console.log(`\n  unpacked ${written.length} image(s) from ${path.basename(given)}`);
+      if (skipped.length) console.log(`  ignored ${skipped.length} non-image entr(ies)`);
+      if (!written.length) {
+        console.error('  the archive held no images — nothing to import');
+        process.exitCode = 1;
+      }
+    }
+  }
 
   const SIZES = {
     hero: [1200, 1200],
@@ -197,7 +224,9 @@ if (!arg) {
 
   console.log(`\n  ${DRY ? 'would import' : 'imported'} ${imported} of ${products.length} illustrated products`);
   if (missing.length) {
-    console.log(`  ${missing.length} still without a file in ${SRC_DIR}:`);
+    // The label is the path the operator gave, not the temporary unzip directory,
+    // which would be meaningless and is deleted moments later.
+    console.log(`  ${missing.length} still without a file in ${given}:`);
     for (const slug of missing.slice(0, 12)) console.log(`    ${slug}`);
     if (missing.length > 12) console.log(`    … and ${missing.length - 12} more`);
   }
@@ -205,4 +234,6 @@ if (!arg) {
     console.log('\n  Restart the server to reseed, then check with:');
     console.log('    node server/scripts/check-catalogue.mjs');
   }
+
+  if (tempDir) fs.rmSync(tempDir, { recursive: true, force: true });
 }
