@@ -35,6 +35,7 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import { getDb } from '../db.mjs';
 import { extractFlat } from './lib/zip.mjs';
+import { gradeResize } from './lib/grade.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..');
@@ -110,37 +111,32 @@ if (!arg) {
   };
 
   /**
-   * The house grade, matching the `product` grade in build-photos.mjs: a slight
-   * warm lift, a restrained ink-green wash, and a vignette so a white studio
-   * background does not punch a hole in the dark grid.
+   * Grade with the *shared* house look, not a local approximation of it.
+   *
+   * This function used to carry its own version, and that version called
+   * sharp's `tint()`. Tint is not a colour cast — it replaces the chroma while
+   * keeping the luminance — so all hundred and thirteen pieces imported through
+   * here came out monochrome: an "Imperial Green" bangle with no green in it,
+   * 22k gold that read as pewter. It looked plausible in a contact sheet built
+   * from the source files, which is why it survived a review.
+   *
+   * `gradeResize` recombines channels instead, which shifts the colour warm or
+   * cool without removing it, and it is the same code the rest of the catalogue
+   * is graded with. The source is first cropped to a square, because the shop's
+   * frames are square and a landscape source would otherwise be letterboxed.
    */
   async function grade(src, width, height) {
-    const img = sharp(src).rotate();
-    const meta = await img.metadata();
+    const meta = await sharp(src, { failOn: 'none' }).metadata();
     const size = Math.min(meta.width || width, meta.height || height);
     const left = Math.max(0, Math.round((((meta.width || size) - size) / 2)));
     const top = Math.max(0, Math.round((((meta.height || size) - size) / 2)));
 
-    return img
+    const squared = await sharp(src, { failOn: 'none' })
+      .rotate()
       .extract({ left, top, width: size, height: size })
-      .resize(width, height, { fit: 'cover' })
-      .modulate({ brightness: 0.97, saturation: 0.94 })
-      .tint({ r: 246, g: 248, b: 240 })
-      .composite([{
-        input: Buffer.from(
-          `<svg width="${width}" height="${height}">` +
-          `<defs><radialGradient id="v" cx="50%" cy="46%" r="72%">` +
-          `<stop offset="55%" stop-color="#06100b" stop-opacity="0"/>` +
-          `<stop offset="100%" stop-color="#06100b" stop-opacity="0.5"/>` +
-          `</radialGradient></defs>` +
-          `<rect width="${width}" height="${height}" fill="url(#v)"/>` +
-          `<rect width="${width}" height="${height}" fill="#0d2016" fill-opacity="0.10"/>` +
-          `</svg>`,
-        ),
-        blend: 'over',
-      }])
-      .jpeg({ quality: 88, mozjpeg: true })
       .toBuffer();
+
+    return gradeResize(squared, width, height, 'product').toBuffer();
   }
 
   function findSource(slug, suffix = '') {
