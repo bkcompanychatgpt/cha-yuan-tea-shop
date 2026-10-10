@@ -56,7 +56,7 @@
       %>
       <% cards.departments.forEach((dept) => { %>
         <a class="dept dept-<%= dept.slug %>" href="<%= dept.href %>">
-          <div class="dept-media"><img src="<%= dept.hero.hero_image %>" alt="" loading="lazy" /></div>
+          <div class="dept-media"><img src="<%= dept.coverSrc %>" alt="" loading="lazy" /></div>
           <div class="dept-body">
             <span class="eyebrow"><%= dept.eyebrow %></span>
             <h2><%= dept.name %></h2>

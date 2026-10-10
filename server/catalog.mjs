@@ -199,6 +199,20 @@ export const DEPARTMENTS = [
     // that wrap to one leaves a ragged row that reads as a mistake rather than
     // as a design.
     blurb: 'Single-origin lots from Fujian, Yunnan and Anhui.',
+    /*
+     * The cover photograph, chosen rather than derived.
+     *
+     * The default is the hero image of the category with the most products in it,
+     * which is a sensible rule and picked badly: the tea cover was a blurred
+     * close-up and the jewellery cover sliced its ornament in half. These three
+     * were picked by looking at every candidate cropped to the card's 4:5
+     * (sheet-covers.mjs). They are deliberately dark — the cards sit in a row and
+     * a bright studio shot among them glows like a hole.
+     *
+     * Note that this is the one thing the generated product imagery will not
+     * improve on its own; these are replaced by hand when better covers exist.
+     */
+    cover: '/img/photos/story-harvest-hero.jpg',
   },
   {
     slug: 'jade',
@@ -206,6 +220,7 @@ export const DEPARTMENTS = [
     kinds: ['jade'],
     eyebrow: 'Stone',
     blurb: 'Nephrite and jadeite, hand-carved and polished.',
+    cover: '/img/photos/jade-dragon-pendant-hero.jpg',
   },
   {
     slug: 'jewellery',
@@ -213,6 +228,7 @@ export const DEPARTMENTS = [
     kinds: ['jewellery'],
     eyebrow: 'Metal',
     blurb: 'Gold, pearls and set stones, worked by hand.',
+    cover: '/img/photos/gold-filigree-cuff-hero.jpg',
   },
 ];
 
@@ -222,13 +238,17 @@ export const ALSO = { slug: 'also', name: 'Teaware & gifts', kinds: ['teaware', 
 /**
  * Department cards, ready to render.
  *
- * Each department is represented by its largest category's photograph, because
- * a department has no image of its own — the cover is borrowed from the category
- * with the most in it, which is the one most likely to have good photography.
+ * A department has no image of its own, so the cover comes from a named
+ * photograph on the department (see `cover` in DEPARTMENTS) and falls back to the
+ * hero image of the category with the most products in it.
  *
  * Shared by the homepage and the shop chooser so the two cannot disagree about
  * what the departments are called, how many pieces are in them, or which picture
  * stands for each.
+ *
+ * `coverSrc` is what a template should use: the chosen photograph when there is
+ * one, otherwise the category hero. `hero` stays as the category, because that is
+ * what the chooser links its collection list from.
  */
 export function departmentCards() {
   const categories = listCategories();
@@ -244,6 +264,7 @@ export function departmentCards() {
       href: `/shop?department=${dept.slug}`,
       count: members.reduce((n, c) => n + c.product_count, 0),
       hero,
+      coverSrc: dept.cover || hero.hero_image,
       members,
     };
   };

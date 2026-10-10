@@ -110,7 +110,7 @@
       %>
       <% deptCards.forEach((dept) => { %>
         <a class="dept" href="<%= dept.href %>">
-          <div class="dept-media"><img src="<%= dept.hero.hero_image %>" alt="" loading="lazy" /></div>
+          <div class="dept-media"><img src="<%= dept.coverSrc %>" alt="" loading="lazy" /></div>
           <div class="dept-body">
             <span class="eyebrow"><%= dept.eyebrow %></span>
             <h3><%= dept.name %></h3>
@@ -139,7 +139,7 @@
       <div class="dept-grid dept-grid-outros">
         <% outros.forEach((dept) => { %>
           <a class="dept dept-small" href="/shop?category=<%= encodeURIComponent(dept.hero.slug) %>">
-            <div class="dept-media"><img src="<%= dept.hero.hero_image %>" alt="" loading="lazy" /></div>
+            <div class="dept-media"><img src="<%= dept.coverSrc %>" alt="" loading="lazy" /></div>
             <div class="dept-body">
               <span class="eyebrow"><%= dept.count %> pieces</span>
               <h3><%= dept.label %></h3>
