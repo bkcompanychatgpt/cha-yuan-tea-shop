@@ -14,8 +14,20 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..');
-const PROMPTS = path.join(ROOT, 'docs', 'image-prompts.json');
-const OUT = path.join(ROOT, 'docs', 'prompts-for-image-ai.md');
+
+/*
+ * Where to read and write.
+ *
+ *   node server/scripts/make-image-brief.mjs
+ *     the main set → docs/prompts-for-image-ai.md
+ *
+ *   node server/scripts/make-image-brief.mjs docs/prompts-replace-photos.json docs/prompts-replace-photos.md
+ *     a subset, written from its own prompt file.
+ */
+const inArg = process.argv[2];
+const outArg = process.argv[3];
+const PROMPTS = inArg ? path.resolve(ROOT, inArg) : path.join(ROOT, 'docs', 'image-prompts.json');
+const OUT = outArg ? path.resolve(ROOT, outArg) : path.join(ROOT, 'docs', 'prompts-for-image-ai.md');
 const ZIP_NAME = 'cha-yuan-product-images.zip';
 
 const data = JSON.parse(fs.readFileSync(PROMPTS, 'utf8'));
@@ -67,7 +79,7 @@ push(`3. One object per image, centred, filling about 70% of the frame.`);
 push('4. No text, lettering, watermark, logo, brand mark, price tag, ruler, hand, person, prop box,');
 push('   packaging, second object, or white studio backdrop in any image.');
 push('5. Consistent lighting and background across all of them. The set has to read as one');
-push('   catalogue, not as ninety-seven separate pictures.');
+push(`   catalogue, not as ${data.prompts.length} separate pictures.`);
 push('6. Where a generator produces an off-centre or skewed object, regenerate it rather than');
 push('   shipping it.');
 push(`7. Work through every one of the ${data.prompts.length} items. Report any you could not produce.`);

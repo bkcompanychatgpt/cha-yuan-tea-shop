@@ -75,12 +75,43 @@ function describe(product) {
 }
 
 const db = getDb();
+/*
+ * Which products to write prompts for.
+ *
+ *   node server/scripts/make-image-prompts.mjs
+ *     every product whose image is drawn or rendered — the main set.
+ *
+ *   node server/scripts/make-image-prompts.mjs --departments jade,jewellery --all --out docs/prompts-jade-jewellery-photos
+ *     every jade and jewellery product, including the ones already carrying a
+ *     photograph. Those are the handful whose original Commons photographs have
+ *     white or grey studio backgrounds sitting in a grid of dark renders.
+ */
+const args = process.argv.slice(2);
+const flag = (name) => {
+  const i = args.indexOf(name);
+  return i >= 0 ? args[i + 1] : null;
+};
+const departments = flag('--departments');
+const includePhotographed = args.includes('--all');
+// Only the products that already have a photograph. Used to re-render a handful
+// whose originals do not match the rest of the grid.
+const onlyPhotographed = args.includes('--only-photographed');
+const outBase = flag('--out') || path.join(ROOT, 'docs', 'image-prompts');
+
+const kindFilter = departments
+  ? departments.split(',').map((s) => s.trim()).filter(Boolean)
+  : ['jade', 'jewellery', 'tea', 'teaware', 'gift'];
+
+const imageKindFilter = onlyPhotographed
+  ? "p.image_kind = 'photo'"
+  : includePhotographed ? '1 = 1' : "p.image_kind = 'illustration'";
+
 const rows = db.prepare(
   `SELECT p.slug, p.name, p.subtitle, p.cultivar, p.art_unit, p.image_kind, c.kind
      FROM products p JOIN categories c ON c.id = p.category_id
-    WHERE p.is_active = 1 AND p.image_kind = 'illustration'
+    WHERE p.is_active = 1 AND (${imageKindFilter})
     ORDER BY c.kind, p.name`,
-).all();
+).all().filter((p) => kindFilter.includes(p.kind));
 
 const out = { style: STYLE, generatedAt: new Date().toISOString(), prompts: [] };
 
@@ -95,12 +126,15 @@ for (const product of rows) {
   });
 }
 
-fs.mkdirSync(OUT_DIR, { recursive: true });
-fs.writeFileSync(path.join(OUT_DIR, 'image-prompts.json'), `${JSON.stringify(out, null, 2)}\n`, 'utf8');
+fs.mkdirSync(path.dirname(outBase), { recursive: true });
+fs.writeFileSync(`${outBase}.json`, `${JSON.stringify(out, null, 2)}\n`, 'utf8');
+const OUT_JSON = `${outBase}.json`;
+const OUT_TXT = `${outBase}.txt`;
+void OUT_JSON;
 
 /* A readable copy, because pasting from JSON is miserable. */
 const lines = [
-  `Image prompts — ${out.prompts.length} products without a photograph`,
+  `Image prompts — ${out.prompts.length} products`,
   '',
   'Generate one square (1:1) image per prompt, save each as the filename given,',
   'and put them all in one folder. Then:',
@@ -119,7 +153,7 @@ for (const p of out.prompts) {
   lines.push(p.prompt);
   lines.push('');
 }
-fs.writeFileSync(path.join(OUT_DIR, 'image-prompts.txt'), lines.join('\n'), 'utf8');
+fs.writeFileSync(OUT_TXT, lines.join('\n'), 'utf8');
 
 const byDept = {};
 for (const p of out.prompts) byDept[p.department] = (byDept[p.department] || 0) + 1;
