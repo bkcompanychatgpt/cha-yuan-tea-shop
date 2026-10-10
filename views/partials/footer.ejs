@@ -106,13 +106,7 @@
         <span class="footer-pay-label">Cards we accept</span>
 
         <div class="footer-pay">
-          <img class="mark" src="/img/badge/visa.svg" alt="Visa" loading="lazy" />
-          <img class="mark" src="/img/badge/mastercard.svg" alt="Mastercard" loading="lazy" />
-          <img class="mark" src="/img/badge/amex.svg" alt="American Express" loading="lazy" />
-          <img class="mark" src="/img/badge/discover.svg" alt="Discover" loading="lazy" />
-          <img class="mark" src="/img/badge/jcb.svg" alt="JCB" loading="lazy" />
-          <img class="mark" src="/img/badge/diners.svg" alt="Diners Club" loading="lazy" />
-          <img class="mark" src="/img/badge/unionpay.svg" alt="China UnionPay" loading="lazy" />
+          <%- include('pay-marks', { lazy: true }) %>
         </div>
 
         <span class="footer-pay-note">Credit and debit · 3-D Secure 2 · settled in <%= store.currency %></span>

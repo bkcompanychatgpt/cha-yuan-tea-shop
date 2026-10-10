@@ -1,0 +1,40 @@
+<%#
+  Payment network marks.
+
+  Every brand rendered here is one OTT Pay's local-card API actually settles —
+  Visa, Mastercard, American Express, Discover, JCB, Diners Club and China
+  UnionPay, credit and debit. Nothing else may be added: a mark for a method the
+  shop cannot take promises a payment route that does not exist, and a customer
+  who tries it has a legitimate chargeback. See docs/payment-methods.md.
+
+  Each mark sits on its own light plate because the artwork is dark ink drawn for
+  a white page, and on the ink-green ground Discover and Diners — which are
+  almost entirely wordmark — would be invisible without it.
+
+  The `?v=` is load-bearing, not tidiness. These files are served `immutable` for
+  a year, so a browser that once cached the generated fallback pill under the same
+  URL never asks for the real mark again. The version comes from the files at
+  boot, so replacing a mark changes the URL and the cache is bypassed.
+
+  Locals:
+    only   optional array of slugs; omit to render all seven
+    lazy   set true to add loading="lazy" (below the fold); default eager
+%>
+<%
+  const CARD_MARKS = [
+    { slug: 'visa', name: 'Visa' },
+    { slug: 'mastercard', name: 'Mastercard' },
+    { slug: 'amex', name: 'American Express' },
+    { slug: 'discover', name: 'Discover' },
+    { slug: 'jcb', name: 'JCB' },
+    { slug: 'diners', name: 'Diners Club' },
+    { slug: 'unionpay', name: 'China UnionPay' },
+  ];
+  // Named apart from the `only` local it reads: `const only = typeof only …`
+  // is a temporal-dead-zone error in EJS, where the included template and its
+  // data hash share one scope.
+  const slugFilter = (typeof only !== 'undefined' && only) ? only : null;
+  const marks = slugFilter ? CARD_MARKS.filter((m) => slugFilter.includes(m.slug)) : CARD_MARKS;
+  const lazyAttr = (typeof lazy !== 'undefined' && lazy) ? ' loading="lazy"' : '';
+%>
+<% marks.forEach((m) => { %><img class="mark" src="/img/badge/<%= m.slug %>.svg?v=<%= assetVersion %>" alt="<%= m.name %>"<%- lazyAttr %> /><% }) %>

@@ -31,6 +31,39 @@ import { englishLabel } from './photo-selection.mjs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(config.rootDir, 'public');
 
+/**
+ * A content version for the assets that must never survive a change.
+ *
+ * `express.static` serves `public/` with `max-age=7d`, and the payment marks are
+ * served `immutable` for a year on top of that. Neither URL changes when the
+ * file does, so a browser that has fetched an earlier copy keeps it and never
+ * asks again. That is not theoretical: it is how the footer ended up showing the
+ * generated fallback pills — gold outline, brand name as text — long after the
+ * real Visa and Mastercard artwork had been deployed, because the browser had
+ * cached the fallback that the route produced at a moment when the mark files
+ * were missing from the image directory.
+ *
+ * The fix is a query-string version, which is the standard one: same file, new
+ * URL, cache bypassed. The hash is computed from the files themselves at boot,
+ * so there is no build step to forget to run and no version constant to bump.
+ * It covers the stylesheet and the brand marks, which are the two things whose
+ * content changes without their path changing.
+ */
+const ASSET_VERSION = (() => {
+  const hash = crypto.createHash('sha1');
+  const css = path.join(PUBLIC_DIR, 'css', 'styles.css');
+  if (fs.existsSync(css)) hash.update(fs.readFileSync(css));
+  const badgeDir = path.join(PUBLIC_DIR, 'img', 'badge');
+  if (fs.existsSync(badgeDir)) {
+    // Name and size, not bytes: two marks changing is caught, and it stays cheap.
+    for (const file of fs.readdirSync(badgeDir).sort()) {
+      const st = fs.statSync(path.join(badgeDir, file));
+      hash.update(`${file}:${st.size};`);
+    }
+  }
+  return hash.digest('hex').slice(0, 10);
+})();
+
 /* -------------------------------------------------------------------------- */
 /*  Boot                                                                       */
 /* -------------------------------------------------------------------------- */
@@ -257,6 +290,12 @@ app.locals.payment = {
 };
 app.locals.year = new Date().getFullYear();
 app.locals.escapeHtml = security.escapeHtml;
+/*
+ * Templates append this to the two asset URLs that can change without their path
+ * changing: `/css/styles.css?v=…` and `/img/badge/<brand>.svg?v=…`. Without it a
+ * returning visitor keeps a week-old stylesheet and a year-old brand mark.
+ */
+app.locals.assetVersion = ASSET_VERSION;
 // Fulfilment promises, so any view can render the same deadlines the customer
 // was shown. Callable from a template as fulfilment(order); the partial that
 // does so lives at views/partials/order-progress.ejs.
@@ -308,9 +347,20 @@ app.use((req, res, next) => {
 /*  Generated imagery                                                          */
 /* -------------------------------------------------------------------------- */
 
-function sendSvg(res, svg, { immutable = false } = {}) {
+/**
+ * @param {object}  [opts]
+ * @param {boolean} [opts.immutable] A year, for artwork that only changes with a
+ *   deploy — and which is therefore requested with a `?v=` that changes with it.
+ * @param {boolean} [opts.noStore]   Never stored. For a response that stands in
+ *   for a missing file, where caching the stand-in is the bug.
+ */
+function sendSvg(res, svg, { immutable = false, noStore = false } = {}) {
   res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
-  res.setHeader('Cache-Control', immutable ? 'public, max-age=31536000, immutable' : 'public, max-age=86400');
+  if (noStore) {
+    res.setHeader('Cache-Control', 'no-store');
+  } else {
+    res.setHeader('Cache-Control', immutable ? 'public, max-age=31536000, immutable' : 'public, max-age=86400');
+  }
   res.send(svg);
 }
 
@@ -430,7 +480,19 @@ app.get('/img/badge/:label.svg', (req, res) => {
       return res.sendFile(file);
     }
   }
-  return sendSvg(res, imagery.brandBadge({ label: raw }), { immutable: true });
+  /*
+   * The fallback is a stand-in for a mark that is missing, and it must not be
+   * cached for a year the way a real mark is.
+   *
+   * It once was, and that is precisely what left the footer showing gold
+   * outline pills reading "VISA" and "MASTERCARD" long after the real artwork
+   * had been deployed: a browser had cached a fallback produced by an earlier
+   * deploy under a URL that never changes. A response that means "this file is
+   * absent" is a transient answer, so it is never stored — the next request
+   * asks again and gets the real mark the moment it exists.
+   */
+  res.setHeader('Cache-Control', 'no-store');
+  return sendSvg(res, imagery.brandBadge({ label: raw }), { noStore: true });
 });
 app.get('/favicon.svg', (req, res) => sendSvg(res, imagery.favicon(), { immutable: true }));
 app.get('/favicon.ico', (req, res) => sendSvg(res, imagery.favicon(), { immutable: true }));
