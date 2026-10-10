@@ -501,7 +501,32 @@ app.get('/favicon.ico', (req, res) => sendSvg(res, imagery.favicon(), { immutabl
 /*  Storefront                                                                 */
 /* -------------------------------------------------------------------------- */
 
-app.use(express.static(PUBLIC_DIR, { maxAge: config.isProduction ? '7d' : 0, index: false }));
+/*
+ * Static assets.
+ *
+ * A week is right for fonts, favicons and anything whose URL changes when its
+ * content does. It is wrong for the photographs and the generated artwork,
+ * because those are replaced **in place**: a re-shoot of sixteen jade and
+ * jewellery pieces lands as the same `<slug>-hero.jpg` it always was. With a
+ * seven-day max-age the browser serves the old picture for up to a week and the
+ * page has no way to say otherwise, which is precisely what happened — the new
+ * images were on the server, byte for byte, and the shop still showed the old
+ * ones.
+ *
+ * `no-cache` does not mean "do not store"; it means "revalidate before use", and
+ * express.static already sends an ETag. An image that has not changed comes back
+ * as a 304 with no body, and one that has comes back as a 200 with the new
+ * bytes. That is the only policy that stays correct when the filename is fixed
+ * and the content is not.
+ */
+app.use(express.static(PUBLIC_DIR, {
+  maxAge: config.isProduction ? '7d' : 0,
+  index: false,
+  setHeaders(res, filePath) {
+    const replacedInPlace = /[\\/]img[\\/](photos|hero|editorial|product|category)[\\/]/.test(filePath);
+    if (replacedInPlace) res.setHeader('Cache-Control', 'no-cache');
+  },
+}));
 
 app.get('/', (req, res) => {
   const editorial = catalog.getEditorial();
