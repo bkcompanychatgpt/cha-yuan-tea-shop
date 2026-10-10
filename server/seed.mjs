@@ -377,11 +377,22 @@ function applyPhotos() {
  * generated detail views, which carry the same illustration notice as the main
  * artwork, so nothing in the strip can be mistaken for photography.
  *
- * Products that do have photography are left alone: their real gallery came from
- * the manifest, and mixing artwork into it would be worse than having none.
+ * Products that have an image of their own are left alone.
+ *
+ * This is narrower than "image_kind = illustration", and it has to be. A product
+ * whose image was imported from a generated render is deliberately still marked
+ * `illustration` so the disclosure stays on — and an earlier version of this
+ * function keyed off exactly that, so on the next reseed it replaced all
+ * ninety-seven imported renders with the drawn silhouettes they had just
+ * replaced. The test is whether the product has an image of its own, not how that
+ * image is described.
  */
 function giveIllustratedProductsAGallery() {
-  const rows = all("SELECT id, slug FROM products WHERE image_kind = 'illustration'");
+  const rows = all(
+    `SELECT id, slug FROM products
+      WHERE image_kind = 'illustration'
+        AND (hero_image = '' OR hero_image LIKE '/img/product/%')`,
+  );
   for (const row of rows) {
     const gallery = ['vessel', 'layout', 'profile'].map((style) => `/img/product/${row.slug}/${style}.svg`);
     run(

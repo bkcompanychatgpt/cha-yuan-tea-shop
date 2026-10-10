@@ -78,14 +78,31 @@ for (const p of photoProducts) {
 }
 check(`${photoProducts.length} photographs all resolve to files on disk`, missing.length === 0, missing.slice(0, 6).join(', '));
 
-// An illustrated product must be drawn by a route that exists, not point at a
-// file that was never generated.
+/*
+ * A rendered product must have an image that resolves: either the drawing route
+ * or an imported render on disk. It used to have to be the drawing route, which
+ * stopped being true the moment the first generated images were imported. The
+ * assertion was about where the artwork comes from; what matters is that the
+ * customer sees something.
+ */
 const illustrated = products.filter((p) => p.image_kind === 'illustration');
-const badRoutes = illustrated.filter((p) => !/^\/img\/product\/[a-z0-9-]+\.svg$/.test(String(p.hero_image)));
-check('every illustrated product points at the artwork route', badRoutes.length === 0, badRoutes.map((p) => p.slug).join(', '));
+const badRender = illustrated.filter((p) => {
+  const hero = String(p.hero_image);
+  if (/^\/img\/product\/[a-z0-9-]+\.svg$/.test(hero)) return false;
+  if (/^\/img\/photos\/[a-z0-9-]+\.jpg$/.test(hero)) {
+    return !fs.existsSync(path.join(ROOT, 'public', hero.replace(/^\//, '')));
+  }
+  return true;
+});
+check('every rendered product has an image that resolves', badRender.length === 0, badRender.map((p) => `${p.slug} → ${p.hero_image}`).join(', '));
 
-const noUnit = illustrated.filter((p) => !shapeForUnit(p.art_unit) || !p.art_unit);
-check('every illustrated product declares a shape to draw', noUnit.length === 0, noUnit.map((p) => p.slug).join(', '));
+/*
+ * The drawn silhouettes are now only a fallback, so the shape has to exist only
+ * where a product still relies on them.
+ */
+const stillDrawn = illustrated.filter((p) => String(p.hero_image).startsWith('/img/product/'));
+const noUnit = stillDrawn.filter((p) => !shapeForUnit(p.art_unit) || !p.art_unit);
+check('every product still on drawn artwork declares a shape', noUnit.length === 0, noUnit.map((p) => p.slug).join(', '));
 
 const gallery = illustrated.filter((p) => {
   try { return JSON.parse(p.images || '[]').length < 3; } catch { return true; }

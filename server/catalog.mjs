@@ -220,7 +220,7 @@ export const DEPARTMENTS = [
     kinds: ['jade'],
     eyebrow: 'Stone',
     blurb: 'Nephrite and jadeite, hand-carved and polished.',
-    cover: '/img/photos/jade-dragon-pendant-hero.jpg',
+    cover: '/img/photos/imperial-green-jade-pendant-hero.jpg',
   },
   {
     slug: 'jewellery',
@@ -228,7 +228,7 @@ export const DEPARTMENTS = [
     kinds: ['jewellery'],
     eyebrow: 'Metal',
     blurb: 'Gold, pearls and set stones, worked by hand.',
-    cover: '/img/photos/gold-filigree-cuff-hero.jpg',
+    cover: '/img/photos/south-sea-pearl-pendant-hero.jpg',
   },
 ];
 

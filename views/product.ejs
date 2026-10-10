@@ -26,7 +26,7 @@
     <!-- ------------------------------------------------------- gallery -->
     <div class="pdp-gallery">
       <div class="pdp-main" data-pdp-main>
-        <img src="<%= product.hero_image %>" alt="<%= product.is_illustrated ? `${product.name} — house illustration, studio photography pending` : `${product.name} — ${product.subtitle}` %>" />
+        <img src="<%= product.hero_image %>" alt="<%= product.is_illustrated ? `${product.name} — rendered visualisation, studio photography pending` : `${product.name} — ${product.subtitle}` %>" />
         <div class="tea-badges">
           <% if (product.is_new) { %><span class="badge badge-gold">New season</span><% } %>
           <% (product.badges || []).slice(0, 3).forEach(b => { %><span class="badge"><%= b %></span><% }) %>
@@ -47,11 +47,12 @@
         <div class="illus-note" role="note">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 4l1.5 14.5L11 20l7-7z"/><path d="M2 4l5.5 5.5"/></svg>
           <div>
-            <strong>This is a house illustration, not a photograph.</strong>
+            <strong>This is a computer-rendered visualisation, not a photograph.</strong>
             <p>
-              Each piece is made by hand in small numbers, so we draw it rather than photograph a
-              duplicate. The illustration shows the form, the finish and the proportion — it is not a
-              likeness of the exact piece you will receive.
+              Each piece is made by hand in small numbers, so we render it rather than photograph a
+              duplicate. The image shows the form, the material, the finish and the proportion — it is
+              not a photograph of the exact piece you will receive, and natural stone varies from one
+              piece to the next.
               <a class="link-underline" href="/about">Write to us</a> and we will photograph the actual
               piece in stock, with its weight and measurements, before you buy.
             </p>

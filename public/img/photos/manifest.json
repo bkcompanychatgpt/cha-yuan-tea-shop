@@ -863,6 +863,685 @@
         "/img/photos/snow-chrysanthemum-hero.jpg",
         "/img/photos/snow-chrysanthemum-alt.jpg"
       ]
+    },
+    "guanyin-pendant": {
+      "gallery": [
+        "/img/photos/guanyin-pendant-hero.jpg",
+        "/img/photos/guanyin-pendant-alt.jpg",
+        "/img/photos/guanyin-pendant-alt2.jpg"
+      ]
+    },
+    "mutton-fat-gourd-pendant": {
+      "gallery": [
+        "/img/photos/mutton-fat-gourd-pendant-hero.jpg",
+        "/img/photos/mutton-fat-gourd-pendant-alt.jpg",
+        "/img/photos/mutton-fat-gourd-pendant-alt2.jpg"
+      ]
+    },
+    "spinach-jade-coin-pendant": {
+      "gallery": [
+        "/img/photos/spinach-jade-coin-pendant-hero.jpg",
+        "/img/photos/spinach-jade-coin-pendant-alt.jpg",
+        "/img/photos/spinach-jade-coin-pendant-alt2.jpg"
+      ]
+    },
+    "bat-and-coin-pendant": {
+      "gallery": [
+        "/img/photos/bat-and-coin-pendant-hero.jpg",
+        "/img/photos/bat-and-coin-pendant-alt.jpg",
+        "/img/photos/bat-and-coin-pendant-alt2.jpg"
+      ]
+    },
+    "honey-jade-peach-pendant": {
+      "gallery": [
+        "/img/photos/honey-jade-peach-pendant-hero.jpg",
+        "/img/photos/honey-jade-peach-pendant-alt.jpg",
+        "/img/photos/honey-jade-peach-pendant-alt2.jpg"
+      ]
+    },
+    "lavender-jade-lotus-pendant": {
+      "gallery": [
+        "/img/photos/lavender-jade-lotus-pendant-hero.jpg",
+        "/img/photos/lavender-jade-lotus-pendant-alt.jpg",
+        "/img/photos/lavender-jade-lotus-pendant-alt2.jpg"
+      ]
+    },
+    "apple-green-phoenix-pendant": {
+      "gallery": [
+        "/img/photos/apple-green-phoenix-pendant-hero.jpg",
+        "/img/photos/apple-green-phoenix-pendant-alt.jpg",
+        "/img/photos/apple-green-phoenix-pendant-alt2.jpg"
+      ]
+    },
+    "ice-jade-cicada-pendant": {
+      "gallery": [
+        "/img/photos/ice-jade-cicada-pendant-hero.jpg",
+        "/img/photos/ice-jade-cicada-pendant-alt.jpg",
+        "/img/photos/ice-jade-cicada-pendant-alt2.jpg"
+      ]
+    },
+    "spinach-jade-bamboo-pendant": {
+      "gallery": [
+        "/img/photos/spinach-jade-bamboo-pendant-hero.jpg",
+        "/img/photos/spinach-jade-bamboo-pendant-alt.jpg",
+        "/img/photos/spinach-jade-bamboo-pendant-alt2.jpg"
+      ]
+    },
+    "white-jade-bi-disc": {
+      "gallery": [
+        "/img/photos/white-jade-bi-disc-hero.jpg",
+        "/img/photos/white-jade-bi-disc-alt.jpg",
+        "/img/photos/white-jade-bi-disc-alt2.jpg"
+      ]
+    },
+    "moss-in-snow-bi-disc": {
+      "gallery": [
+        "/img/photos/moss-in-snow-bi-disc-hero.jpg",
+        "/img/photos/moss-in-snow-bi-disc-alt.jpg",
+        "/img/photos/moss-in-snow-bi-disc-alt2.jpg"
+      ]
+    },
+    "spinach-jade-mala": {
+      "gallery": [
+        "/img/photos/spinach-jade-mala-hero.jpg",
+        "/img/photos/spinach-jade-mala-alt.jpg",
+        "/img/photos/spinach-jade-mala-alt2.jpg"
+      ]
+    },
+    "apple-green-jade-bead-bracelet": {
+      "gallery": [
+        "/img/photos/apple-green-jade-bead-bracelet-hero.jpg",
+        "/img/photos/apple-green-jade-bead-bracelet-alt.jpg",
+        "/img/photos/apple-green-jade-bead-bracelet-alt2.jpg"
+      ]
+    },
+    "black-jade-archer-s-ring": {
+      "gallery": [
+        "/img/photos/black-jade-archer-s-ring-hero.jpg",
+        "/img/photos/black-jade-archer-s-ring-alt.jpg",
+        "/img/photos/black-jade-archer-s-ring-alt2.jpg"
+      ]
+    },
+    "lavender-jade-dome-ring": {
+      "gallery": [
+        "/img/photos/lavender-jade-dome-ring-hero.jpg",
+        "/img/photos/lavender-jade-dome-ring-alt.jpg",
+        "/img/photos/lavender-jade-dome-ring-alt2.jpg"
+      ]
+    },
+    "white-jade-signet-seal": {
+      "gallery": [
+        "/img/photos/white-jade-signet-seal-hero.jpg",
+        "/img/photos/white-jade-signet-seal-alt.jpg",
+        "/img/photos/white-jade-signet-seal-alt2.jpg"
+      ]
+    },
+    "honey-jade-pair-of-seals": {
+      "gallery": [
+        "/img/photos/honey-jade-pair-of-seals-hero.jpg",
+        "/img/photos/honey-jade-pair-of-seals-alt.jpg",
+        "/img/photos/honey-jade-pair-of-seals-alt2.jpg"
+      ]
+    },
+    "white-jade-horse": {
+      "gallery": [
+        "/img/photos/white-jade-horse-hero.jpg",
+        "/img/photos/white-jade-horse-alt.jpg",
+        "/img/photos/white-jade-horse-alt2.jpg"
+      ]
+    },
+    "mutton-fat-jade-crane": {
+      "gallery": [
+        "/img/photos/mutton-fat-jade-crane-hero.jpg",
+        "/img/photos/mutton-fat-jade-crane-alt.jpg",
+        "/img/photos/mutton-fat-jade-crane-alt2.jpg"
+      ]
+    },
+    "spinach-jade-guardian-lion": {
+      "gallery": [
+        "/img/photos/spinach-jade-guardian-lion-hero.jpg",
+        "/img/photos/spinach-jade-guardian-lion-alt.jpg",
+        "/img/photos/spinach-jade-guardian-lion-alt2.jpg"
+      ]
+    },
+    "white-jade-immortal": {
+      "gallery": [
+        "/img/photos/white-jade-immortal-hero.jpg",
+        "/img/photos/white-jade-immortal-alt.jpg",
+        "/img/photos/white-jade-immortal-alt2.jpg"
+      ]
+    },
+    "honey-jade-toad-on-a-leaf": {
+      "gallery": [
+        "/img/photos/honey-jade-toad-on-a-leaf-hero.jpg",
+        "/img/photos/honey-jade-toad-on-a-leaf-alt.jpg",
+        "/img/photos/honey-jade-toad-on-a-leaf-alt2.jpg"
+      ]
+    },
+    "white-jade-mountain-carving": {
+      "gallery": [
+        "/img/photos/white-jade-mountain-carving-hero.jpg",
+        "/img/photos/white-jade-mountain-carving-alt.jpg",
+        "/img/photos/white-jade-mountain-carving-alt2.jpg"
+      ]
+    },
+    "moss-in-snow-landscape-plaque": {
+      "gallery": [
+        "/img/photos/moss-in-snow-landscape-plaque-hero.jpg",
+        "/img/photos/moss-in-snow-landscape-plaque-alt.jpg",
+        "/img/photos/moss-in-snow-landscape-plaque-alt2.jpg"
+      ]
+    },
+    "black-jade-cup": {
+      "gallery": [
+        "/img/photos/black-jade-cup-hero.jpg",
+        "/img/photos/black-jade-cup-alt.jpg",
+        "/img/photos/black-jade-cup-alt2.jpg"
+      ]
+    },
+    "spinach-jade-pair-of-cups": {
+      "gallery": [
+        "/img/photos/spinach-jade-pair-of-cups-hero.jpg",
+        "/img/photos/spinach-jade-pair-of-cups-alt.jpg",
+        "/img/photos/spinach-jade-pair-of-cups-alt2.jpg"
+      ]
+    },
+    "mutton-fat-snuff-bottle": {
+      "gallery": [
+        "/img/photos/mutton-fat-snuff-bottle-hero.jpg",
+        "/img/photos/mutton-fat-snuff-bottle-alt.jpg",
+        "/img/photos/mutton-fat-snuff-bottle-alt2.jpg"
+      ]
+    },
+    "white-jade-belt-buckle": {
+      "gallery": [
+        "/img/photos/white-jade-belt-buckle-hero.jpg",
+        "/img/photos/white-jade-belt-buckle-alt.jpg",
+        "/img/photos/white-jade-belt-buckle-alt2.jpg"
+      ]
+    },
+    "ice-jade-hairpin": {
+      "gallery": [
+        "/img/photos/ice-jade-hairpin-hero.jpg",
+        "/img/photos/ice-jade-hairpin-alt.jpg",
+        "/img/photos/ice-jade-hairpin-alt2.jpg"
+      ]
+    },
+    "apple-green-jade-drop-earrings": {
+      "gallery": [
+        "/img/photos/apple-green-jade-drop-earrings-hero.jpg",
+        "/img/photos/apple-green-jade-drop-earrings-alt.jpg",
+        "/img/photos/apple-green-jade-drop-earrings-alt2.jpg"
+      ]
+    },
+    "lavender-jade-huggie-earrings": {
+      "gallery": [
+        "/img/photos/lavender-jade-huggie-earrings-hero.jpg",
+        "/img/photos/lavender-jade-huggie-earrings-alt.jpg",
+        "/img/photos/lavender-jade-huggie-earrings-alt2.jpg"
+      ]
+    },
+    "moss-in-snow-oval-bangle": {
+      "gallery": [
+        "/img/photos/moss-in-snow-oval-bangle-hero.jpg",
+        "/img/photos/moss-in-snow-oval-bangle-alt.jpg",
+        "/img/photos/moss-in-snow-oval-bangle-alt2.jpg"
+      ]
+    },
+    "ice-jade-princess-bangle": {
+      "gallery": [
+        "/img/photos/ice-jade-princess-bangle-hero.jpg",
+        "/img/photos/ice-jade-princess-bangle-alt.jpg",
+        "/img/photos/ice-jade-princess-bangle-alt2.jpg"
+      ]
+    },
+    "lavender-jade-oval-bangle": {
+      "gallery": [
+        "/img/photos/lavender-jade-oval-bangle-hero.jpg",
+        "/img/photos/lavender-jade-oval-bangle-alt.jpg",
+        "/img/photos/lavender-jade-oval-bangle-alt2.jpg"
+      ]
+    },
+    "spinach-jade-cong-tube": {
+      "gallery": [
+        "/img/photos/spinach-jade-cong-tube-hero.jpg",
+        "/img/photos/spinach-jade-cong-tube-alt.jpg",
+        "/img/photos/spinach-jade-cong-tube-alt2.jpg"
+      ]
+    },
+    "black-jade-ceremonial-axe": {
+      "gallery": [
+        "/img/photos/black-jade-ceremonial-axe-hero.jpg",
+        "/img/photos/black-jade-ceremonial-axe-alt.jpg",
+        "/img/photos/black-jade-ceremonial-axe-alt2.jpg"
+      ]
+    },
+    "white-jade-dragon-hook": {
+      "gallery": [
+        "/img/photos/white-jade-dragon-hook-hero.jpg",
+        "/img/photos/white-jade-dragon-hook-alt.jpg",
+        "/img/photos/white-jade-dragon-hook-alt2.jpg"
+      ]
+    },
+    "apple-green-pendant-and-chain": {
+      "gallery": [
+        "/img/photos/apple-green-pendant-and-chain-hero.jpg",
+        "/img/photos/apple-green-pendant-and-chain-alt.jpg",
+        "/img/photos/apple-green-pendant-and-chain-alt2.jpg"
+      ]
+    },
+    "imperial-green-jade-pendant": {
+      "gallery": [
+        "/img/photos/imperial-green-jade-pendant-hero.jpg",
+        "/img/photos/imperial-green-jade-pendant-alt.jpg",
+        "/img/photos/imperial-green-jade-pendant-alt2.jpg"
+      ]
+    },
+    "imperial-green-guanyin-pendant": {
+      "gallery": [
+        "/img/photos/imperial-green-guanyin-pendant-hero.jpg",
+        "/img/photos/imperial-green-guanyin-pendant-alt.jpg",
+        "/img/photos/imperial-green-guanyin-pendant-alt2.jpg"
+      ]
+    },
+    "ice-jade-buddha-pendant": {
+      "gallery": [
+        "/img/photos/ice-jade-buddha-pendant-hero.jpg",
+        "/img/photos/ice-jade-buddha-pendant-alt.jpg",
+        "/img/photos/ice-jade-buddha-pendant-alt2.jpg"
+      ]
+    },
+    "honey-jade-buddha-pendant": {
+      "gallery": [
+        "/img/photos/honey-jade-buddha-pendant-hero.jpg",
+        "/img/photos/honey-jade-buddha-pendant-alt.jpg",
+        "/img/photos/honey-jade-buddha-pendant-alt2.jpg"
+      ]
+    },
+    "honey-jade-bi-disc": {
+      "gallery": [
+        "/img/photos/honey-jade-bi-disc-hero.jpg",
+        "/img/photos/honey-jade-bi-disc-alt.jpg",
+        "/img/photos/honey-jade-bi-disc-alt2.jpg"
+      ]
+    },
+    "moss-in-snow-jade-mala": {
+      "gallery": [
+        "/img/photos/moss-in-snow-jade-mala-hero.jpg",
+        "/img/photos/moss-in-snow-jade-mala-alt.jpg",
+        "/img/photos/moss-in-snow-jade-mala-alt2.jpg"
+      ]
+    },
+    "black-jade-horse": {
+      "gallery": [
+        "/img/photos/black-jade-horse-hero.jpg",
+        "/img/photos/black-jade-horse-alt.jpg",
+        "/img/photos/black-jade-horse-alt2.jpg"
+      ]
+    },
+    "ice-jade-crane": {
+      "gallery": [
+        "/img/photos/ice-jade-crane-hero.jpg",
+        "/img/photos/ice-jade-crane-alt.jpg",
+        "/img/photos/ice-jade-crane-alt2.jpg"
+      ]
+    },
+    "apple-green-jade-cup": {
+      "gallery": [
+        "/img/photos/apple-green-jade-cup-hero.jpg",
+        "/img/photos/apple-green-jade-cup-alt.jpg",
+        "/img/photos/apple-green-jade-cup-alt2.jpg"
+      ]
+    },
+    "honey-jade-round-bangle": {
+      "gallery": [
+        "/img/photos/honey-jade-round-bangle-hero.jpg",
+        "/img/photos/honey-jade-round-bangle-alt.jpg",
+        "/img/photos/honey-jade-round-bangle-alt2.jpg"
+      ]
+    },
+    "imperial-green-coin-pendant": {
+      "gallery": [
+        "/img/photos/imperial-green-coin-pendant-hero.jpg",
+        "/img/photos/imperial-green-coin-pendant-alt.jpg",
+        "/img/photos/imperial-green-coin-pendant-alt2.jpg"
+      ]
+    },
+    "apple-green-jade-seal": {
+      "gallery": [
+        "/img/photos/apple-green-jade-seal-hero.jpg",
+        "/img/photos/apple-green-jade-seal-alt.jpg",
+        "/img/photos/apple-green-jade-seal-alt2.jpg"
+      ]
+    },
+    "lavender-jade-dragon-hook": {
+      "gallery": [
+        "/img/photos/lavender-jade-dragon-hook-hero.jpg",
+        "/img/photos/lavender-jade-dragon-hook-alt.jpg",
+        "/img/photos/lavender-jade-dragon-hook-alt2.jpg"
+      ]
+    },
+    "solitaire-diamond-ring": {
+      "gallery": [
+        "/img/photos/solitaire-diamond-ring-hero.jpg",
+        "/img/photos/solitaire-diamond-ring-alt.jpg",
+        "/img/photos/solitaire-diamond-ring-alt2.jpg"
+      ]
+    },
+    "halo-diamond-ring": {
+      "gallery": [
+        "/img/photos/halo-diamond-ring-hero.jpg",
+        "/img/photos/halo-diamond-ring-alt.jpg",
+        "/img/photos/halo-diamond-ring-alt2.jpg"
+      ]
+    },
+    "sapphire-and-diamond-halo-ring": {
+      "gallery": [
+        "/img/photos/sapphire-and-diamond-halo-ring-hero.jpg",
+        "/img/photos/sapphire-and-diamond-halo-ring-alt.jpg",
+        "/img/photos/sapphire-and-diamond-halo-ring-alt2.jpg"
+      ]
+    },
+    "burmese-ruby-halo-ring": {
+      "gallery": [
+        "/img/photos/burmese-ruby-halo-ring-hero.jpg",
+        "/img/photos/burmese-ruby-halo-ring-alt.jpg",
+        "/img/photos/burmese-ruby-halo-ring-alt2.jpg"
+      ]
+    },
+    "jadeite-cabochon-ring": {
+      "gallery": [
+        "/img/photos/jadeite-cabochon-ring-hero.jpg",
+        "/img/photos/jadeite-cabochon-ring-alt.jpg",
+        "/img/photos/jadeite-cabochon-ring-alt2.jpg"
+      ]
+    },
+    "hubei-turquoise-ring": {
+      "gallery": [
+        "/img/photos/hubei-turquoise-ring-hero.jpg",
+        "/img/photos/hubei-turquoise-ring-alt.jpg",
+        "/img/photos/hubei-turquoise-ring-alt2.jpg"
+      ]
+    },
+    "baltic-amber-ring": {
+      "gallery": [
+        "/img/photos/baltic-amber-ring-hero.jpg",
+        "/img/photos/baltic-amber-ring-alt.jpg",
+        "/img/photos/baltic-amber-ring-alt2.jpg"
+      ]
+    },
+    "rainbow-moonstone-ring": {
+      "gallery": [
+        "/img/photos/rainbow-moonstone-ring-hero.jpg",
+        "/img/photos/rainbow-moonstone-ring-alt.jpg",
+        "/img/photos/rainbow-moonstone-ring-alt2.jpg"
+      ]
+    },
+    "engraved-signet-ring": {
+      "gallery": [
+        "/img/photos/engraved-signet-ring-hero.jpg",
+        "/img/photos/engraved-signet-ring-alt.jpg",
+        "/img/photos/engraved-signet-ring-alt2.jpg"
+      ]
+    },
+    "garnet-stacking-ring": {
+      "gallery": [
+        "/img/photos/garnet-stacking-ring-hero.jpg",
+        "/img/photos/garnet-stacking-ring-alt.jpg",
+        "/img/photos/garnet-stacking-ring-alt2.jpg"
+      ]
+    },
+    "freshwater-pearl-necklace": {
+      "gallery": [
+        "/img/photos/freshwater-pearl-necklace-hero.jpg",
+        "/img/photos/freshwater-pearl-necklace-alt.jpg",
+        "/img/photos/freshwater-pearl-necklace-alt2.jpg"
+      ]
+    },
+    "akoya-pearl-necklace": {
+      "gallery": [
+        "/img/photos/akoya-pearl-necklace-hero.jpg",
+        "/img/photos/akoya-pearl-necklace-alt.jpg",
+        "/img/photos/akoya-pearl-necklace-alt2.jpg"
+      ]
+    },
+    "south-sea-pearl-necklace": {
+      "gallery": [
+        "/img/photos/south-sea-pearl-necklace-hero.jpg",
+        "/img/photos/south-sea-pearl-necklace-alt.jpg",
+        "/img/photos/south-sea-pearl-necklace-alt2.jpg"
+      ]
+    },
+    "diamond-pendant-necklace": {
+      "gallery": [
+        "/img/photos/diamond-pendant-necklace-hero.jpg",
+        "/img/photos/diamond-pendant-necklace-alt.jpg",
+        "/img/photos/diamond-pendant-necklace-alt2.jpg"
+      ]
+    },
+    "jadeite-pendant-necklace": {
+      "gallery": [
+        "/img/photos/jadeite-pendant-necklace-hero.jpg",
+        "/img/photos/jadeite-pendant-necklace-alt.jpg",
+        "/img/photos/jadeite-pendant-necklace-alt2.jpg"
+      ]
+    },
+    "tourmaline-pendant-necklace": {
+      "gallery": [
+        "/img/photos/tourmaline-pendant-necklace-hero.jpg",
+        "/img/photos/tourmaline-pendant-necklace-alt.jpg",
+        "/img/photos/tourmaline-pendant-necklace-alt2.jpg"
+      ]
+    },
+    "lapis-beaded-necklace": {
+      "gallery": [
+        "/img/photos/lapis-beaded-necklace-hero.jpg",
+        "/img/photos/lapis-beaded-necklace-alt.jpg",
+        "/img/photos/lapis-beaded-necklace-alt2.jpg"
+      ]
+    },
+    "jadeite-beaded-necklace": {
+      "gallery": [
+        "/img/photos/jadeite-beaded-necklace-hero.jpg",
+        "/img/photos/jadeite-beaded-necklace-alt.jpg",
+        "/img/photos/jadeite-beaded-necklace-alt2.jpg"
+      ]
+    },
+    "coral-beaded-necklace": {
+      "gallery": [
+        "/img/photos/coral-beaded-necklace-hero.jpg",
+        "/img/photos/coral-beaded-necklace-alt.jpg",
+        "/img/photos/coral-beaded-necklace-alt2.jpg"
+      ]
+    },
+    "akoya-pearl-choker": {
+      "gallery": [
+        "/img/photos/akoya-pearl-choker-hero.jpg",
+        "/img/photos/akoya-pearl-choker-alt.jpg",
+        "/img/photos/akoya-pearl-choker-alt2.jpg"
+      ]
+    },
+    "22k-gold-choker": {
+      "gallery": [
+        "/img/photos/22k-gold-choker-hero.jpg",
+        "/img/photos/22k-gold-choker-alt.jpg",
+        "/img/photos/22k-gold-choker-alt2.jpg"
+      ]
+    },
+    "pearl-lariat": {
+      "gallery": [
+        "/img/photos/pearl-lariat-hero.jpg",
+        "/img/photos/pearl-lariat-alt.jpg",
+        "/img/photos/pearl-lariat-alt2.jpg"
+      ]
+    },
+    "diamond-stud-earrings": {
+      "gallery": [
+        "/img/photos/diamond-stud-earrings-hero.jpg",
+        "/img/photos/diamond-stud-earrings-alt.jpg",
+        "/img/photos/diamond-stud-earrings-alt2.jpg"
+      ]
+    },
+    "akoya-pearl-studs": {
+      "gallery": [
+        "/img/photos/akoya-pearl-studs-hero.jpg",
+        "/img/photos/akoya-pearl-studs-alt.jpg",
+        "/img/photos/akoya-pearl-studs-alt2.jpg"
+      ]
+    },
+    "jadeite-stud-earrings": {
+      "gallery": [
+        "/img/photos/jadeite-stud-earrings-hero.jpg",
+        "/img/photos/jadeite-stud-earrings-alt.jpg",
+        "/img/photos/jadeite-stud-earrings-alt2.jpg"
+      ]
+    },
+    "tourmaline-drop-earrings": {
+      "gallery": [
+        "/img/photos/tourmaline-drop-earrings-hero.jpg",
+        "/img/photos/tourmaline-drop-earrings-alt.jpg",
+        "/img/photos/tourmaline-drop-earrings-alt2.jpg"
+      ]
+    },
+    "amber-drop-earrings": {
+      "gallery": [
+        "/img/photos/amber-drop-earrings-hero.jpg",
+        "/img/photos/amber-drop-earrings-alt.jpg",
+        "/img/photos/amber-drop-earrings-alt2.jpg"
+      ]
+    },
+    "18k-gold-hoop-earrings": {
+      "gallery": [
+        "/img/photos/18k-gold-hoop-earrings-hero.jpg",
+        "/img/photos/18k-gold-hoop-earrings-alt.jpg",
+        "/img/photos/18k-gold-hoop-earrings-alt2.jpg"
+      ]
+    },
+    "diamond-chandelier-earrings": {
+      "gallery": [
+        "/img/photos/diamond-chandelier-earrings-hero.jpg",
+        "/img/photos/diamond-chandelier-earrings-alt.jpg",
+        "/img/photos/diamond-chandelier-earrings-alt2.jpg"
+      ]
+    },
+    "18k-gold-link-bracelet": {
+      "gallery": [
+        "/img/photos/18k-gold-link-bracelet-hero.jpg",
+        "/img/photos/18k-gold-link-bracelet-alt.jpg",
+        "/img/photos/18k-gold-link-bracelet-alt2.jpg"
+      ]
+    },
+    "jadeite-beaded-bracelet": {
+      "gallery": [
+        "/img/photos/jadeite-beaded-bracelet-hero.jpg",
+        "/img/photos/jadeite-beaded-bracelet-alt.jpg",
+        "/img/photos/jadeite-beaded-bracelet-alt2.jpg"
+      ]
+    },
+    "22k-gold-bangle": {
+      "gallery": [
+        "/img/photos/22k-gold-bangle-hero.jpg",
+        "/img/photos/22k-gold-bangle-alt.jpg",
+        "/img/photos/22k-gold-bangle-alt2.jpg"
+      ]
+    },
+    "filigree-lace-cuff": {
+      "gallery": [
+        "/img/photos/filigree-lace-cuff-hero.jpg",
+        "/img/photos/filigree-lace-cuff-alt.jpg",
+        "/img/photos/filigree-lace-cuff-alt2.jpg"
+      ]
+    },
+    "diamond-tennis-bracelet": {
+      "gallery": [
+        "/img/photos/diamond-tennis-bracelet-hero.jpg",
+        "/img/photos/diamond-tennis-bracelet-alt.jpg",
+        "/img/photos/diamond-tennis-bracelet-alt2.jpg"
+      ]
+    },
+    "coral-brooch": {
+      "gallery": [
+        "/img/photos/coral-brooch-hero.jpg",
+        "/img/photos/coral-brooch-alt.jpg",
+        "/img/photos/coral-brooch-alt2.jpg"
+      ]
+    },
+    "amber-brooch": {
+      "gallery": [
+        "/img/photos/amber-brooch-hero.jpg",
+        "/img/photos/amber-brooch-alt.jpg",
+        "/img/photos/amber-brooch-alt2.jpg"
+      ]
+    },
+    "burmese-ruby-pendant": {
+      "gallery": [
+        "/img/photos/burmese-ruby-pendant-hero.jpg",
+        "/img/photos/burmese-ruby-pendant-alt.jpg",
+        "/img/photos/burmese-ruby-pendant-alt2.jpg"
+      ]
+    },
+    "moonstone-pendant": {
+      "gallery": [
+        "/img/photos/moonstone-pendant-hero.jpg",
+        "/img/photos/moonstone-pendant-alt.jpg",
+        "/img/photos/moonstone-pendant-alt2.jpg"
+      ]
+    },
+    "22k-gold-hairpin": {
+      "gallery": [
+        "/img/photos/22k-gold-hairpin-hero.jpg",
+        "/img/photos/22k-gold-hairpin-alt.jpg",
+        "/img/photos/22k-gold-hairpin-alt2.jpg"
+      ]
+    },
+    "silver-anklet": {
+      "gallery": [
+        "/img/photos/silver-anklet-hero.jpg",
+        "/img/photos/silver-anklet-alt.jpg",
+        "/img/photos/silver-anklet-alt2.jpg"
+      ]
+    },
+    "pearl-suite": {
+      "gallery": [
+        "/img/photos/pearl-suite-hero.jpg",
+        "/img/photos/pearl-suite-alt.jpg",
+        "/img/photos/pearl-suite-alt2.jpg"
+      ]
+    },
+    "18k-gold-locket": {
+      "gallery": [
+        "/img/photos/18k-gold-locket-hero.jpg",
+        "/img/photos/18k-gold-locket-alt.jpg",
+        "/img/photos/18k-gold-locket-alt2.jpg"
+      ]
+    },
+    "silver-locket": {
+      "gallery": [
+        "/img/photos/silver-locket-hero.jpg",
+        "/img/photos/silver-locket-alt.jpg",
+        "/img/photos/silver-locket-alt2.jpg"
+      ]
+    },
+    "south-sea-pearl-pendant": {
+      "gallery": [
+        "/img/photos/south-sea-pearl-pendant-hero.jpg",
+        "/img/photos/south-sea-pearl-pendant-alt.jpg",
+        "/img/photos/south-sea-pearl-pendant-alt2.jpg"
+      ]
+    },
+    "sterling-silver-bangle": {
+      "gallery": [
+        "/img/photos/sterling-silver-bangle-hero.jpg",
+        "/img/photos/sterling-silver-bangle-alt.jpg",
+        "/img/photos/sterling-silver-bangle-alt2.jpg"
+      ]
+    },
+    "22k-gold-signet-ring": {
+      "gallery": [
+        "/img/photos/22k-gold-signet-ring-hero.jpg",
+        "/img/photos/22k-gold-signet-ring-alt.jpg",
+        "/img/photos/22k-gold-signet-ring-alt2.jpg"
+      ]
     }
   },
   "all": [
