@@ -1,4 +1,4 @@
-# One prompt: generate all 97 product images and return a ZIP
+# One prompt: generate 97 images and return a ZIP
 
 Copy everything in the block below and send it as a single message.
 
@@ -28,7 +28,7 @@ REQUIREMENTS
 4. No text, lettering, watermark, logo, brand mark, price tag, ruler, hand, person, prop box,
    packaging, second object, or white studio backdrop in any image.
 5. Consistent lighting and background across all of them. The set has to read as one
-   catalogue, not as ninety-seven separate pictures.
+   catalogue, not as 97 separate pictures.
 6. Where a generator produces an off-centre or skewed object, regenerate it rather than
    shipping it.
 7. Work through every one of the 97 items. Report any you could not produce.

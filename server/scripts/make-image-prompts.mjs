@@ -43,12 +43,39 @@ const STYLE = [
   'no hands, no people, no prop boxes, no packaging, no second object, no white studio backdrop.',
 ].join(' ');
 
+/**
+ * The product name is not always the whole subject.
+ *
+ * `jade-carved-pendant-tiger` is listed as "Carved Nephrite Pendant" and carries
+ * its actual subject — a crouching tiger — only in the subtitle. A prompt built
+ * from the name alone asks for a generic carved pendant, and a generic carved
+ * pendant is what came back: a perfectly good nephrite piece with a dragon on
+ * it, which does not match the copy beside it. The subtitle's first clause is
+ * the subject, so it goes in front of the form.
+ *
+ * It is dropped when it only repeats the material, or the prompt ends up saying
+ * "Black nephrite" twice — once as the subject and once in the Material line.
+ */
+function subjectOf(product) {
+  const clause = String(product.subtitle || '').split('·')[0].trim();
+  if (!clause) return product.name;
+
+  const lower = clause.toLowerCase();
+  const material = String(product.cultivar || '').toLowerCase();
+  if (material.includes(lower)) return product.name;
+
+  const nameWords = product.name.toLowerCase().split(/\s+/).filter((w) => w.length > 3);
+  if (nameWords.some((w) => lower.includes(w))) return product.name;
+
+  return `${product.name} — ${clause}`;
+}
+
 /** Per-department phrasing that keeps the object itself the subject. */
 function describe(product) {
   const kind = product.kind;
   const material = String(product.cultivar || '').trim();
   const unit = String(product.art_unit || '').trim().toLowerCase();
-  const name = product.name;
+  const name = subjectOf(product);
 
   if (kind === 'jade') {
     return [
@@ -130,7 +157,6 @@ fs.mkdirSync(path.dirname(outBase), { recursive: true });
 fs.writeFileSync(`${outBase}.json`, `${JSON.stringify(out, null, 2)}\n`, 'utf8');
 const OUT_JSON = `${outBase}.json`;
 const OUT_TXT = `${outBase}.txt`;
-void OUT_JSON;
 
 /* A readable copy, because pasting from JSON is miserable. */
 const lines = [
@@ -159,5 +185,7 @@ const byDept = {};
 for (const p of out.prompts) byDept[p.department] = (byDept[p.department] || 0) + 1;
 console.log(`${out.prompts.length} prompts written`);
 for (const [d, n] of Object.entries(byDept)) console.log(`  ${d.padEnd(12)} ${n}`);
-console.log('\n  _shots/image-prompts.json   (structured, for tooling)');
-console.log('  _shots/image-prompts.txt    (readable, for pasting)');
+// The real path, not a hard-coded one: printing `_shots/…` while writing
+// somewhere else sends the reader to a stale file.
+console.log(`\n  ${path.relative(ROOT, OUT_JSON)}   (structured, for tooling)`);
+console.log(`  ${path.relative(ROOT, OUT_TXT)}    (readable, for pasting)`);

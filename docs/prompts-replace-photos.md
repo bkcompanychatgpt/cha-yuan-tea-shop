@@ -1,4 +1,4 @@
-# One prompt: generate all 17 product images and return a ZIP
+# One prompt: generate 17 images and return a ZIP
 
 Copy everything in the block below and send it as a single message.
 

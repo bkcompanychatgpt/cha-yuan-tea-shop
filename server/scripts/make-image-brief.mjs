@@ -41,11 +41,37 @@ function subjectOf(prompt) {
 
 const jade = data.prompts.filter((p) => p.department === 'jade');
 const jewellery = data.prompts.filter((p) => p.department === 'jewellery');
+void jade;
+void jewellery;
+
+const TOTAL = data.prompts.length;
+/** "1 image" rather than "1 images" — the brief is read as English, not as output. */
+const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
+const images = plural(TOTAL, 'image');
+const items = plural(TOTAL, 'item');
+const pictures = plural(TOTAL, 'separate picture');
+
+const DEPT_LABEL = {
+  tea: 'Tea',
+  jade: 'Jade & Stone',
+  jewellery: 'Fine Jewellery',
+  teaware: 'Teaware',
+  'gift-sets': 'Gift Sets',
+  gift: 'Gift Sets',
+};
+
+/** Group the prompts by department, in order, so a single-department run reads cleanly. */
+const groups = [];
+for (const p of data.prompts) {
+  const last = groups[groups.length - 1];
+  if (last && last.department === p.department) last.items.push(p);
+  else groups.push({ department: p.department, items: [p] });
+}
 
 const L = [];
 const push = (...xs) => L.push(...xs);
 
-push(`# One prompt: generate all ${data.prompts.length} product images and return a ZIP`);
+push(`# One prompt: generate ${images} and return a ZIP`);
 push('');
 push('Copy everything in the block below and send it as a single message.');
 push('');
@@ -57,7 +83,7 @@ push('Do not stop to ask questions, and do not deliver the images one at a time.
 push('');
 
 push('TASK');
-push(`Generate ${data.prompts.length} photorealistic product images — one for every item listed at the`);
+push(`Generate ${plural(TOTAL, 'photorealistic product image')} — one for every item listed at the`);
 push('end of this message. Each image must be square (1:1) and must be saved under the exact');
 push('filename given for that item.');
 push('');
@@ -79,14 +105,14 @@ push(`3. One object per image, centred, filling about 70% of the frame.`);
 push('4. No text, lettering, watermark, logo, brand mark, price tag, ruler, hand, person, prop box,');
 push('   packaging, second object, or white studio backdrop in any image.');
 push('5. Consistent lighting and background across all of them. The set has to read as one');
-push(`   catalogue, not as ${data.prompts.length} separate pictures.`);
+push(`   catalogue, not as ${pictures}.`);
 push('6. Where a generator produces an off-centre or skewed object, regenerate it rather than');
 push('   shipping it.');
-push(`7. Work through every one of the ${data.prompts.length} items. Report any you could not produce.`);
+push(`7. Work through every one of the ${items}. Report any you could not produce.`);
 push('');
 
 push('DELIVERABLE');
-push(`A single ZIP file named ${ZIP_NAME} containing all ${data.prompts.length} images at the top level`);
+push(`A single ZIP file named ${ZIP_NAME} containing all ${images} at the top level`);
 push('(no nested folders), each named exactly as listed below, plus a plain-text file called');
 push('MANIFEST.txt listing every filename you included and any you had to leave out.');
 push('');
@@ -94,19 +120,14 @@ push('');
 push('THE ITEMS');
 push('');
 
-push(`### Jade & Stone — ${jade.length} images`);
-push('');
-for (const p of jade) {
-  push(`* ${p.filename} — ${subjectOf(p.prompt)}`);
+for (const group of groups) {
+  push(`### ${DEPT_LABEL[group.department] || group.department} — ${plural(group.items.length, 'image')}`);
+  push('');
+  for (const p of group.items) {
+    push(`* ${p.filename} — ${subjectOf(p.prompt)}`);
+  }
+  push('');
 }
-push('');
-
-push(`### Fine Jewellery — ${jewellery.length} images`);
-push('');
-for (const p of jewellery) {
-  push(`* ${p.filename} — ${subjectOf(p.prompt)}`);
-}
-push('');
 
 push('Once the ZIP is ready, that is the deliverable. Nothing else is needed.');
 push('```');
