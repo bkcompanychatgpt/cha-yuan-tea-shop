@@ -15,12 +15,35 @@
 
 <!-- ================================================================== hero -->
 <%
-  // Families for the quick links, and a short shelf of lots to show directly
-  // under the hero. Both exist so a visitor meets products and categories without
-  // scrolling: the hero alone used to fill the whole first screen.
-  const familyLinks = categories.filter(c => c.kind === 'tea');
-  const shelf = featured.slice(0, 6);
+  // The homepage is a directory: the departments, then a few entry points into
+  // each. Products live inside their collection, which is where someone who
+  // wants to choose a piece will go.
+  const KIND_LABELS = {
+    tea: { label: 'Tea', blurb: 'Single-origin lots from Fujian, Yunnan, Anhui and Guangdong' },
+    jade: { label: 'Jade & Stone', blurb: 'Nephrite and jadeite, hand-carved' },
+    jewellery: { label: 'Fine Jewellery', blurb: 'Gold, pearls, and jade set in gold' },
+    teaware: { label: 'Teaware', blurb: 'Gaiwan, clay pots and the vessels that brew it best' },
+    gift: { label: 'Gift Sets', blurb: 'Boxed flights, ready to give' },
+  };
+
+  const buildDept = (kind) => {
+    const members = categories.filter((c) => c.kind === kind);
+    if (!members.length) return null;
+    return {
+      kind,
+      label: KIND_LABELS[kind].label,
+      blurb: KIND_LABELS[kind].blurb,
+      count: members.reduce((n, c) => n + c.product_count, 0),
+      hero: members.reduce((a, b) => (b.product_count > a.product_count ? b : a)),
+      members,
+    };
+  };
+
+  const departments = ['tea', 'jade', 'jewellery'].map(buildDept).filter(Boolean);
+  const outros = ['teaware', 'gift'].map(buildDept).filter(Boolean);
+  const totalProducts = categories.reduce((n, c) => n + c.product_count, 0);
 %>
+
 <section class="hero hero-compact">
   <div class="hero-bg">
     <img src="/img/photos/hero-wide.jpg" alt="" />
@@ -28,149 +51,87 @@
   <div class="wrap hero-inner">
     <div class="hero-copy">
       <span class="eyebrow">Fujian &middot; Yunnan &middot; Anhui &middot; Guangdong</span>
-      <h1>Single-origin Chinese tea</h1>
+      <h1>Single-origin Chinese tea, jade and jewellery</h1>
       <p class="hero-sub">
-        Bought in small lots direct from growers, dated by harvest, and brewed in a
-        gaiwan before it is listed. Free shipping over <%= money(store.freeShippingThreshold) %>.
+        <%= totalProducts %> pieces across <%= categories.length %> collections. Choose a
+        department below, then the piece. Free shipping over <%= money(store.freeShippingThreshold) %>.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-solid" href="/shop">Shop the tea</a>
+        <a class="btn btn-solid" href="/shop">Browse everything</a>
         <a class="btn btn-ghost" href="/guides">How to brew it</a>
       </div>
     </div>
-
-    <nav class="cat-chips" aria-label="Shop by family">
-      <% familyLinks.forEach(c => { %>
-        <a class="cat-chip" href="/shop?category=<%= encodeURIComponent(c.slug) %>">
-          <%= c.name %><span><%= c.product_count %></span>
-        </a>
-      <% }) %>
-      <% categories.filter(c => c.kind !== 'tea').forEach(c => { %>
-        <a class="cat-chip" href="/shop?category=<%= encodeURIComponent(c.slug) %>">
-          <%= c.name %><span><%= c.product_count %></span>
-        </a>
-      <% }) %>
-      <a class="cat-chip cat-chip-all" href="/shop">Everything &rarr;</a>
-    </nav>
   </div>
 </section>
 
-<!-- ============================================================ quick shelf -->
-<section class="shelf" aria-label="Shop the range">
-  <div class="wrap shelf-head">
-    <span class="eyebrow">On the shelf now</span>
-    <a class="link-underline small" href="/shop">All <%= categories.reduce((n, c) => n + c.product_count, 0) %> products &rarr;</a>
-  </div>
-  <div class="shelf-track">
-    <% shelf.forEach(product => { %>
-      <% const dv = product.defaultVariant; %>
-      <a class="shelf-item" href="/tea/<%= product.slug %>">
-        <img src="<%= product.hero_image %>" alt="<%= product.name %>" loading="eager" />
-        <span class="shelf-name"><%= product.name %></span>
-        <span class="shelf-price"><%= money(product.priceFrom) %></span>
-      </a>
-    <% }) %>
-  </div>
-</section>
-
-<!-- =============================================================== featured -->
-<section class="section-tight">
+<!-- =========================================================== departments -->
+<section class="section-tight" id="departments">
   <div class="wrap">
     <div class="section-head">
       <div>
-        <span class="eyebrow">Chosen most often</span>
-        <h2>Featured lots</h2>
+        <span class="eyebrow">The shop</span>
+        <h2>Departments</h2>
       </div>
       <div class="section-head-rule"></div>
-      <a class="link-underline small nowrap" href="/shop?sort=rating">By rating &rarr;</a>
+      <a class="link-underline small nowrap" href="/shop">All <%= totalProducts %> pieces &rarr;</a>
     </div>
 
-    <div class="tea-grid">
-      <% featured.forEach(product => { %>
-        <%- include('partials/tea-card', { product, money }) %>
-      <% }) %>
-    </div>
-
-    <div class="row" style="justify-content:center;margin-top:32px">
-      <a class="btn" href="/shop">Browse the whole shop</a>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================= categories -->
-<section class="section-tight">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <span class="eyebrow">By family</span>
-        <h2>Where to start</h2>
-      </div>
-      <div class="section-head-rule"></div>
-      <a class="link-underline small nowrap" href="/shop">All products &rarr;</a>
-    </div>
-
-    <div class="cat-grid">
-      <%
-        // A four-column grid whose first tile spans two columns and two rows
-        // shows exactly eight tiles: one large, seven small. Seven tea families
-        // plus teaware fill it, and whatever does not fit is offered as a chip.
-        const teaCats = categories.filter(c => c.kind === 'tea').slice(0, 7);
-        const teaware = categories.find(c => c.slug === 'teaware');
-        const tiles = teaware ? [...teaCats, teaware] : teaCats;
-        const heroTile = tiles[0];
-        const others = tiles.slice(1, 8);
-      %>
-      <% if (heroTile) { %>
-        <a class="cat-tile cat-tile-featured" href="/shop?category=<%= encodeURIComponent(heroTile.slug) %>">
-          <img src="<%= heroTile.hero_image %>" alt="" loading="lazy" />
-          <div class="cat-tile-inner">
-            <h3><%= heroTile.name %></h3>
-            <p><%= heroTile.tagline %></p>
-            <% if (heroTile.description) { %><p class="cat-blurb"><%= heroTile.description %></p><% } %>
-            <span class="cat-count"><%= heroTile.product_count %> teas &rarr;</span>
-          </div>
-        </a>
-      <% } %>
-      <% others.forEach(c => { %>
-        <a class="cat-tile" href="/shop?category=<%= encodeURIComponent(c.slug) %>">
-          <img src="<%= c.hero_image %>" alt="" loading="lazy" />
-          <div class="cat-tile-inner">
-            <h3><%= c.name %></h3>
-            <p><%= c.tagline %></p>
-            <span class="cat-count"><%= c.product_count %> products</span>
+    <div class="dept-grid">
+      <% departments.forEach((dept) => { %>
+        <a class="dept" href="/shop?category=<%= encodeURIComponent(dept.hero.slug) %>">
+          <div class="dept-media"><img src="<%= dept.hero.hero_image %>" alt="" loading="lazy" /></div>
+          <div class="dept-body">
+            <span class="eyebrow"><%= dept.count %> pieces</span>
+            <h3><%= dept.label %></h3>
+            <p><%= dept.blurb %></p>
+            <ul class="dept-links">
+              <% dept.members.slice(0, 7).forEach((c) => { %>
+                <li><%= c.name %> <span><%= c.product_count %></span></li>
+              <% }) %>
+            </ul>
+            <span class="dept-cta">Enter <%= dept.label %> &rarr;</span>
           </div>
         </a>
       <% }) %>
     </div>
-
-    <div class="row" style="gap:10px;flex-wrap:wrap;margin-top:16px">
-      <span class="tiny faint" style="letter-spacing:0.16em;text-transform:uppercase;align-self:center">Also</span>
-      <% categories.filter(c => c.kind !== 'tea' || !tiles.includes(c)).forEach(c => { %>
-        <a class="chip" href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %> &middot; <%= c.product_count %></a>
-      <% }) %>
-      <a class="chip" href="/shop">All products</a>
-    </div>
   </div>
 </section>
 
-<!-- =========================================================== new arrivals -->
-<section class="section-tight">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <span class="eyebrow">Just arrived</span>
-        <h2>New this season</h2>
+<!-- ============================================ the rest of the catalogue -->
+<% if (outros.length) { %>
+  <section class="section-tight">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Also</span>
+          <h2>Beyond the three</h2>
+        </div>
+        <div class="section-head-rule"></div>
       </div>
-      <div class="section-head-rule"></div>
-      <a class="link-underline small nowrap" href="/shop?sort=newest">Everything new &rarr;</a>
+
+      <div class="dept-grid dept-grid-outros">
+        <% outros.forEach((dept) => { %>
+          <a class="dept dept-small" href="/shop?category=<%= encodeURIComponent(dept.hero.slug) %>">
+            <div class="dept-media"><img src="<%= dept.hero.hero_image %>" alt="" loading="lazy" /></div>
+            <div class="dept-body">
+              <span class="eyebrow"><%= dept.count %> pieces</span>
+              <h3><%= dept.label %></h3>
+              <p><%= dept.blurb %></p>
+              <span class="dept-cta">Enter &rarr;</span>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+
+      <div class="row" style="gap:10px;flex-wrap:wrap;margin-top:20px">
+        <span class="tiny faint" style="letter-spacing:0.16em;text-transform:uppercase;align-self:center">Every collection</span>
+        <% categories.forEach((c) => { %>
+          <a class="chip" href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %> &middot; <%= c.product_count %></a>
+        <% }) %>
+      </div>
     </div>
-    <div class="tea-grid">
-      <% arrivals.forEach(product => { %>
-        <%- include('partials/tea-card', { product, money }) %>
-      <% }) %>
-    </div>
-  </div>
-</section>
+  </section>
+<% } %>
 
 <!-- ================================================================ brewing -->
 <% if (ed.brewing) { %>
@@ -193,88 +154,6 @@
             <p><%= step.body %></p>
           </div>
         <% }) %>
-      </div>
-    </div>
-  </section>
-<% } %>
-
-<!-- ============================================================== spotlight -->
-<% if (spotlightProduct && ed.spotlight) { %>
-  <section class="section-tight spotlight">
-    <div class="wrap">
-      <div class="spotlight-grid">
-        <div class="spotlight-media">
-          <img src="<%= ed.spotlight.image || spotlightProduct.hero_image %>" alt="<%= spotlightProduct.name %>" loading="lazy" />
-          <div class="spotlight-seal"><%= String(spotlightProduct.seal || 'Tea').slice(0, 12) %></div>
-        </div>
-
-        <div>
-          <span class="eyebrow"><%= ed.spotlight.eyebrow %></span>
-          <h2 style="margin:14px 0 18px"><%= ed.spotlight.heading %></h2>
-          <p class="lede" style="margin-bottom:4px"><%= ed.spotlight.body %></p>
-
-          <div class="spotlight-points">
-            <% (ed.spotlight.points || []).forEach(point => { %>
-              <div class="spotlight-point">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m5 12 5 5L20 7"/></svg>
-                <span><%= point %></span>
-              </div>
-            <% }) %>
-          </div>
-
-          <div class="row" style="gap:12px;flex-wrap:wrap">
-            <a class="btn btn-solid" href="/tea/<%= spotlightProduct.slug %>">View this lot &mdash; <%= money(spotlightProduct.priceFrom) %></a>
-            <a class="btn btn-ghost" href="/guides/how-to-brew-gongfu">How to brew it</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-<% } %>
-
-<!-- ================================================================== gift -->
-<% if (giftProduct && ed.gift) { %>
-  <section class="section-tight">
-    <div class="wrap">
-      <div class="gift-banner">
-        <img class="gift-banner-media" src="<%= ed.gift.image || giftProduct.hero_image %>" alt="" loading="lazy" />
-        <div class="gift-banner-inner">
-          <div>
-            <span class="eyebrow"><%= ed.gift.eyebrow %></span>
-            <h2 style="margin:14px 0 16px"><%= ed.gift.heading %></h2>
-            <p class="lede"><%= ed.gift.body %></p>
-            <div class="gift-bullets">
-              <% (ed.gift.bullets || []).forEach(b => { %>
-                <div class="gift-bullet">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m5 12 5 5L20 7"/></svg>
-                  <span><%= b %></span>
-                </div>
-              <% }) %>
-            </div>
-            <a class="btn btn-solid" href="/tea/<%= giftProduct.slug %>">See the box</a>
-          </div>
-
-          <div class="gift-price-card">
-            <span class="eyebrow">From</span>
-            <span class="price"><%= money(giftProduct.priceFrom) %></span>
-            <p class="small muted" style="margin-bottom:18px"><%= giftProduct.defaultVariant ? giftProduct.defaultVariant.label : '' %></p>
-            <% const gv = giftProduct.defaultVariant; %>
-            <% if (gv) { %>
-              <button class="btn btn-solid btn-block"
-                      type="button"
-                      data-add-to-cart
-                      data-variant-id="<%= gv.id %>"
-                      data-quantity="1"
-                      data-slug="<%= giftProduct.slug %>"
-                      data-name="<%= giftProduct.name %>"
-                      data-variant-label="<%= gv.label %>"
-                      data-price-cents="<%= gv.price_cents %>"
-                      data-image="<%= giftProduct.hero_image %>"
-                      data-stock="<%= gv.stock %>">Add to basket</button>
-            <% } %>
-            <p class="tiny faint" style="margin-top:14px">Hand-written message on request</p>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -395,7 +274,7 @@
           <span class="eyebrow">Questions</span>
           <h2 style="margin:14px 0 18px">Answered before you ask</h2>
           <p class="lede" style="font-size:0.95rem">
-            Anything not covered here, write to us &mdash; every message is answered by the person who chose the tea.
+            Anything not covered here, write to us &mdash; every message is answered by the person who chose the piece.
           </p>
           <a class="btn btn-ghost" href="/about" style="margin-top:22px">More about us</a>
         </div>

@@ -1,0 +1,59 @@
+{
+  "fetchedAt": "2026-10-10T14:52:31.900Z",
+  "marks": [
+    {
+      "slug": "visa",
+      "status": "fetched",
+      "from": "Visa Inc. logo.svg",
+      "bytes": 3305
+    },
+    {
+      "slug": "mastercard",
+      "status": "fetched",
+      "from": "Mastercard-logo.svg",
+      "bytes": 3918
+    },
+    {
+      "slug": "amex",
+      "status": "fetched",
+      "from": "American Express logo (2018).svg",
+      "bytes": 9701
+    },
+    {
+      "slug": "discover",
+      "status": "fetched",
+      "from": "Discover Card logo.svg",
+      "bytes": 19193
+    },
+    {
+      "slug": "jcb",
+      "status": "fetched",
+      "from": "JCB logo.svg",
+      "bytes": 6403
+    },
+    {
+      "slug": "diners",
+      "status": "fetched",
+      "from": "Diners Club logo.svg",
+      "bytes": 15968
+    },
+    {
+      "slug": "unionpay",
+      "status": "fetched",
+      "from": "UnionPay logo.svg",
+      "bytes": 17570
+    },
+    {
+      "slug": "paypal",
+      "status": "fetched",
+      "from": "PayPal.svg",
+      "bytes": 5350
+    },
+    {
+      "slug": "applepay",
+      "status": "fetched",
+      "from": "Apple Pay logo.svg",
+      "bytes": 1474
+    }
+  ]
+}

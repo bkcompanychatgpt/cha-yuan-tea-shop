@@ -227,6 +227,47 @@ export async function launch(viewport = {}) {
       return Buffer.from(data, 'base64');
     },
 
+    /** Navigate and return a PNG buffer of one rectangular region. */
+    async screenshotClip(url, box) {
+      await goto(url);
+      const { data } = await session.send('Page.captureScreenshot', {
+        format: 'png',
+        captureBeyondViewport: true,
+        clip: {
+          x: Math.max(0, Math.round(box.x)),
+          y: Math.max(0, Math.round(box.y)),
+          width: Math.max(1, Math.round(box.width)),
+          height: Math.max(1, Math.round(box.height)),
+          scale: 1,
+        },
+      });
+      return Buffer.from(data, 'base64');
+    },
+
+    /** Capture the page as it currently stands, without navigating. */
+    async screenshotCurrent() {
+      const { cssContentSize } = await session.send('Page.getLayoutMetrics');
+      const { data } = await session.send('Page.captureScreenshot', {
+        format: 'png',
+        captureBeyondViewport: true,
+        clip: {
+          x: 0,
+          y: 0,
+          width: Math.min(cssContentSize.width, 2000),
+          height: Math.min(Math.max(cssContentSize.height, 50), 12_000),
+          scale: 1,
+        },
+      });
+      return Buffer.from(data, 'base64');
+    },
+
+    /** Navigate, then evaluate an expression and return its value. */
+    async evaluateOn(url, expression) {
+      await goto(url);
+      const { result } = await session.send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true });
+      return result.value;
+    },
+
     /** Evaluate an expression in the page and return its value. */
     async evaluate(expression) {
       const { result } = await session.send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true });

@@ -83,11 +83,13 @@ async function main() {
     const html = await r.text();
     record(r.status === 200, 'GET / returns 200', `status ${r.status}`);
     record(html.includes('Single-origin Chinese tea'), 'homepage renders the hero headline');
-    // Products and the family links both have to be reachable in the first screen,
-    // which is the whole point of the compact hero and the shelf beneath it.
-    record(html.includes('cat-chips'), 'homepage shows the family quick links in the hero');
-    record((html.match(/class="shelf-item"/g) || []).length >= 4, 'homepage shows a shelf of products above the fold');
-    record(html.includes('/tea/lion-peak-longjing'), 'homepage lists products');
+    // The homepage is deliberately a directory: three departments, each naming
+    // its collections, and no individual product cards. Products are one click
+    // deeper, inside a category.
+    record(html.includes('dept-grid'), 'homepage shows the department grid');
+    record((html.match(/class="dept"/g) || []).length >= 3, 'homepage shows three departments');
+    record(/\/shop\?category=/.test(html), 'homepage departments link into categories');
+    record(!html.includes('class="tea-card"'), 'homepage shows no individual product cards');
     record(html.includes('id="cart-drawer"'), 'cart drawer is present in the layout');
   }
 
@@ -327,6 +329,49 @@ async function main() {
     const html = await r.text();
     record(r.status === 200 && html.includes(orderNumber), 'the order confirmation page renders');
     record(html.includes('Smoke Tester'), 'the confirmation shows the customer');
+  }
+
+  /* ------------------------------------------------- fulfilment promises */
+  console.log('\nOrder confirmation detail');
+  {
+    const r = await request(`/order/${orderNumber}?email=smoke@chayuan.test`);
+    const html = await r.text();
+    record(html.includes('What happens next'), 'the confirmation explains what happens next');
+    record((html.match(/class="fulfil-step /g) || []).length === 6, 'the confirmation shows all six fulfilment stages');
+    record(html.includes('Weighed and packed') && html.includes('Dispatched with tracking'), 'the stages name handling and dispatch');
+    record(/Dispatch by|Not shipping/.test(html), 'the confirmation states a dispatch deadline');
+    record(/Arrives|Not shipping/.test(html), 'the confirmation states an arrival window');
+    record(html.includes('business day'), 'the confirmation promises business-day handling');
+    record(html.includes('returns') || html.includes('refund'), 'the confirmation states the returns position');
+    // A stage marker must never be emitted with an unknown state, which would
+    // silently render an unstyled dot.
+    const states = [...html.matchAll(/class="fulfil-step is-([a-z]+)"/g)].map((m) => m[1]);
+    record(states.every((s) => ['done', 'current', 'pending', 'void'].includes(s)), 'every fulfilment stage has a known state', states.join(','));
+  }
+
+  /* ------------------------------------------------- payment brand marks */
+  console.log('\nPayment brand marks');
+  {
+    const marks = ['visa', 'mastercard', 'amex', 'discover', 'jcb', 'diners', 'unionpay'];
+    const missing = [];
+    for (const slug of marks) {
+      const r = await request(`/img/badge/${slug}.svg`);
+      const body = await r.text();
+      // The generated fallback pill is a 92x28 viewBox with a gold label; a real
+      // network mark is a filled vector. Distinguish them so a deleted mark file
+      // cannot pass as success.
+      const isRealMark = r.status === 200 && /<svg/i.test(body) && !/viewBox="0 0 92 28"/.test(body);
+      if (!isRealMark) missing.push(`${slug}(${r.status})`);
+    }
+    record(missing.length === 0, 'all seven card network marks serve real vector artwork', missing.join(' '));
+
+    const r = await request('/');
+    const html = await r.text();
+    record((html.match(/class="mark"/g) || []).length >= 7, 'the footer presents the network marks on light plates');
+
+    const c = await request('/checkout');
+    const chtml = await c.text();
+    record((chtml.match(/class="mark"/g) || []).length >= 7, 'the checkout presents every accepted network');
   }
 
   /* ------------------------------------------------------ callback crypto */

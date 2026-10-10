@@ -1,0 +1,108 @@
+<%
+  /*
+   * The fulfilment promise block: what has happened to this order, what happens
+   * next, and by when. Every date comes from server/fulfilment.mjs so it cannot
+   * disagree with the shipping policy or the order record.
+   *
+   * Usage from a view: pass the order through as the only local.
+   *
+   * Note: never write an EJS tag literally inside this comment. A percent-then-
+   * angle-bracket sequence closes the tag early and the template fails to
+   * compile with "could not find matching close tag".
+   *
+   * Also: this file must not be called fulfilment.ejs. EJS names the compiled
+   * template function after the file, so a partial named fulfilment.ejs shadows
+   * the `fulfilment` module local and every call fails with
+   * "fulfilment is not a function".
+   */
+  const f = fulfilment(order);
+  const statusWord = String(order.status || '').replace(/_/g, ' ');
+%>
+
+<section class="fulfil" aria-labelledby="fulfil-title">
+  <div class="row-between" style="align-items:flex-start;flex-wrap:wrap;gap:16px">
+    <div>
+      <span class="eyebrow">What happens next</span>
+      <h2 id="fulfil-title" class="fulfil-title">Your order, step by step</h2>
+      <p class="fulfil-lede">
+        <% if (f.isBad) { %>
+          This order is marked <strong><%= statusWord %></strong>, so it will not be shipped. If a card payment was
+          taken it has been returned to the card it came from.
+        <% } else if (f.isComplete) { %>
+          Delivered. Everything below is the completed record of how this order was handled.
+        <% } else { %>
+          Expected <strong class="gold"><%= f.etaLabel %></strong><%= f.international ? ', customs permitting' : '' %>,
+          to <%= order.shipping_city %><%= order.shipping_province ? `, ${order.shipping_province}` : '' %>.
+        <% } %>
+      </p>
+    </div>
+    <div class="fulfil-meta">
+      <div class="fulfil-meta-row"><span>Service</span><strong><%= f.methodLabel %></strong></div>
+      <% if (f.isBad) { %>
+        <%# No dates: nothing is being dispatched, and printing a dispatch date on a
+            refunded order reads as a promise that will not be kept. %>
+        <div class="fulfil-meta-row"><span>Dispatch by</span><strong>—</strong></div>
+        <div class="fulfil-meta-row"><span>Arrives</span><strong>Not shipping</strong></div>
+      <% } else { %>
+        <div class="fulfil-meta-row"><span>Dispatch by</span><strong><%= f.dispatchByLabel %></strong></div>
+        <div class="fulfil-meta-row"><span>Arrives</span><strong><%= f.etaLabel %></strong></div>
+      <% } %>
+    </div>
+  </div>
+
+  <ol class="fulfil-track">
+    <% f.stages.forEach((stage, index) => { %>
+      <li class="fulfil-step is-<%= stage.state %>">
+        <span class="fulfil-dot" aria-hidden="true">
+          <% if (stage.state === 'done') { %>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          <% } else { %>
+            <span class="fulfil-num"><%= index + 1 %></span>
+          <% } %>
+        </span>
+        <div class="fulfil-body">
+          <div class="fulfil-head">
+            <h3><%= stage.title %></h3>
+            <span class="fulfil-state">
+              <%= stage.state === 'done' ? 'Done'
+                : stage.state === 'current' ? 'In progress'
+                : stage.state === 'void' ? 'Not happening'
+                : 'Next' %>
+            </span>
+          </div>
+          <p class="fulfil-copy"><%= stage.body %></p>
+          <p class="fulfil-when"><%= stage.promise %></p>
+        </div>
+      </li>
+    <% }) %>
+  </ol>
+
+  <div class="fulfil-notes">
+    <div class="fulfil-note">
+      <span class="eyebrow">Handling</span>
+      <p>
+        Orders placed before <%= f.cutoffLabel %> are weighed and packed the same day. Weekends and statutory
+        holidays are not business days. If anything in your order needs a decision from us — a substituted harvest,
+        a tin that will not seal, a stone with a fault we would not ship — we email you before the parcel is closed
+        rather than after it has left.
+      </p>
+    </div>
+    <div class="fulfil-note">
+      <span class="eyebrow">Shipping</span>
+      <p>
+        <strong class="gold">Standard</strong> is 2 to 5 business days within Canada and 7 to 14 business days
+        internationally, with tracking on every parcel.
+        <strong class="gold">Express</strong> is 1 to 2 business days.
+        Duties and import taxes on international orders are the customer's responsibility.
+      </p>
+    </div>
+    <div class="fulfil-note">
+      <span class="eyebrow">If something goes wrong</span>
+      <p>
+        A parcel that does not arrive, a tin that has not survived the journey or a piece that is not what you
+        expected is our problem to fix, not yours to prove. Write to us with the order number and we will replace it
+        or refund it. Refunds return to the original card through OTT Pay, usually within 5 to 10 business days.
+      </p>
+    </div>
+  </div>
+</section>

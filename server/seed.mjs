@@ -6,8 +6,9 @@
  *
  * Orders are never touched by --force; only the catalogue is rebuilt.
  */
-import { getDb, run, get, transaction, setSetting } from './db.mjs';
+import { getDb, run, get, all, transaction, setSetting } from './db.mjs';
 import { CATEGORIES, PRODUCTS, EDITORIAL } from './catalog-data.mjs';
+import { variantSku, findSkuProblems } from './sku.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import config from './config.mjs';
@@ -201,11 +202,49 @@ function seed({ always = false } = {}) {
   // Point products and categories at their photographs.
   const photos = applyPhotos();
 
+  assertUniqueSkus();
+
   console.log(
     `Seeded ${CATEGORIES.length} categories, ${productCount} products, ${variantCount} variants`
     + ` — ${photos.products} with photography, ${photos.categories} category tiles.`,
   );
   return { skipped: false, products: productCount, variants: variantCount, photos };
+}
+
+/**
+ * Every variant SKU must identify exactly one thing.
+ *
+ * This runs after seeding and throws rather than warning, because a duplicate
+ * SKU is silent otherwise: the catalogue looks fine, and the first person to
+ * notice is whoever is packing the order. It previously went unnoticed until a
+ * design review of the confirmation page showed three different pearl strands
+ * sharing one code.
+ */
+function assertUniqueSkus() {
+  const rows = all(
+    `SELECT p.sku AS product_sku, p.name AS product_name, v.label AS variant_label
+       FROM variants v JOIN products p ON p.id = v.product_id
+      ORDER BY p.id, v.sort_order, v.id`,
+  ).map((r) => ({
+    sku: variantSku(r.product_sku, r.variant_label),
+    productSku: r.product_sku,
+    productName: r.product_name,
+    label: r.variant_label,
+  }));
+
+  const { duplicates, empty } = findSkuProblems(rows);
+  if (!duplicates.size && !empty.length) return;
+
+  const lines = [];
+  for (const [sku, list] of duplicates) {
+    lines.push(`  ${sku} is shared by ${list.length} variants:`);
+    for (const r of list) lines.push(`    - ${r.productName} / ${r.label}`);
+  }
+  for (const r of empty) lines.push(`  (blank SKU) ${r.productName} / ${r.label}`);
+
+  throw new Error(
+    `Variant SKUs are not unique — refusing to seed a catalogue that cannot be fulfilled:\n${lines.join('\n')}`,
+  );
 }
 
 /**

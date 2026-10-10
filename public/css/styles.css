@@ -1040,6 +1040,35 @@ select.select option { background: var(--ink-800); color: var(--text); }
 .card-logos { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 12px; }
 .card-logos img { height: 22px; width: auto; opacity: 0.85; }
 
+/* --------------------------------------------------------------------------
+   Payment network marks
+
+   The real Visa / Mastercard / Amex artwork is dark ink on transparency, drawn
+   for a white page. On this ink-green background it would be close to
+   invisible, so each mark sits on its own light plate — the same treatment the
+   networks' own brand guidelines use for dark backgrounds. The generated
+   fallback pill (`/img/badge/3ds.svg`) is deliberately not given the class: it
+   already draws its own gold-on-transparent frame.
+   -------------------------------------------------------------------------- */
+
+.card-logos img.mark,
+.footer-pay img.mark {
+  /* A uniform plate: the marks have wildly different aspect ratios (Amex is
+     square, Discover is 6:1), so a fixed footprint with object-fit keeps the
+     row on one baseline instead of a ragged strip. */
+  width: 42px;
+  height: 16px;
+  object-fit: contain;
+  padding: 5px 6px;
+  box-sizing: content-box;
+  background: #fbfaf6;
+  border-radius: 3px;
+  opacity: 0.94;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.footer-pay img.mark { width: 46px; height: 17px; }
+
 /* ------------------------------------------------------------- cart drawer */
 .drawer-scrim {
   position: fixed;
@@ -1954,6 +1983,75 @@ select.select option { background: var(--ink-800); color: var(--text); }
 .credits-row a { color: var(--gold-200); }
 .credits-row span:last-child { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); }
 
+/* ----------------------------------------------------------- departments */
+/**
+ * The homepage is a directory, not a shelf: three large cards, each naming its
+ * own collections, so a visitor chooses where to look before being shown
+ * individual pieces.
+ */
+.dept-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.dept-grid-outros { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.dept {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line-soft);
+  background: linear-gradient(180deg, var(--ink-800), var(--ink-850));
+  overflow: hidden;
+  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.dept:hover { border-color: var(--gold-400); transform: translateY(-3px); }
+.dept-media { overflow: hidden; aspect-ratio: 4 / 3; }
+.dept-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ease);
+}
+.dept:hover .dept-media img { transform: scale(1.05); }
+
+.dept-body {
+  padding: 24px 22px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.dept-body h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); margin-top: 2px; }
+.dept-body p { font-size: 0.87rem; color: var(--text-dim); line-height: 1.68; }
+
+.dept-links {
+  display: grid;
+  gap: 0;
+  margin: 8px 0 4px;
+  border-top: 1px solid var(--line-soft);
+}
+.dept-links li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 0.83rem;
+  color: var(--text-dim);
+}
+.dept-links li span { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); }
+
+.dept-cta {
+  margin-top: auto;
+  padding-top: 14px;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+.dept:hover .dept-cta { color: var(--gold-100); }
+
 /* -------------------------------------------------------------- case strip */
 .case-strip {
   display: grid;
@@ -2106,9 +2204,12 @@ select.select option { background: var(--ink-800); color: var(--text); }
 .shelf-price { font-size: 0.78rem; color: var(--gold-300); }
 
 @media (max-width: 760px) {
-  /* On a phone the wordmark competes with the cart and menu for a 390px row and
-     wraps to three lines, which makes the header taller than its own height
-     variable. The seal alone reads as the logo and gives the actions room. */
+  /* On a phone the department cards stack, and their collection lists are dropped:
+     the card's own link already leads to the same place. */
+  .dept-grid, .dept-grid-outros { grid-template-columns: 1fr; gap: 14px; }
+  .dept-media { aspect-ratio: 16 / 9; }
+  .dept-body { padding: 18px 18px 20px; }
+  .dept-links { display: none; }
   .brand-text { display: none; }
   .brand img { height: 40px; }
   .header-inner { gap: 10px; }
@@ -2127,6 +2228,8 @@ select.select option { background: var(--ink-800); color: var(--text); }
 }
 
 @media (max-width: 1180px) {
+  .dept-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dept-grid-outros { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer-grid { grid-template-columns: 1.4fr 1fr 1fr; row-gap: 34px; }
   .trust-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .trust-item:nth-child(2) { border-right: 0; }
@@ -2218,6 +2321,201 @@ select.select option { background: var(--ink-800); color: var(--text); }
   .brand img { height: 38px; }
   .pdp-meta-row { grid-template-columns: 1fr; gap: 4px; }
   .brew-row { grid-template-columns: 1fr; gap: 3px; }
+}
+
+/* --------------------------------------------------------------------------
+   Fulfilment promise block (order confirmation, order record)
+   -------------------------------------------------------------------------- */
+
+.fulfil {
+  margin-top: clamp(34px, 5vw, 58px);
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(201, 167, 92, 0.07), transparent 58%),
+    var(--ink-850);
+  padding: clamp(26px, 4vw, 46px);
+}
+
+.fulfil-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.05rem);
+  margin: 12px 0 12px;
+  font-weight: 400;
+}
+
+.fulfil-lede {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  max-width: 62ch;
+  margin: 0;
+}
+
+.fulfil-meta {
+  display: grid;
+  gap: 8px;
+  min-width: 210px;
+  border-left: 1px solid var(--line-soft);
+  padding-left: 20px;
+}
+
+.fulfil-meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 0.82rem;
+}
+
+.fulfil-meta-row span { color: var(--text-faint); }
+.fulfil-meta-row strong { color: var(--gold-200); font-weight: 500; white-space: nowrap; }
+
+.fulfil-track {
+  list-style: none;
+  margin: clamp(30px, 4vw, 44px) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+
+.fulfil-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 18px;
+  padding-bottom: 26px;
+}
+
+.fulfil-step:last-child { padding-bottom: 0; }
+
+/* The connector runs between dots, and never past the last one. */
+.fulfil-step:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 34px;
+  bottom: 0;
+  width: 1px;
+  background: var(--line-soft);
+}
+
+.fulfil-step.is-done:not(:last-child)::before { background: rgba(201, 167, 92, 0.42); }
+
+.fulfil-dot {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  background: var(--ink-800);
+  position: relative;
+  z-index: 1;
+}
+
+.fulfil-dot svg { width: 16px; height: 16px; }
+
+.fulfil-num { font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-faint); }
+
+.fulfil-step.is-done .fulfil-dot {
+  border-color: var(--gold-400);
+  background: rgba(201, 167, 92, 0.16);
+  color: var(--gold-200);
+}
+
+.fulfil-step.is-current .fulfil-dot {
+  border-color: var(--gold-300);
+  background: var(--ink-700);
+  color: var(--gold-200);
+  box-shadow: 0 0 0 4px var(--gold-glow);
+}
+
+.fulfil-step.is-pending .fulfil-dot { opacity: 0.6; }
+
+/* Struck-out stages on a cancelled or refunded order: dimmed, dashed, and
+   clearly not something the customer is still waiting on. */
+.fulfil-step.is-void { opacity: 0.5; }
+
+.fulfil-step.is-void .fulfil-dot { border-style: dashed; opacity: 0.8; }
+
+.fulfil-step.is-void .fulfil-head h3 { color: var(--text-faint); text-decoration: line-through; }
+
+.fulfil-step.is-void .fulfil-state { color: var(--text-faint); }
+
+.fulfil-body { padding-top: 3px; }
+
+.fulfil-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.fulfil-head h3 {
+  font-family: var(--font-display);
+  font-size: 1.14rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--text);
+}
+
+.fulfil-step.is-pending .fulfil-head h3 { color: var(--text-dim); }
+
+.fulfil-state {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.fulfil-step.is-done .fulfil-state { color: var(--gold-400); }
+.fulfil-step.is-current .fulfil-state { color: var(--gold-200); }
+
+.fulfil-copy {
+  margin: 7px 0 0;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  max-width: 74ch;
+}
+
+.fulfil-when {
+  margin: 8px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--gold-400);
+}
+
+.fulfil-step.is-pending .fulfil-when { color: var(--text-faint); }
+
+.fulfil-notes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+  margin-top: clamp(32px, 4vw, 46px);
+  padding-top: clamp(26px, 3vw, 36px);
+  border-top: 1px solid var(--line-soft);
+}
+
+.fulfil-note p {
+  margin: 11px 0 0;
+  color: var(--text-dim);
+  font-size: 0.87rem;
+  line-height: 1.82;
+}
+
+@media (max-width: 1180px) {
+  .fulfil-notes { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 760px) {
+  .fulfil-notes { grid-template-columns: 1fr; }
+  .fulfil-meta { border-left: 0; padding-left: 0; border-top: 1px solid var(--line-soft); padding-top: 16px; width: 100%; }
+  .fulfil-step { grid-template-columns: 28px 1fr; gap: 14px; }
+  .fulfil-dot { width: 28px; height: 28px; }
+  .fulfil-num { font-size: 0.7rem; }
+  .fulfil-step:not(:last-child)::before { left: 13px; top: 28px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

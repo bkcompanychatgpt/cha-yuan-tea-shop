@@ -117,6 +117,43 @@
       3-D Secure 2 state machine as OTT Pay: the challenge page, the encrypted AES-ECB callback and this reconciliation
       are the same code paths used against <span class="mono">sandbox-api.ottpay.com</span>.
     </div>
+
+    <% if (paid) { %>
+      <%- include('partials/order-progress', { order }) %>
+    <% } else { %>
+      <div class="fulfil">
+        <span class="eyebrow">What happens next</span>
+        <h2 class="fulfil-title">Nothing has been shipped yet</h2>
+        <p class="fulfil-lede">
+          No money has left your account and no parcel has been packed. Your basket is still saved on this device, so
+          you can return to the checkout and try again, or use a different card.
+        </p>
+        <div class="fulfil-notes">
+          <div class="fulfil-note">
+            <span class="eyebrow">If your bank declined it</span>
+            <p>
+              A decline usually means the card needs 3-D Secure confirmation, or the issuer is blocking an
+              international or first-time online merchant. Calling the number on the back of the card clears most of
+              these in a minute.
+            </p>
+          </div>
+          <div class="fulfil-note">
+            <span class="eyebrow">If you were charged anyway</span>
+            <p>
+              A failed order never completes a charge, but your bank may show a pending authorisation. That hold is
+              released by the issuer, typically within a few business days, and we cannot release it for you.
+            </p>
+          </div>
+          <div class="fulfil-note">
+            <span class="eyebrow">If you would rather not retry</span>
+            <p>
+              Write to us with the order number. We can hold the same teas or take the order another way. Nothing is
+              reserved until a payment completes, so tell us if you want the harvest set aside.
+            </p>
+          </div>
+        </div>
+      </div>
+    <% } %>
   <% } else { %>
     <div class="panel" style="text-align:center;padding:50px 30px">
       <p class="muted">We could not find an order for that reference.</p>

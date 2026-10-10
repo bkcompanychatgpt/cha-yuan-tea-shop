@@ -5,6 +5,7 @@ import crypto from 'node:crypto';
 import config from './config.mjs';
 import { all, get, run, transaction } from './db.mjs';
 import * as payments from './payments.mjs';
+import { variantSku } from './sku.mjs';
 
 /* ------------------------------------------------------------------ pricing */
 
@@ -53,7 +54,7 @@ export function priceCart(lines, { shippingMethod = 'standard' } = {}) {
       slug: row.slug,
       name: row.name,
       variantLabel: row.variant_label,
-      sku: row.sku + (row.variant_label ? `-${row.variant_label.replace(/\W+/g, '').slice(0, 6).toUpperCase()}` : ''),
+      sku: variantSku(row.sku, row.variant_label),
       unitPriceCents: row.price_cents,
       quantity: qty,
       lineTotalCents: row.price_cents * qty,
@@ -190,7 +191,18 @@ export function createOrder({ priced, customer, shipping, shippingMethod = 'stan
 export function getOrderById(id) {
   const order = get('SELECT * FROM orders WHERE id = ?', Number(id));
   if (!order) return null;
-  order.items = all('SELECT * FROM order_items WHERE order_id = ? ORDER BY id', order.id);
+  // The department is joined in so downstream copy can tell a tea order from a
+  // jade or jewellery one: the confirmation page must not tell someone their
+  // bangle is "weighed to the gram". A LEFT JOIN keeps historical orders
+  // readable if the product has since been removed from the catalogue.
+  order.items = all(
+    `SELECT oi.*, COALESCE(c.kind, '') AS category_kind
+       FROM order_items oi
+       LEFT JOIN products p ON p.id = oi.product_id
+       LEFT JOIN categories c ON c.id = p.category_id
+      WHERE oi.order_id = ? ORDER BY oi.id`,
+    order.id,
+  );
   order.attempts = all('SELECT * FROM payment_attempts WHERE order_id = ? ORDER BY id DESC', order.id);
   order.refunds = all('SELECT * FROM refunds WHERE order_id = ? ORDER BY id DESC', order.id);
   return order;

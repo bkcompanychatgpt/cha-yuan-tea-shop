@@ -23,6 +23,9 @@ import * as orders from './orders.mjs';
 import * as payments from './payments.mjs';
 import * as imagery from './imagery.mjs';
 import * as security from './security.mjs';
+// Named import, not `import * as`: views call this as a function, and a module
+// namespace object is not callable.
+import { fulfilment } from './fulfilment.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(config.rootDir, 'public');
@@ -253,6 +256,10 @@ app.locals.payment = {
 };
 app.locals.year = new Date().getFullYear();
 app.locals.escapeHtml = security.escapeHtml;
+// Fulfilment promises, so any view can render the same deadlines the customer
+// was shown. Callable from a template as fulfilment(order); the partial that
+// does so lives at views/partials/order-progress.ejs.
+app.locals.fulfilment = fulfilment;
 
 function renderPage(res, view, data = {}) {
   res.render(view, { ...data, view, money, config, store: config.store });
@@ -349,7 +356,30 @@ app.get('/img/hero/:key.svg', (req, res) => {
 });
 
 app.get('/img/logo.svg', (req, res) => sendSvg(res, imagery.logo({ name: config.store.name }), { immutable: true }));
-app.get('/img/badge/:label.svg', (req, res) => sendSvg(res, imagery.brandBadge({ label: req.params.label }), { immutable: true }));
+/**
+ * Payment-network marks.
+ *
+ * A real mark file in public/img/badge/<slug>.svg wins; otherwise the generated
+ * label pill is drawn instead. The fallback keeps the checkout whole if a brand
+ * mark is ever removed, and it is what non-network pills (anything without a
+ * mark file) still use.
+ */
+const BADGE_DIR = path.join(PUBLIC_DIR, 'img', 'badge');
+
+app.get('/img/badge/:label.svg', (req, res) => {
+  const raw = String(req.params.label || '');
+  // Slug only: no separators, no traversal, no extension games.
+  const slug = /^[a-z0-9][a-z0-9-]{0,31}$/.test(raw) ? raw : null;
+  if (slug) {
+    const file = path.join(BADGE_DIR, `${slug}.svg`);
+    if (file.startsWith(BADGE_DIR) && fs.existsSync(file)) {
+      res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      return res.sendFile(file);
+    }
+  }
+  return sendSvg(res, imagery.brandBadge({ label: raw }), { immutable: true });
+});
 app.get('/favicon.svg', (req, res) => sendSvg(res, imagery.favicon(), { immutable: true }));
 app.get('/favicon.ico', (req, res) => sendSvg(res, imagery.favicon(), { immutable: true }));
 
@@ -1433,6 +1463,10 @@ app.use((err, req, res, _next) => {
   if (req.path.startsWith('/api/')) {
     return res.status(500).json({ error: 'server', message: 'Something went wrong on our side.' });
   }
+  // The status must be set on the response, not merely passed to the view:
+  // rendering the error page with a 200 made a broken page look healthy to
+  // every client, monitor and assertion that only checks the status code.
+  res.status(500);
   renderPage(res, 'error', { page: 'error', title: 'Something went wrong', status: 500, message: 'An unexpected error occurred. Nothing has been charged.' });
 });
 
