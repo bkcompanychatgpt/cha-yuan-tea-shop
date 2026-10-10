@@ -68,6 +68,24 @@ const bool = (key, fallback = false) => {
 const PAYMENT_MODES = ['mock', 'sandbox', 'live'];
 const paymentMode = str('PAYMENT_MODE', 'mock').toLowerCase();
 
+/**
+ * Sample trading details, used until the operator supplies the real ones.
+ *
+ * They are deliberately British-Columbia-shaped rather than generic, because a
+ * placeholder that looks plausible is easier to spot on a page than one that
+ * looks like a placeholder — and the pages say outright that they are samples.
+ */
+const COMPANY_DEFAULTS = {
+  legalName: 'Cha Yuan Tea Ltd.',
+  address: 'Unit 200 — 1234 Main Street|Vancouver, British Columbia V6B 1A1|Canada',
+  country: 'Canada',
+  registrationNumber: 'BC0000000',
+  taxNumber: 'GST/HST 000000000 RT0001',
+  email: 'hello@chayuan.test',
+  privacyEmail: 'privacy@chayuan.test',
+  phone: '+1 604 000 0000',
+};
+
 const ottBaseUrl =
   paymentMode === 'live'
     ? str('OTT_LIVE_BASE_URL', 'https://ecom-api.ottpay.com')
@@ -88,6 +106,44 @@ const config = {
     flatShippingFee: Math.round(num('FLAT_SHIPPING_FEE', 9.5) * 100),
     taxRate: num('TAX_RATE', 0.13),
     taxLabel: str('TAX_LABEL', 'HST (13%)'),
+  },
+
+  /*
+   * The trading entity behind the shop.
+   *
+   * A policy page that names no legal entity, no address and no reachable
+   * contact is not a policy page — card scheme rules and consumer law both
+   * require the customer to be able to find out who they are buying from. Every
+   * value here is an environment variable, so the real registration can be
+   * filled in on the host without touching code.
+   */
+  company: {
+    legalName: str('COMPANY_LEGAL_NAME', COMPANY_DEFAULTS.legalName),
+    tradingName: str('COMPANY_TRADING_NAME', str('STORE_NAME', 'Cha Yuan')),
+    addressLines: str('COMPANY_ADDRESS', COMPANY_DEFAULTS.address)
+      .split('|')
+      .map((line) => line.trim())
+      .filter(Boolean),
+    country: str('COMPANY_COUNTRY', COMPANY_DEFAULTS.country),
+    registrationNumber: str('COMPANY_REGISTRATION_NUMBER', COMPANY_DEFAULTS.registrationNumber),
+    taxNumber: str('COMPANY_TAX_NUMBER', COMPANY_DEFAULTS.taxNumber),
+    contactPerson: str('COMPANY_CONTACT_PERSON', 'Customer service'),
+    email: str('COMPANY_EMAIL', COMPANY_DEFAULTS.email),
+    privacyEmail: str('COMPANY_PRIVACY_EMAIL', COMPANY_DEFAULTS.privacyEmail),
+    phone: str('COMPANY_PHONE', COMPANY_DEFAULTS.phone),
+    hours: str('COMPANY_HOURS', 'Monday to Friday, 9:00am to 5:00pm Pacific'),
+    responseTime: str('COMPANY_RESPONSE_TIME', 'one business day'),
+
+    /*
+     * Whether the details above are still the shipped examples.
+     *
+     * A policy page that names a company nobody can find is worse than one that
+     * admits it is a sample, so the pages say so out loud until the real
+     * registration is entered. This is derived rather than configured: it turns
+     * itself off the moment COMPANY_LEGAL_NAME is set, so it cannot be left on
+     * by accident once the shop is real.
+     */
+    isPlaceholder: !process.env.COMPANY_LEGAL_NAME || !process.env.COMPANY_ADDRESS,
   },
 
   payment: {

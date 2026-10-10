@@ -122,7 +122,7 @@ function check(ok, name, detail = '') {
   }
 }
 
-const PAGES = ['/', '/shop', '/tea/lion-peak-longjing', '/cart', '/checkout', '/guides', '/about'];
+const PAGES = ['/', '/shop', '/tea/lion-peak-longjing', '/cart', '/checkout', '/guides', '/about', '/privacy', '/refund', '/contact'];
 
 /**
  * Viewports to audit. The default Chrome window is 800px, which is neither a

@@ -88,7 +88,16 @@ if (!target || !selector || !outArg) {
       process.exitCode = 1;
     } else {
       await browser.goto(url);
-      await new Promise((r) => setTimeout(r, 700));
+      /*
+       * Scroll the target into view before capturing. Everything below the fold
+       * is lazy-loaded, so a footer captured from the top of the page is a row of
+       * blank plates — which reads as "the artwork is missing" when the artwork
+       * is fine and simply never got asked for.
+       */
+      await browser.evaluate(
+        `document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({ block: 'center' })`,
+      );
+      await new Promise((r) => setTimeout(r, 900));
       const clipped = await browser.screenshotClip(url, box);
       fs.mkdirSync(path.dirname(out), { recursive: true });
       fs.writeFileSync(out, clipped);

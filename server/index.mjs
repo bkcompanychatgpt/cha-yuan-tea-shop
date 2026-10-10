@@ -262,8 +262,28 @@ app.locals.escapeHtml = security.escapeHtml;
 // does so lives at views/partials/order-progress.ejs.
 app.locals.fulfilment = fulfilment;
 
+/**
+ * The revision date printed at the foot of every policy page.
+ *
+ * One value rather than one per page, so the four policies cannot end up
+ * claiming four different revision dates. Bump it whenever the wording of any
+ * of them changes — a policy page that does not say when it last changed is a
+ * policy page a customer cannot rely on.
+ */
+const POLICY = { updated: 'November 2026' };
+
 function renderPage(res, view, data = {}) {
-  res.render(view, { ...data, view, money, config, store: config.store });
+  res.render(view, {
+    ...data,
+    view,
+    money,
+    config,
+    store: config.store,
+    // Every policy page names the trading entity, and they must all name it the
+    // same way — so it is passed once here rather than per route.
+    company: config.company,
+    policy: POLICY,
+  });
 }
 
 /**
@@ -590,19 +610,46 @@ app.get('/about', (req, res) => {
 app.get('/shipping', (req, res) => {
   renderPage(res, 'shipping', {
     page: 'shipping',
-    title: `Shipping, returns & payment — ${config.store.name}`,
-    description: 'How we ship, what it costs, how refunds work, and how card payments are secured.',
+    title: `Shipping policy — ${config.store.name}`,
+    description: 'Where we ship from, what it costs, how long it takes, customs, packaging, and what happens if a parcel is late, lost or damaged.',
   });
 });
 
-app.get('/terms', (req, res) => {
-  // Photography is used under Creative Commons licences that require
-  // attribution, so the credits are published on the legal page.
-  let photoCredits = [];
+app.get('/refund', (req, res) => {
+  renderPage(res, 'refund', {
+    page: 'refund',
+    title: `Refund & returns policy — ${config.store.name}`,
+    description: 'Thirty days to change your mind, what can and cannot be returned, who pays the return postage, and how long a refund takes to reach your card.',
+  });
+});
+
+app.get('/privacy', (req, res) => {
+  renderPage(res, 'privacy', {
+    page: 'privacy',
+    title: `Privacy policy — ${config.store.name}`,
+    description: 'What personal data we collect, why we need it, who else receives it, how long we keep it, and how to have it corrected or deleted.',
+  });
+});
+
+app.get('/contact', (req, res) => {
+  renderPage(res, 'contact', {
+    page: 'contact',
+    title: `Contact us — ${config.store.name}`,
+    description: 'How to reach us about an order, a return, a question before you buy, or your personal data — with the trading details behind the shop.',
+  });
+});
+
+/**
+ * Attribution shown with, or linked from, the legal pages.
+ *
+ * Photography is used under Creative Commons licences that require attribution,
+ * so the credits are published wherever the legal text is.
+ */
+function loadPhotoCredits() {
   try {
     const raw = fs.readFileSync(path.join(PUBLIC_DIR, 'img', 'credits.json'), 'utf8');
     const parsed = JSON.parse(raw);
-    photoCredits = Object.entries(parsed.credits || {}).map(([slot, credit]) => ({
+    return Object.entries(parsed.credits || {}).map(([slot, credit]) => ({
       slot,
       ...credit,
       // Attribution has to name the author, and a number of Commons titles and
@@ -613,35 +660,25 @@ app.get('/terms', (req, res) => {
       author: englishLabel(credit.author),
     }));
   } catch {
-    photoCredits = [];
+    return [];
   }
+}
 
+app.get('/terms', (req, res) => {
   renderPage(res, 'terms', {
     page: 'terms',
-    title: `Terms, privacy & cookies — ${config.store.name}`,
-    description: 'Our terms of sale, privacy policy, cookie use, and photo credits.',
-    photoCredits,
+    title: `Terms of service — ${config.store.name}`,
+    description: 'Who you are dealing with, how a contract is formed, how the goods are described, liability, and the governing law.',
+    photoCredits: loadPhotoCredits(),
   });
 });
 
 app.get('/credits', (req, res) => {
-  let photoCredits = [];
-  try {
-    const parsed = JSON.parse(fs.readFileSync(path.join(PUBLIC_DIR, 'img', 'credits.json'), 'utf8'));
-    photoCredits = Object.entries(parsed.credits || {}).map(([slot, credit]) => ({
-      slot,
-      ...credit,
-      title: englishLabel(credit.title),
-      author: englishLabel(credit.author),
-    }));
-  } catch {
-    photoCredits = [];
-  }
   renderPage(res, 'credits', {
     page: 'credits',
     title: `Photography & illustrations — ${config.store.name}`,
     description: 'Attribution for the openly-licensed photography used on this site, and how to tell an illustration from a photograph.',
-    photoCredits,
+    photoCredits: loadPhotoCredits(),
   });
 });
 

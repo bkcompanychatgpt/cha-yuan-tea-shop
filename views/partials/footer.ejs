@@ -64,10 +64,18 @@
         <a href="/guides">Brewing guides</a>
         <a href="/guides/how-to-brew-gongfu">How to brew gongfu</a>
         <a href="/guides/water-and-temperature">Water &amp; temperature</a>
-        <a href="/shipping">Shipping &amp; returns</a>
         <a href="/order">Track an order</a>
+        <a href="/contact">Contact us</a>
         <a href="/about">About us</a>
-        <a href="/terms">Terms &amp; privacy</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Policies</h4>
+        <a href="/shipping">Shipping policy</a>
+        <a href="/refund">Refund &amp; returns</a>
+        <a href="/terms">Terms of service</a>
+        <a href="/privacy">Privacy policy</a>
+        <a href="/credits">Photography &amp; illustrations</a>
       </div>
 
       <div class="footer-col">
@@ -76,18 +84,6 @@
           Card payments are processed by OTT Pay over a PCI-DSS compliant gateway with
           3-D Secure 2 authentication. Card details never reach our servers.
         </p>
-        <div class="footer-pay" style="margin-top:16px">
-          <img class="mark" src="/img/badge/visa.svg" alt="Visa" loading="lazy" />
-          <img class="mark" src="/img/badge/mastercard.svg" alt="Mastercard" loading="lazy" />
-          <img class="mark" src="/img/badge/amex.svg" alt="American Express" loading="lazy" />
-          <img class="mark" src="/img/badge/discover.svg" alt="Discover" loading="lazy" />
-        </div>
-        <div class="footer-pay" style="margin-top:9px">
-          <img class="mark" src="/img/badge/jcb.svg" alt="JCB" loading="lazy" />
-          <img class="mark" src="/img/badge/diners.svg" alt="Diners Club" loading="lazy" />
-          <img class="mark" src="/img/badge/unionpay.svg" alt="China UnionPay" loading="lazy" />
-          <img src="/img/badge/3ds.svg" alt="3-D Secure" loading="lazy" />
-        </div>
 
         <div class="footer-badges">
           <span>Harvest dated</span>
@@ -97,14 +93,41 @@
       </div>
     </div>
 
+    <%#
+      The network marks get their own full-width strip rather than a column.
+      Seven plates in a 240px column wrapped to four ragged rows; across the
+      footer they sit on one line, which is how every card scheme's brand
+      guidelines show them and how the reference shops present them.
+      Every mark here is a brand OTT Pay's local-card API actually settles —
+      see docs/payment-methods.md. Nothing unsupported is shown.
+    %>
+    <div class="footer-pay-strip">
+      <div class="wrap footer-pay-inner">
+        <span class="footer-pay-label">Cards we accept</span>
+
+        <div class="footer-pay">
+          <img class="mark" src="/img/badge/visa.svg" alt="Visa" loading="lazy" />
+          <img class="mark" src="/img/badge/mastercard.svg" alt="Mastercard" loading="lazy" />
+          <img class="mark" src="/img/badge/amex.svg" alt="American Express" loading="lazy" />
+          <img class="mark" src="/img/badge/discover.svg" alt="Discover" loading="lazy" />
+          <img class="mark" src="/img/badge/jcb.svg" alt="JCB" loading="lazy" />
+          <img class="mark" src="/img/badge/diners.svg" alt="Diners Club" loading="lazy" />
+          <img class="mark" src="/img/badge/unionpay.svg" alt="China UnionPay" loading="lazy" />
+        </div>
+
+        <span class="footer-pay-note">Credit and debit · 3-D Secure 2 · settled in <%= store.currency %></span>
+      </div>
+    </div>
+
     <div class="footer-bottom">
       <span>© <%= year %> <%= store.name %>. All rights reserved.</span>
       <span class="mono tiny"><%= store.currency %> · all prices in <%= store.currency %></span>
       <span class="row" style="gap:18px">
         <a href="/terms" style="color:inherit">Terms</a>
-        <a href="/terms#privacy" style="color:inherit">Privacy</a>
+        <a href="/privacy" style="color:inherit">Privacy</a>
         <a href="/shipping" style="color:inherit">Shipping</a>
-        <a href="/credits" style="color:inherit">Photography &amp; illustrations</a>
+        <a href="/refund" style="color:inherit">Refunds</a>
+        <a href="/contact" style="color:inherit">Contact</a>
         <a href="/admin/login" style="color:inherit">Staff</a>
       </span>
     </div>

@@ -1,49 +1,98 @@
 <div class="wrap">
   <nav class="breadcrumb" aria-label="Breadcrumb">
-    <a href="/">Home</a><span class="sep">/</span><span>Shipping &amp; returns</span>
+    <a href="/">Home</a><span class="sep">/</span><span>Shipping policy</span>
   </nav>
 </div>
 
 <section class="wrap wrap-mid" style="padding-bottom:clamp(60px,8vw,110px)">
-  <span class="eyebrow">Policies</span>
-  <h1 style="margin:14px 0 18px">Shipping, returns &amp; payment</h1>
-  <p class="lede">Plain answers, no small print games.</p>
+  <span class="eyebrow">Policy</span>
+  <h1 style="margin:14px 0 18px">Shipping policy</h1>
+  <p class="lede">Where we ship from, what it costs, how long it takes, and what happens if a parcel goes
+    astray.</p>
 
   <div class="stack-32" style="margin-top:44px">
     <div class="panel">
-      <h3 style="margin-bottom:16px">Shipping</h3>
+      <h3 style="margin-bottom:16px">Where it ships from, and when</h3>
       <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
-        <p>Orders placed before 2:00pm on a business day are packed and dispatched the same day. Everything ships
-          from our tea room in Canada with tracking.</p>
+        <p>Every order is packed by hand and dispatched from <%= company.addressLines[company.addressLines.length - 1] %>
+          — there is no third-party fulfilment warehouse in the chain, and nothing ships from overseas.</p>
+        <p>Orders placed before <strong class="gold">2:00pm</strong> on a business day are packed and dispatched the
+          same day. Orders placed after the cut-off, at a weekend, or on a statutory holiday go out on the next
+          business day. Every parcel carries tracking, and the tracking number is emailed to you when the label is
+          created, before the carrier has scanned it.</p>
+        <p>If something you ordered is not in stock we will tell you the same day and give you the choice of waiting,
+          splitting the shipment, or cancelling that line.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:16px">Options and cost</h3>
+      <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
         <p><strong class="gold">Standard</strong> — 2 to 5 business days domestically, 7 to 14 business days
           internationally. <%= money(store.flatShippingFee) %> flat, and complimentary on orders over
-          <%= money(store.freeShippingThreshold) %>.</p>
+          <%= money(store.freeShippingThreshold) %>. There is no minimum order.</p>
         <p><strong class="gold">Express</strong> — 1 to 2 business days, <%= money(store.flatShippingFee * 2) %>.</p>
-        <p>Duties and import taxes on international orders are the customer's responsibility. Tea is a food product:
-          some countries restrict the import of unprocessed leaf, and if a parcel is seized by customs we will refund
-          the product cost.</p>
+        <p>Shipping is calculated at checkout and shown before you pay. Nothing is added after you press pay. Delivery
+          estimates are business days from dispatch, not from the moment you order, and they are the carrier's
+          published transit times rather than a promise we can enforce — which is why we tell you the tracking number
+          and let you watch it yourself.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:16px">International orders</h3>
+      <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
+        <p>We ship worldwide. Duties, import taxes and customs handling charges are the recipient's responsibility
+          and are not collected by us — the carrier will ask you for them before delivery, and a parcel refused for
+          that reason comes back to us and is refunded less the outbound shipping.</p>
+        <p>Tea is a food product, and a few countries restrict the import of unprocessed leaf or of foodstuffs
+          generally. If we know a destination will not accept a parcel we will say so before you pay rather than after.
+          If a parcel is nonetheless seized or destroyed by customs, we refund the product cost in full.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:16px">Packaging</h3>
+      <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
+        <p>Tea travels in a sealed foil pouch inside a tin or a box, and the outer parcel is plain with no indication
+          of its contents. Jade and jewellery travel in a padded case inside a rigid box, with any certificate in the
+          same parcel. We use paper tape and paper padding, no plastic void fill, and every part of the outer packaging
+          is recyclable.</p>
+        <p>A gift order can be sent straight to the recipient with the price removed. Say so in the order notes and we
+          will leave the invoice out of the parcel and email it to you instead.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:16px">If a parcel is late, lost or damaged</h3>
+      <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
+        <p>If tracking has not moved for <strong class="gold">10 business days</strong>, or shows delivered when
+          nothing arrived, tell us at
+          <a class="link-underline" href="mailto:<%= company.email %>"><%= company.email %></a>. We open a claim with
+          the carrier and either reship or refund — your choice — and we do not make you wait for the carrier's answer
+          before we act.</p>
+        <p>If a parcel arrives damaged, photograph the box and the contents before you unpack it fully and email us the
+          same day. That is what the carrier's claim needs, and it is the difference between a claim that is paid and
+          one that is refused. We will replace the item or refund it either way.</p>
       </div>
     </div>
 
     <div class="panel">
       <h3 style="margin-bottom:16px">Returns</h3>
       <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
-        <p>Unopened, sealed tins can be returned within 30 days of delivery for a full refund of the product cost.
-          Email us first and we will send a prepaid label for domestic orders.</p>
-        <p>If you have opened a tea and it is not to your taste, tell us. We will replace it or refund it — this
-          happens rarely, and it is a better outcome for both of us than an argument. We do not ask you to ship a
-          half-used tin back across a border.</p>
-        <p>Refunds are issued to the original card through OTT Pay and normally appear within 5 to 10 business days,
-          depending on your bank.</p>
+        <p>Returns, exchanges and refunds are covered in full by the
+          <a class="link-underline" href="/refund">refund &amp; returns policy</a> — the thirty-day window, what can
+          and cannot come back, who pays the return postage, and how long the money takes. The short version: thirty
+          days, no restocking fee, and we pay the postage when the fault is ours.</p>
       </div>
     </div>
 
     <div class="panel">
       <h3 style="margin-bottom:16px">Payment</h3>
       <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
-        <p>We accept Visa, Mastercard, American Express, Discover, JCB, Diners Club and China UnionPay credit and
-          debit cards. All payments are processed by <strong>OTT Pay</strong>, a PCI-DSS compliant payment provider,
-          using a 3-D Secure 2 authenticated card-not-present transaction.</p>
+        <p>We accept Visa, Mastercard, American Express, Discover, JCB, Diners Club and China UnionPay — credit and
+          debit cards, in the currency shown at checkout. All payments are processed by <strong>OTT Pay</strong>, a
+          PCI-DSS compliant payment institution, as a 3-D Secure 2 authenticated card-not-present transaction.</p>
         <p>3-D Secure 2 means your bank may ask you to confirm the payment — usually a code in your banking app, a
           text message, or a fingerprint. This is a security feature of the card scheme, not something we control,
           and it protects you against fraudulent use of your card.</p>
@@ -51,7 +100,8 @@
           transmitted directly to OTT Pay over TLS. Our database records only the card brand, the last four digits
           and the gateway's payment identifier so that we can reconcile an order or issue a refund.</p>
         <p>All prices are in <%= store.currency %> and include <%= store.taxLabel %> where applicable, calculated at
-          checkout before you pay.</p>
+          checkout before you pay. We do not store your card for future purchases and there is no one-click
+          re-order.</p>
       </div>
     </div>
 
@@ -67,8 +117,9 @@
   </div>
 
   <div class="row" style="gap:12px;margin-top:40px;flex-wrap:wrap">
-    <a class="btn btn-ghost" href="/terms">Full terms &amp; privacy</a>
-    <a class="btn btn-ghost" href="/order">Track an order</a>
-    <a class="btn btn-solid" href="/shop">Shop the tea</a>
+    <a class="btn btn-ghost" href="/refund">Refund policy</a>
+    <a class="btn btn-ghost" href="/terms">Terms of service</a>
+    <a class="btn btn-ghost" href="/privacy">Privacy policy</a>
+    <a class="btn btn-solid" href="/order">Track an order</a>
   </div>
 </section>

@@ -116,7 +116,7 @@ const PAGES = [
   '/', '/shop', '/shop?category=green-tea', '/shop?category=teaware', '/shop?q=oolong',
   '/tea/lion-peak-longjing', '/tea/yixing-zisha-shi-piao-pot', '/tea/bamboo-tea-tray',
   '/cart', '/checkout', '/guides', '/guides/how-to-brew-gongfu', '/about', '/shipping',
-  '/terms', '/credits', '/order', '/admin/login',
+  '/refund', '/terms', '/privacy', '/contact', '/credits', '/order', '/admin/login',
 ];
 
 async function scanPages() {

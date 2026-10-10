@@ -1,0 +1,104 @@
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><span>Contact us</span>
+  </nav>
+</div>
+
+<section class="wrap wrap-mid" style="padding-bottom:clamp(60px,8vw,110px)">
+  <span class="eyebrow">Policy</span>
+  <h1 style="margin:14px 0 18px">Contact us</h1>
+  <p class="lede">A real person reads every message. If you are asking about an order, quote the order number and
+    you will get a faster, better answer.</p>
+
+  <div class="stack-32" style="margin-top:44px">
+    <div class="contact-grid">
+      <% const desks = [
+        {
+          label: 'Orders, shipping and returns',
+          email: company.email,
+          note: 'Order changes, delivery questions, returns and refunds. Quote your order number.',
+        },
+        {
+          label: 'Before you buy',
+          email: company.email,
+          note: 'Which lot suits you, how to brew it, what a piece of jade actually looks like in daylight, sizing.',
+        },
+        {
+          label: 'Privacy and your data',
+          email: company.privacyEmail,
+          note: 'Access, correction or deletion requests, and anything about how we handle your data.',
+        },
+      ]; %>
+      <% desks.forEach(desk => { %>
+        <div class="panel">
+          <h3 style="margin-bottom:10px"><%= desk.label %></h3>
+          <p style="color:var(--text-dim);line-height:1.85;font-size:0.92rem;margin-bottom:14px"><%= desk.note %></p>
+          <a class="link-underline mono" href="mailto:<%= desk.email %>"><%= desk.email %></a>
+        </div>
+      <% }) %>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:16px">The details behind the shop</h3>
+      <div class="contact-table">
+        <div><span>Registered name</span><span><%= company.legalName %></span></div>
+        <div><span>Trading as</span><span><%= company.tradingName %></span></div>
+        <div>
+          <span>Registered address</span>
+          <span><% company.addressLines.forEach((line, i) => { %><%= line %><% if (i < company.addressLines.length - 1) { %><br /><% } %><% }) %></span>
+        </div>
+        <div><span>Country of establishment</span><span><%= company.country %></span></div>
+        <div><span>Company registration</span><span class="mono"><%= company.registrationNumber %></span></div>
+        <div><span>Tax registration</span><span class="mono"><%= company.taxNumber %></span></div>
+        <div><span>Contact person</span><span><%= company.contactPerson %></span></div>
+        <div><span>Telephone</span><span><a class="link-underline" href="tel:<%= company.phone.replace(/[^+0-9]/g, '') %>"><%= company.phone %></a></span></div>
+        <div><span>Opening hours</span><span><%= company.hours %></span></div>
+        <div><span>Reply time</span><span>Within <%= company.responseTime %></span></div>
+        <div><span>Language</span><span>English</span></div>
+        <div><span>Returns address</span><span>Use the address above, and email us first for a return authorisation</span></div>
+      </div>
+
+      <% if (company.isPlaceholder) { %>
+        <div class="alert alert-warn" style="margin-top:22px">
+          <strong>Sample details.</strong> The registered name, address and registration numbers above are
+          placeholders. Set <span class="mono">COMPANY_LEGAL_NAME</span>, <span class="mono">COMPANY_ADDRESS</span>,
+          <span class="mono">COMPANY_REGISTRATION_NUMBER</span>, <span class="mono">COMPANY_TAX_NUMBER</span>,
+          <span class="mono">COMPANY_PHONE</span> and <span class="mono">COMPANY_EMAIL</span> on the host and this
+          notice disappears. A shop that takes card payments has to publish the identity of the business behind it,
+          so this is the first thing to fill in.
+        </div>
+      <% } %>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:16px">How we answer</h3>
+      <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
+        <p>Messages are read in the order they arrive, <%= company.hours %>, and answered within
+          <%= company.responseTime %>. A message sent on a Friday evening is answered on Monday, not over the
+          weekend.</p>
+        <p>If your question is about an order in progress, quoting the order number — it is in the confirmation email
+          and on the <a class="link-underline" href="/order">track an order</a> page — means we do not have to write
+          back and ask for it, which is the single biggest cause of a slow reply.</p>
+        <p>We do not take card details over email, the telephone or any messaging app, and we will never ask for them.
+          Payment is taken only in the checkout on this site.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:16px">Something wrong with the site?</h3>
+      <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
+        <p>If a page will not load, a payment fails without explanation, or the checkout does something odd, tell us
+          what you were doing and what you saw. Those reports are the only way we find out — and if a payment failed,
+          say so explicitly and we will check whether your card was charged, because an authorisation that never
+          completed can still show as pending at your bank for a few days.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="gap:12px;margin-top:40px;flex-wrap:wrap">
+    <a class="btn btn-ghost" href="/shipping">Shipping policy</a>
+    <a class="btn btn-ghost" href="/refund">Refund policy</a>
+    <a class="btn btn-ghost" href="/privacy">Privacy policy</a>
+    <a class="btn btn-solid" href="/shop">Shop the tea</a>
+  </div>
+</section>

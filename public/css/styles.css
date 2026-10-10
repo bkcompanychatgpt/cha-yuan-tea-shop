@@ -1066,11 +1066,7 @@ select.select option { background: var(--ink-800); color: var(--text); }
    already draws its own gold-on-transparent frame.
    -------------------------------------------------------------------------- */
 
-.card-logos img.mark,
-.footer-pay img.mark {
-  /* A uniform plate: the marks have wildly different aspect ratios (Amex is
-     square, Discover is 6:1), so a fixed footprint with object-fit keeps the
-     row on one baseline instead of a ragged strip. */
+.card-logos img.mark {
   width: 42px;
   height: 16px;
   object-fit: contain;
@@ -1082,7 +1078,65 @@ select.select option { background: var(--ink-800); color: var(--text); }
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
 }
 
-.footer-pay img.mark { width: 46px; height: 17px; }
+/* ------------------------------------------------- footer payment strip
+   The marks sit on one full-width line rather than inside the narrow "Secure
+   payment" column, because seven plates in a 240px column wrapped to four
+   ragged rows and read as clutter. Each plate is the same size whatever the
+   mark's own aspect ratio, which is what makes the row look like a row.
+   ------------------------------------------------------------------------- */
+
+.footer-pay-strip {
+  border-top: 1px solid var(--line-soft);
+  padding: 24px 0;
+}
+.footer-pay-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px 22px;
+  flex-wrap: wrap;
+}
+.footer-pay-label {
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+  font-weight: 500;
+  flex: none;
+}
+.footer-pay {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.footer-pay img.mark {
+  width: 54px;
+  height: 20px;
+  object-fit: contain;
+  padding: 7px 9px;
+  box-sizing: content-box;
+  background: #fbfaf6;
+  border-radius: 4px;
+  opacity: 0.95;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.footer-pay img.mark:hover { opacity: 1; transform: translateY(-1px); }
+.footer-pay-note {
+  margin-left: auto;
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 760px) {
+  .footer-pay-inner { gap: 12px 16px; }
+  .footer-pay img.mark { width: 44px; height: 17px; padding: 6px 7px; }
+  .footer-pay-note { margin-left: 0; width: 100%; }
+}
+@media (max-width: 420px) {
+  .footer-pay img.mark { width: 38px; height: 15px; padding: 5px 6px; }
+}
 
 /* ------------------------------------------------------------- cart drawer */
 .drawer-scrim {
@@ -1162,8 +1216,6 @@ select.select option { background: var(--ink-800); color: var(--text); }
   font-size: 0.76rem;
   color: var(--text-faint);
 }
-.footer-pay { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; }
-.footer-pay img { height: 24px; width: auto; opacity: 0.7; }
 
 /* ---------------------------------------------------------------- tables */
 .table { width: 100%; font-size: 0.86rem; }
@@ -2022,6 +2074,45 @@ select.select option { background: var(--ink-800); color: var(--text); }
 }
 .credits-row a { color: var(--gold-200); }
 .credits-row span:last-child { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); }
+
+/* ------------------------------------------------------------ contact page */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+.contact-grid .panel + .panel { margin-top: 0; }
+
+/* A definition list that stays readable at 320px: the label sits above the value
+   until there is room for two columns, rather than squeezing the value to a
+   sliver. */
+.contact-table { display: grid; gap: 0; }
+.contact-table > div {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) minmax(0, 1fr);
+  gap: 18px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+.contact-table > div > span:first-child {
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding-top: 4px;
+}
+.contact-table > div:last-child { border-bottom: 0; }
+
+@media (max-width: 900px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .contact-table > div { grid-template-columns: 1fr; gap: 5px; }
+  .contact-table > div > span:first-child { padding-top: 0; }
+}
 
 /* ----------------------------------------------------------- departments */
 /**

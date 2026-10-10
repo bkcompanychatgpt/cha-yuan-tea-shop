@@ -8,6 +8,15 @@
  * photographed.
  *
  *   node server/scripts/import-product-photos.mjs <folder | .zip> [--dry-run]
+ *   node server/scripts/import-product-photos.mjs <folder | .zip> --list
+ *   node server/scripts/import-product-photos.mjs <folder | .zip> --replace [--expect prompts.json]
+ *
+ * By default only products still showing drawn artwork are touched, so a
+ * half-finished archive can never overwrite a real photograph. `--replace` lifts
+ * that guard: every product the archive actually contains is rewritten, which is
+ * what a deliberate re-shoot of already-photographed pieces needs. `--list` names
+ * the files in the archive and stops, so it can be checked before anything moves.
+ * `--expect <prompts.json>` reports which requested items the archive left out.
  *
  * Derivatives per product, matching build-photos.mjs:
  *   <slug>-hero.jpg   1200 sq   card, gallery, spotlight
@@ -34,11 +43,23 @@ const CREDITS = path.join(ROOT, 'public', 'img', 'credits.json');
 const MANIFEST = path.join(OUT_DIR, 'manifest.json');
 const PROMPTS = path.join(ROOT, 'docs', 'image-prompts.json');
 
-const arg = process.argv[2];
-const DRY = process.argv.includes('--dry-run');
+const argv = process.argv.slice(2);
+const has = (flag) => argv.includes(flag);
+const valueOf = (flag) => (has(flag) ? argv[argv.indexOf(flag) + 1] : null);
+const DRY = has('--dry-run');
+const LIST = has('--list');
+const REPLACE = has('--replace');
+const EXPECT = valueOf('--expect');
+const SKIP = new Set(
+  (valueOf('--skip') || '').split(',').map((s) => s.trim()).filter(Boolean),
+);
+const arg = argv.find((a) => !a.startsWith('--') && a !== EXPECT);
 
 if (!arg) {
-  console.error('usage: node server/scripts/import-product-photos.mjs <folder | .zip> [--dry-run]');
+  console.error(
+    'usage: node server/scripts/import-product-photos.mjs <folder | .zip> ' +
+    '[--dry-run | --list | --replace] [--expect prompts.json]',
+  );
   process.exitCode = 2;
 } else {
   /*
@@ -49,6 +70,8 @@ if (!arg) {
   const given = path.resolve(arg);
   let SRC_DIR = given;
   let tempDir = null;
+  /** Basenames of the images the archive or folder actually holds. */
+  let supplied = [];
 
   if (/\.zip$/i.test(given)) {
     if (!fs.existsSync(given)) {
@@ -58,6 +81,7 @@ if (!arg) {
       tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cy-import-'));
       const { written, skipped } = extractFlat(fs.readFileSync(given), tempDir, { fs, path });
       SRC_DIR = tempDir;
+      supplied = written;
       console.log(`\n  unpacked ${written.length} image(s) from ${path.basename(given)}`);
       if (skipped.length) console.log(`  ignored ${skipped.length} non-image entr(ies)`);
       if (!written.length) {
@@ -65,6 +89,19 @@ if (!arg) {
         process.exitCode = 1;
       }
     }
+  } else if (fs.existsSync(given)) {
+    supplied = fs.readdirSync(given).filter((f) => /\.(jpe?g|png|webp)$/i.test(f));
+  }
+
+  /*
+   * `--list` names what arrived and stops before the database is opened, so an
+   * archive can be checked against the prompt list without moving anything.
+   */
+  if (LIST) {
+    for (const name of supplied.slice().sort()) console.log(`  ${name}`);
+    console.log(`\n  ${supplied.length} image(s) in ${given}`);
+    if (tempDir) fs.rmSync(tempDir, { recursive: true, force: true });
+    process.exit(0);
   }
 
   const SIZES = {
@@ -120,10 +157,25 @@ if (!arg) {
   const known = new Map(prompts.map((p) => [p.slug, p]));
 
   const db = getDb();
+  /*
+   * Default: only products still showing drawn artwork. A generated image is
+   * worth having where there is nothing better, but it must never quietly
+   * displace a real photograph because an archive happened to contain the slug.
+   * `--replace` is the operator saying they meant it.
+   */
   const products = db.prepare(
     `SELECT p.id, p.slug, p.name FROM products p
-      WHERE p.is_active = 1 AND p.image_kind = 'illustration'`,
+      WHERE p.is_active = 1${REPLACE ? '' : " AND p.image_kind = 'illustration'"}`,
   ).all();
+
+  /*
+   * Which requested items the archive left out. Without `--expect` the only
+   * honest answer is "every product that is still waiting", which is true but
+   * useless once most of the catalogue has been photographed.
+   */
+  const expected = EXPECT && fs.existsSync(path.resolve(EXPECT))
+    ? (JSON.parse(fs.readFileSync(path.resolve(EXPECT), 'utf8')).prompts || []).map((p) => p.slug)
+    : null;
 
   const credits = fs.existsSync(CREDITS)
     ? JSON.parse(fs.readFileSync(CREDITS, 'utf8'))
@@ -132,11 +184,22 @@ if (!arg) {
 
   let imported = 0;
   const missing = [];
+  /** Slugs this run actually rewrote, which is what may be recorded as generated. */
+  const written = [];
 
   for (const product of products) {
+    if (SKIP.has(product.slug)) {
+      console.log(`  skipping      ${product.slug}  (--skip)`);
+      continue;
+    }
     const primary = findSource(product.slug);
     if (!primary) {
-      missing.push(product.slug);
+      /*
+       * Under `--replace` every product in the shop is a candidate, so "no file"
+       * means "not part of this job" rather than "missing" — unless an expected
+       * list says it was asked for.
+       */
+      if (expected ? expected.includes(product.slug) : !REPLACE) missing.push(product.slug);
       continue;
     }
     const prompt = known.get(product.slug);
@@ -183,6 +246,7 @@ if (!arg) {
     );
 
     imported += 1;
+    written.push(product.slug);
   }
 
   if (!DRY) {
@@ -207,13 +271,22 @@ if (!arg) {
     if (fs.existsSync(MANIFEST)) {
       const manifest = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
       manifest.products = manifest.products || {};
-      for (const product of products) {
+      /*
+       * Only what this run rewrote.
+       *
+       * Looping the candidate list instead means `--replace` sweeps the whole
+       * shop: every product whose derivatives already exist on disk gets written
+       * into generated.json, so the next reseed relabels the tea department —
+       * which has real photographs — as drawn artwork. The candidate list is
+       * "what may be touched"; this list is "what was touched".
+       */
+      for (const slug of written) {
         const files = ['hero', 'alt', 'alt2']
-          .map((s) => `/img/photos/${product.slug}-${s}.jpg`)
+          .map((s) => `/img/photos/${slug}-${s}.jpg`)
           .filter((rel) => fs.existsSync(path.join(ROOT, 'public', rel.replace(/^\//, ''))));
         if (files.length) {
-          manifest.products[product.slug] = { gallery: files };
-          slugs.add(product.slug);
+          manifest.products[slug] = { gallery: files };
+          slugs.add(slug);
         }
       }
       fs.writeFileSync(MANIFEST, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
@@ -222,7 +295,14 @@ if (!arg) {
     fs.writeFileSync(GENERATED, `${JSON.stringify({ slugs: [...slugs].sort() }, null, 2)}\n`, 'utf8');
   }
 
-  console.log(`\n  ${DRY ? 'would import' : 'imported'} ${imported} of ${products.length} illustrated products`);
+  if (REPLACE) {
+    console.log(
+      `\n  ${DRY ? 'would import' : 'imported'} ${imported} product(s); ` +
+      `${products.length - imported} in the shop were not in the source`,
+    );
+  } else {
+    console.log(`\n  ${DRY ? 'would import' : 'imported'} ${imported} of ${products.length} illustrated products`);
+  }
   if (missing.length) {
     // The label is the path the operator gave, not the temporary unzip directory,
     // which would be meaningless and is deleted moments later.

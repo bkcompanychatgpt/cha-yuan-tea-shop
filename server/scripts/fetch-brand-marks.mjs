@@ -30,6 +30,12 @@ const API = 'https://commons.wikimedia.org/w/api.php';
 /**
  * Candidate Commons file titles per brand, most-preferred first. The first
  * title that resolves to a real SVG wins.
+ *
+ * The list is exactly the brands OTT Pay's local-card API settles — Visa,
+ * Mastercard, American Express, Discover, JCB, Diners Club and China UnionPay,
+ * credit and debit. PayPal and Apple Pay were fetched here once and have been
+ * removed: the gateway does not process them, and a mark in the asset folder is
+ * an invitation to put it on the page. See docs/payment-methods.md.
  */
 const BRANDS = {
   visa: ['Visa Inc. logo.svg', 'Visa 2021.svg', 'Visa.svg'],
@@ -39,8 +45,6 @@ const BRANDS = {
   jcb: ['JCB logo.svg', 'JCB Co., Ltd. logo.svg'],
   diners: ['Diners Club Logo.svg', 'Diners Club International Logo.svg', 'Diners Club logo.svg'],
   unionpay: ['UnionPay logo.svg', 'China UnionPay logo.svg'],
-  paypal: ['PayPal.svg', 'PayPal logo.svg'],
-  applepay: ['Apple Pay logo.svg', 'Apple Pay.svg'],
 };
 
 const args = process.argv.slice(2);

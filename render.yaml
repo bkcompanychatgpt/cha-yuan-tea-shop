@@ -71,6 +71,38 @@ services:
       - key: TAX_LABEL
         value: HST (13%)
 
+      # ------------------------------------------------- trading entity details
+      # These are printed on /contact, /terms, /privacy and /refund. They ship
+      # with sample values so the pages render, and the policy pages say outright
+      # that they are samples until COMPANY_LEGAL_NAME and COMPANY_ADDRESS are
+      # set. A shop that takes card payments has to publish the identity of the
+      # business behind it, so fill these in before going live.
+      - key: COMPANY_LEGAL_NAME
+        sync: false
+      - key: COMPANY_TRADING_NAME
+        sync: false
+      # One line per address row, separated by "|".
+      - key: COMPANY_ADDRESS
+        sync: false
+      - key: COMPANY_COUNTRY
+        sync: false
+      - key: COMPANY_REGISTRATION_NUMBER
+        sync: false
+      - key: COMPANY_TAX_NUMBER
+        sync: false
+      - key: COMPANY_CONTACT_PERSON
+        sync: false
+      - key: COMPANY_EMAIL
+        sync: false
+      - key: COMPANY_PRIVACY_EMAIL
+        sync: false
+      - key: COMPANY_PHONE
+        sync: false
+      - key: COMPANY_HOURS
+        sync: false
+      - key: COMPANY_RESPONSE_TIME
+        sync: false
+
       # ------------------------------------------------------ OTT Pay gateway
       # `mock` needs no credentials and simulates the acquirer end to end, which
       # is the right setting for a first deploy. Switch to `sandbox`, then `live`,

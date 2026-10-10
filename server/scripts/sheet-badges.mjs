@@ -16,7 +16,7 @@ const ROOT = path.resolve(HERE, '..', '..');
 const OUT = process.argv[2] ? path.resolve(ROOT, process.argv[2]) : path.join(ROOT, '_shots', 'badge-sheet.png');
 const BASE = (process.env.BASE_URL || 'http://127.0.0.1:3080').replace(/\/+$/, '');
 
-const slugs = ['visa', 'mastercard', 'amex', 'discover', 'jcb', 'diners', 'unionpay', 'paypal', 'applepay'];
+const slugs = ['visa', 'mastercard', 'amex', 'discover', 'jcb', 'diners', 'unionpay'];
 
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>
   body { margin:0; background:#08160f; font:12px/1.4 Consolas, monospace; color:#dcc07a; padding:16px; }

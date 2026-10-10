@@ -34,6 +34,11 @@ const PAGES = [
   ['checkout', '/checkout', 1440, 2000],
   ['guides', '/guides', 1440, 1400],
   ['about', '/about', 1440, 2600],
+  ['shipping', '/shipping', 1440, 2400],
+  ['refund', '/refund', 1440, 2600],
+  ['privacy', '/privacy', 1440, 3200],
+  ['terms', '/terms', 1440, 2600],
+  ['contact', '/contact', 1440, 2200],
   ['admin', '/admin/login', 1440, 900],
 ];
 

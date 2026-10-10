@@ -42,18 +42,6 @@
       "status": "fetched",
       "from": "UnionPay logo.svg",
       "bytes": 17570
-    },
-    {
-      "slug": "paypal",
-      "status": "fetched",
-      "from": "PayPal.svg",
-      "bytes": 5350
-    },
-    {
-      "slug": "applepay",
-      "status": "fetched",
-      "from": "Apple Pay logo.svg",
-      "bytes": 1474
     }
   ]
 }

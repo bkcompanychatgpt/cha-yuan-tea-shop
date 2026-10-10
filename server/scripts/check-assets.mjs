@@ -28,7 +28,10 @@ const PAGES = [
   '/guides/how-to-brew-gongfu',
   '/about',
   '/shipping',
+  '/refund',
   '/terms',
+  '/privacy',
+  '/contact',
   '/credits',
   '/order',
 ];

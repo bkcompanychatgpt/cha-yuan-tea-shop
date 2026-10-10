@@ -1,110 +1,177 @@
 <div class="wrap">
   <nav class="breadcrumb" aria-label="Breadcrumb">
-    <a href="/">Home</a><span class="sep">/</span><span>Terms &amp; privacy</span>
+    <a href="/">Home</a><span class="sep">/</span><span>Terms of service</span>
   </nav>
 </div>
 
 <section class="wrap wrap-mid" style="padding-bottom:clamp(60px,8vw,110px)">
-  <span class="eyebrow">Legal</span>
-  <h1 style="margin:14px 0 18px">Terms, privacy &amp; cookies</h1>
-  <p class="lede">Written to be read. If anything here is unclear, ask us and we will explain it in plain language.</p>
+  <span class="eyebrow">Policy</span>
+  <h1 style="margin:14px 0 18px">Terms of service</h1>
+  <p class="lede">Written to be read. If anything here is unclear, ask us and we will explain it in plain
+    language.</p>
 
   <div class="stack-32" style="margin-top:44px;font-size:0.94rem;line-height:1.9;color:var(--text-dim)">
-    <div class="panel" id="terms">
-      <h3 style="margin-bottom:14px">Terms of sale</h3>
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Who you are dealing with</h3>
+      <div class="stack-12">
+        <p>This site is operated by <strong class="gold"><%= company.legalName %></strong>, trading as
+          <%= company.tradingName %>, of <%= company.addressLines.join(', ') %>. Our company registration is
+          <span class="mono"><%= company.registrationNumber %></span> and our tax registration is
+          <span class="mono"><%= company.taxNumber %></span>. You can reach us at
+          <a class="link-underline" href="mailto:<%= company.email %>"><%= company.email %></a> or on
+          <a class="link-underline" href="tel:<%= company.phone.replace(/[^+0-9]/g, '') %>"><%= company.phone %></a>,
+          <%= company.hours %>. Full details are on the <a class="link-underline" href="/contact">contact page</a>.</p>
+        <p>By using this site or placing an order you agree to these terms. If you do not agree with them, please do
+          not order.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">The contract</h3>
       <div class="stack-12">
         <p>By placing an order you make an offer to buy the goods at the price shown. A contract is formed when we
           confirm the order by email, not when the payment is authorised. If a product is mispriced or has sold out
           we may decline the order and refund you in full.</p>
         <p>All prices are in <%= store.currency %>. <%= store.taxLabel %> and shipping are calculated at checkout and
           shown before you pay. Nothing is added after you press pay.</p>
-        <p>Tea is a natural agricultural product: leaf appearance, aroma intensity and even flavour vary year to
-          year and lot to lot. Our tasting notes describe the lot we are currently shipping, and we will always tell
-          you if a new harvest differs meaningfully from the previous one.</p>
-        <p>We may update these terms; the version in force is the one published when you place your order.</p>
-      </div>
-    </div>
-
-    <div class="panel" id="privacy">
-      <h3 style="margin-bottom:14px">Privacy</h3>
-      <div class="stack-12">
-        <p><strong class="gold">What we collect.</strong> To fulfil an order we need your name, email address,
-          delivery address and — for the payment — the card details you type into the checkout. We also keep a record
-          of what you ordered and the gateway's transaction identifiers.</p>
-        <p><strong class="gold">What we do not collect.</strong> We never receive or store your full card number, its
-          expiry date or its security code. Those fields are transmitted directly to OTT Pay when you press pay, and
-          what comes back to us is only the card brand and the last four digits.</p>
-        <p><strong class="gold">Who else sees it.</strong> OTT Pay processes the payment and receives the card data,
-          your name, email and billing address, together with a device fingerprint used for fraud screening. Our
-          shipping carrier receives your name and delivery address. That is the complete list; we do not sell, rent
-          or share personal data with anyone else for marketing.</p>
-        <p><strong class="gold">How long we keep it.</strong> Order records are kept for seven years because tax law
-          requires it. Newsletter subscriptions are kept until you unsubscribe, which is one click in every email.</p>
-        <p><strong class="gold">Your rights.</strong> Ask us for a copy of what we hold about you, ask us to correct
-          it, or ask us to delete anything we are not legally required to keep. Email
-          <a class="link-underline" href="mailto:privacy@chayuan.test">privacy@chayuan.test</a> and we will respond
-          within 30 days.</p>
-      </div>
-    </div>
-
-    <div class="panel" id="cookies">
-      <h3 style="margin-bottom:14px">Cookies and local storage</h3>
-      <div class="stack-12">
-        <p>We use the smallest possible set of cookies:</p>
-        <ul class="stack-8" style="padding-left:18px;list-style:disc">
-          <li><span class="mono">cy_csrf</span> — a security token that stops another site from submitting forms on
-            your behalf. It contains no personal data.</li>
-          <li><span class="mono">cy_admin</span> — only set after a staff member signs in to the back office.</li>
-        </ul>
-        <p>Your basket is stored in your browser's <span class="mono">localStorage</span>, under the key
-          <span class="mono">cy_cart_v1</span>, so that it survives a page reload. It contains product identifiers and
-          quantities and nothing else. Clearing your browser data empties it permanently.</p>
-        <p>When a payment is submitted, a device-fingerprint script supplied by our fraud-screening provider runs in
-          the checkout page. It reports technical characteristics of your browser and device to that provider. It does
-          not read your files, your other tabs, or anything you have typed.</p>
-        <p>We run no advertising or third-party analytics trackers on this site.</p>
+        <p>We may update these terms; the version in force is the one published when you place your order, and the
+          date at the foot of this page changes whenever the text does.</p>
       </div>
     </div>
 
     <div class="panel">
-      <h3 style="margin-bottom:14px">Contact</h3>
-      <p>Cha Yuan Tea — <a class="link-underline" href="mailto:hello@chayuan.test">hello@chayuan.test</a>.
-        We answer every message within one business day.</p>
+      <h3 style="margin-bottom:14px">The goods, described honestly</h3>
+      <div class="stack-12">
+        <p>Tea is a natural agricultural product: leaf appearance, aroma intensity and even flavour vary year to
+          year and lot to lot. Our tasting notes describe the lot we are currently shipping, and we will always tell
+          you if a new harvest differs meaningfully from the previous one.</p>
+        <p>Jade and stone are natural materials. Colour, translucency, veining and internal texture vary from piece to
+          piece, and no two pieces are identical. Dimensions are given to the nearest millimetre and weights to the
+          nearest gram; small variations are normal and are not a defect.</p>
+        <p>Some listings on this site carry an <em>Illustration</em> mark. Those images are drawn for the shop rather
+          than photographed, they are not a picture of the exact object you will receive, and the
+          <a class="link-underline" href="/credits">photography &amp; illustrations</a> page explains how to tell the
+          two apart. We will photograph the actual piece and send you the picture before you buy, on request, for any
+          listing.</p>
+      </div>
     </div>
 
-    <% if (typeof photoCredits !== 'undefined' && photoCredits.length) { %>
-      <div class="panel" id="photo-credits">
-        <h3 style="margin-bottom:10px">Photography &amp; illustrations</h3>
-        <p style="margin-bottom:20px">
-          Product and editorial photographs on this site are openly licensed images used under the terms of
-          their licences, which require attribution. Each is listed below with its author and licence; the
-          title links to the original file and its full licence text. Listings that carry a mark reading
-          <em>Illustration</em> are not photographed at all: they are drawn for the shop, they are not an
-          image of any specific item, and we will photograph the actual piece on request before you buy.
-          Replace these with your own photography before launch and this list can be removed.
-        </p>
-        <div class="credits">
-          <% photoCredits.forEach(credit => { %>
-            <div class="credits-row">
-              <span>
-                <% if (credit.source) { %>
-                  <a href="<%= credit.source %>" target="_blank" rel="noopener noreferrer nofollow"><%= credit.title || credit.slot %></a>
-                <% } else { %>
-                  <%= credit.title || credit.slot %>
-                <% } %>
-              </span>
-              <span><%= credit.author || 'Unknown author' %><% if (credit.via) { %>, via <%= credit.via %><% } %></span>
-              <span>
-                <% if (credit.licenceUrl) { %>
-                  <a href="<%= credit.licenceUrl %>" target="_blank" rel="noopener noreferrer nofollow"><%= credit.licence %></a>
-                <% } else { %>
-                  <%= credit.licence %>
-                <% } %>
-              </span>
-            </div>
-          <% }) %>
-        </div>
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Price, payment and title</h3>
+      <div class="stack-12">
+        <p>Payment is taken in full at the time of ordering, through <strong>OTT Pay</strong>, on a 3-D Secure 2
+          authenticated card transaction. We do not offer payment on account, instalments or cash on delivery. The
+          full set of payment terms is in the <a class="link-underline" href="/shipping">shipping policy</a>.</p>
+        <p>We reserve the right to change prices and to withdraw products from sale without notice. A price change
+          never affects an order we have already confirmed.</p>
+        <p>Title to the goods passes to you when we receive payment in full. Risk passes to you on delivery. If a
+          parcel is lost in transit before delivery, that risk is ours, not yours — see the
+          <a class="link-underline" href="/shipping">shipping policy</a>.</p>
       </div>
-    <% } %>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Age, and lawful use</h3>
+      <div class="stack-12">
+        <p>You must be at least 18 years old to order from this site, or the age of majority where you live if that
+          is higher. You agree to use the site only for lawful purposes, not to attempt to gain access to any part of
+          it you are not authorised to use, and not to place orders you do not intend to pay for.</p>
+        <p>It is your responsibility to check that the goods you order may lawfully be imported into your country. We
+          tell you where we know a restriction applies, but we cannot know every rule in every destination.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Returns and refunds</h3>
+      <div class="stack-12">
+        <p>Returns, exchanges and refunds are governed by the
+          <a class="link-underline" href="/refund">refund &amp; returns policy</a>, which forms part of these terms.
+          It gives you thirty days from delivery on anything unopened and unused, and it does not limit any stronger
+          statutory right you have where you live.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Privacy</h3>
+      <div class="stack-12">
+        <p>What we collect, why we need it, who else receives it and how to have it deleted is set out in the
+          <a class="link-underline" href="/privacy">privacy policy</a>, which also forms part of these terms. In
+          short: we never receive or store your full card number, and we do not sell personal data to anyone.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Our liability</h3>
+      <div class="stack-12">
+        <p>We are responsible for loss you suffer that is a foreseeable result of our breaking these terms or failing
+          to use reasonable care. We are not responsible for loss that was not foreseeable, for loss of profit or
+          business, or for anything caused by a delay or failure outside our reasonable control — carrier strikes,
+          customs action, extreme weather, or a failure of the payment network.</p>
+        <p>Our total liability for any order is limited to the amount you paid for that order, except where the law
+          does not permit such a limit — liability for death or personal injury caused by our negligence, and for
+          fraud, is never limited by these terms.</p>
+        <p>Nothing on this site is medical, dietary or investment advice. Jade is sold as a decorative material and
+          for cultural appreciation; we make no claim that it has any effect on health or fortune, and any
+          gemmological statement we make is based on the certificate supplied with the piece and on the opinion of the
+          laboratory that issued it.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Governing law</h3>
+      <div class="stack-12">
+        <p>These terms are governed by the laws of <%= company.country %> and of the province in which we are
+          established, and the courts there have exclusive jurisdiction over any dispute — save that if you are a
+          consumer resident elsewhere, you keep the protection of the mandatory consumer law of your own country and
+          may bring proceedings in your local courts. Before anything formal, please write to us: almost everything is
+          resolved by an email.</p>
+        <p class="tiny faint">Last updated <%= policy.updated %>.</p>
+      </div>
+    </div>
+
+    <div class="panel" id="photo-credits">
+      <h3 style="margin-bottom:10px">Photography &amp; illustrations</h3>
+      <p style="margin-bottom:14px">
+        Product and editorial photographs on this site are openly licensed images used under the terms of
+        their licences, which require attribution. The full list, with author, licence and a link to the
+        original file, is published on the
+        <a class="link-underline" href="/credits">photography &amp; illustrations</a> page. Listings that carry a
+        mark reading <em>Illustration</em> are not photographed at all: they are drawn for the shop, they are not an
+        image of any specific item, and we will photograph the actual piece on request before you buy.
+      </p>
+      <% if (typeof photoCredits !== 'undefined' && photoCredits.length) { %>
+        <details class="stack-12">
+          <summary style="cursor:pointer;color:var(--gold-200)">Show all <%= photoCredits.length %> attributions</summary>
+          <div class="credits" style="margin-top:16px">
+            <% photoCredits.forEach(credit => { %>
+              <div class="credits-row">
+                <span>
+                  <% if (credit.source) { %>
+                    <a href="<%= credit.source %>" target="_blank" rel="noopener noreferrer nofollow"><%= credit.title || credit.slot %></a>
+                  <% } else { %>
+                    <%= credit.title || credit.slot %>
+                  <% } %>
+                </span>
+                <span><%= credit.author || 'Unknown author' %><% if (credit.via) { %>, via <%= credit.via %><% } %></span>
+                <span>
+                  <% if (credit.licenceUrl) { %>
+                    <a href="<%= credit.licenceUrl %>" target="_blank" rel="noopener noreferrer nofollow"><%= credit.licence %></a>
+                  <% } else { %>
+                    <%= credit.licence %>
+                  <% } %>
+                </span>
+              </div>
+            <% }) %>
+          </div>
+        </details>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="row" style="gap:12px;margin-top:40px;flex-wrap:wrap">
+    <a class="btn btn-ghost" href="/privacy">Privacy policy</a>
+    <a class="btn btn-ghost" href="/refund">Refund policy</a>
+    <a class="btn btn-ghost" href="/shipping">Shipping policy</a>
+    <a class="btn btn-solid" href="/contact">Contact us</a>
   </div>
 </section>

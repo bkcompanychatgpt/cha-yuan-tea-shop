@@ -16,7 +16,10 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..');
 const BASE = (process.env.BASE_URL || 'http://127.0.0.1:3080').replace(/\/+$/, '');
 
-const slugs = ['visa', 'mastercard', 'amex', 'discover', 'jcb', 'diners', 'unionpay', 'paypal', 'applepay', '3ds'];
+// Every brand OTT Pay's local-card API settles, and nothing else. PayPal and
+// Apple Pay are deliberately absent — they are not payment methods this shop
+// can take, so there is no mark for them to probe.
+const slugs = ['visa', 'mastercard', 'amex', 'discover', 'jcb', 'diners', 'unionpay'];
 
 const browser = await launch({ width: 1200, height: 800, dpr: 1 });
 try {

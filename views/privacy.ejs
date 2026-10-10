@@ -1,0 +1,161 @@
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><span>Privacy policy</span>
+  </nav>
+</div>
+
+<section class="wrap wrap-mid" style="padding-bottom:clamp(60px,8vw,110px)">
+  <span class="eyebrow">Policy</span>
+  <h1 style="margin:14px 0 18px">Privacy policy</h1>
+  <p class="lede">What we collect, why we need it, how long we keep it and how to get it removed.</p>
+
+  <div class="stack-32" style="margin-top:44px;font-size:0.94rem;line-height:1.9;color:var(--text-dim)">
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Who is responsible for your data</h3>
+      <div class="stack-12">
+        <p>The data controller for this shop is <strong class="gold"><%= company.legalName %></strong>, trading as
+          <%= company.tradingName %>, of <%= company.addressLines.join(', ') %>. The person accountable for privacy
+          questions is <%= company.contactPerson %>, reachable at
+          <a class="link-underline" href="mailto:<%= company.privacyEmail %>"><%= company.privacyEmail %></a>.</p>
+        <p>We handle personal data in accordance with Canada's <em>Personal Information Protection and Electronic
+          Documents Act</em> (PIPEDA) and, where it applies to you, the EU and UK General Data Protection Regulation.
+          This policy is written to be read; it is the same undertaking either way.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">What we collect, and why</h3>
+      <div class="stack-12">
+        <p><strong class="gold">To fulfil an order.</strong> Your name, email address, delivery address, and a contact
+          telephone number where the carrier requires one. Without these we cannot ship, and under the terms of sale
+          we cannot enter into the contract at all.</p>
+        <p><strong class="gold">To take payment.</strong> The card details you type at checkout are sent directly to
+          <strong>OTT Pay</strong>, our payment processor. They are not sent to us. What is returned to us, and what
+          our database keeps, is the card brand, the last four digits, the amount, the currency and the gateway's own
+          payment and order identifiers — enough to reconcile an order, answer a query and issue a refund, and nothing
+          more.</p>
+        <p><strong class="gold">To screen for fraud.</strong> Every card payment is scored for fraud risk before it is
+          authorised. Where that service is enabled, a device-fingerprint script supplied by Kount runs in the
+          checkout page and reports technical characteristics of your browser and device — screen size, time zone,
+          installed fonts, whether the browser looks automated — to Kount. It does not read your files, your other
+          tabs, or anything you have typed. If the service is not enabled, the checkout generates a session identifier
+          locally instead and no data leaves our server for this purpose.</p>
+        <p><strong class="gold">To keep the shop working.</strong> Ordinary server logs record the IP address, the page
+          requested and the time. We use them to keep the site up and to block abuse, and we keep them for 30
+          days.</p>
+        <p><strong class="gold">What we never collect.</strong> We never ask for your full card number, its expiry date
+          or its security code in any message, form or email outside the checkout — and anything that does is not from
+          us. We never receive your bank login, and we do not run advertising or third-party analytics trackers on
+          this site.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Cookies and local storage</h3>
+      <div class="stack-12">
+        <p>We use the smallest set that will work. There is no consent banner because none of them is used for
+          advertising or tracking:</p>
+        <ul class="stack-8" style="padding-left:18px;list-style:disc">
+          <li><span class="mono">cy_csrf</span> — a security token that stops another site from submitting our forms
+            on your behalf. Strictly necessary, contains no personal data, expires after 30 days.</li>
+          <li><span class="mono">cy_admin</span> — set only after a member of staff signs in to the back office. It is
+            never set for a customer.</li>
+        </ul>
+        <p>Your basket lives in your browser's <span class="mono">localStorage</span> under the key
+          <span class="mono">cy_cart_v1</span>, so that it survives a reload. It holds product identifiers and
+          quantities and nothing else. Clearing your browser data empties it permanently.</p>
+        <p>When a payment is submitted, the fraud-screening script described above runs in the checkout page. That is
+          the only third-party code that executes during a visit, and it is loaded only on the checkout.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">How long we keep it</h3>
+      <div class="stack-12">
+        <p>Order records, including the invoice and the card brand and last four digits, are kept for
+          <strong class="gold">seven years</strong> after the end of the tax year in which you ordered. Tax law
+          requires it and we cannot delete them early on request; everything else on the order we can.</p>
+        <p>Server logs are kept for 30 days. Newsletter subscriptions are kept until you unsubscribe, which is one
+          click in every email. A refund does not delete the order it relates to.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Who else receives it</h3>
+      <div class="stack-12">
+        <p>Four parties, and no others:</p>
+        <ul class="stack-8" style="padding-left:18px;list-style:disc">
+          <li><strong>OTT Pay</strong> — the payment processor. Receives the card data you enter, your name, email
+            address and billing address, plus the fraud-screening session identifier.</li>
+          <li><strong>Kount</strong> — fraud screening, where enabled. Receives device characteristics and the order
+            amount, not your name or address.</li>
+          <li><strong>Our shipping carrier</strong> — receives your name, delivery address and a telephone number
+            where one is required for delivery.</li>
+          <li><strong>Our hosting provider</strong> — stores the database and the logs on our behalf, under a data
+            processing agreement.</li>
+        </ul>
+        <p>We do not sell, rent or trade personal data, and we do not pass it to anyone for their own marketing. We
+          disclose it to anyone else only where the law compels us to, and where we are permitted to say so we will
+          tell you.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Where it is stored</h3>
+      <div class="stack-12">
+        <p>Our database and backups are hosted in Canada. OTT Pay is a Canadian payment institution and processes the
+          transaction in Canada. Kount is operated in the United States, so if you are in the European Economic Area
+          the device data described above is transferred there under standard contractual clauses. Nothing else leaves
+          Canada.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Your rights</h3>
+      <div class="stack-12">
+        <p>You may ask us for a copy of the personal data we hold about you, ask us to correct anything wrong, ask us
+          to delete anything we are not obliged to keep, ask us to restrict what we do with it, object to processing,
+          and ask for it in a portable machine-readable form. You may also withdraw consent at any time where consent
+          is the basis for processing — for example by unsubscribing.</p>
+        <p>Write to <a class="link-underline" href="mailto:<%= company.privacyEmail %>"><%= company.privacyEmail %></a>
+          and we will respond within 30 days. There is no charge. We may ask you to confirm your identity first, so
+          that we do not hand your data to somebody else.</p>
+        <p>If you are not satisfied with our answer you may complain to the Office of the Privacy Commissioner of
+          Canada, or in the EU and UK to your national supervisory authority. We would rather you came to us first.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Security, and children</h3>
+      <div class="stack-12">
+        <p>The site is served over TLS. Card data is transmitted directly from your browser to OTT Pay and never
+          touches our servers, which is what keeps our own obligations under the card scheme rules at the lowest
+          level. Passwords for the back office are stored as scrypt hashes, and the back office is reachable only over
+          an authenticated session.</p>
+        <p>This shop sells to adults. We do not knowingly collect personal data from anyone under 16, and if you
+          believe a child has given us data, write to us and we will delete it.</p>
+        <p>We may update this policy. The version that applies to your order is the one published when you placed it,
+          and the date below changes whenever the text does.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:14px">Contact</h3>
+      <div class="stack-12">
+        <p><%= company.legalName %><br />
+          <% company.addressLines.forEach((line, i) => { %><%= line %><% if (i < company.addressLines.length - 1) { %><br /><% } %><% }) %></p>
+        <p>Privacy: <a class="link-underline" href="mailto:<%= company.privacyEmail %>"><%= company.privacyEmail %></a><br />
+          Everything else: <a class="link-underline" href="mailto:<%= company.email %>"><%= company.email %></a><br />
+          Telephone: <a class="link-underline" href="tel:<%= company.phone.replace(/[^+0-9]/g, '') %>"><%= company.phone %></a></p>
+        <p class="tiny faint">Last updated <%= policy.updated %>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="gap:12px;margin-top:40px;flex-wrap:wrap">
+    <a class="btn btn-ghost" href="/terms">Terms of service</a>
+    <a class="btn btn-ghost" href="/refund">Refund policy</a>
+    <a class="btn btn-ghost" href="/shipping">Shipping policy</a>
+    <a class="btn btn-solid" href="/contact">Contact us</a>
+  </div>
+</section>

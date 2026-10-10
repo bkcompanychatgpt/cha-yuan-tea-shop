@@ -160,7 +160,7 @@ async function main() {
     record(r.status === 200 && svg.startsWith('<svg'), 'generated product artwork is served');
   }
 
-  for (const path of ['/cart', '/checkout', '/guides', '/guides/how-to-brew-gongfu', '/about', '/shipping', '/terms', '/order']) {
+  for (const path of ['/cart', '/checkout', '/guides', '/guides/how-to-brew-gongfu', '/about', '/shipping', '/refund', '/terms', '/privacy', '/contact', '/order']) {
     const r = await request(path);
     record(r.status === 200, `GET ${path} returns 200`, `status ${r.status}`);
   }
