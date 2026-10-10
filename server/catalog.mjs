@@ -404,6 +404,9 @@ export function getChrome() {
     megaShot: (products.find((p) => p.tea_family === 'Oolong') || featured || {}).hero_image
       || (categories[0] ? categories[0].hero_image : null),
     products,
+    // The header nav is built from these, so every page needs them and they are
+    // cached with the rest of the chrome rather than re-queried per request.
+    cards: departmentCards(),
   };
   return chromeCache;
 }

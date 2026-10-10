@@ -44,17 +44,33 @@
   const totalProducts = categories.reduce((n, c) => n + c.product_count, 0);
 %>
 
-<section class="hero hero-compact">
+<%
+  /*
+   * The hero photograph.
+   *
+   * Chosen by looking at all eight candidates side by side (sheet-heroes.mjs).
+   * Most of the editorial set has a picker's face in it, which is wrong for a
+   * commercial banner and wrong twice over when the face belongs to a child, and
+   * the previous pick was a close crop of somebody's back and basket that read as
+   * a brown smear at banner size. Withering beds are the one frame that is
+   * unmistakably tea production, has nobody in it, and leaves the left third
+   * plain enough for the headline to sit on.
+   */
+  const heroShot = '/img/photos/home-hero-hero-wide.jpg';
+%>
+
+<section class="hero hero-banner">
   <div class="hero-bg">
-    <img src="/img/photos/hero-wide.jpg" alt="" />
+    <img src="<%= heroShot %>" alt="" />
   </div>
   <div class="wrap hero-inner">
     <div class="hero-copy">
-      <span class="eyebrow">Fujian &middot; Yunnan &middot; Anhui &middot; Guangdong</span>
-      <h1>Single-origin Chinese tea, jade and jewellery</h1>
+      <span class="eyebrow">Single-origin &middot; small lots</span>
+      <h1>Chinese tea, jade and&nbsp;jewellery</h1>
       <p class="hero-sub">
-        <%= totalProducts %> pieces across <%= categories.length %> collections. Choose a
-        department below, then the piece. Free shipping over <%= money(store.freeShippingThreshold) %>.
+        <%= totalProducts %> pieces across <%= categories.length %> collections, bought in small
+        lots and tasted before they are listed. Free shipping over
+        <%= money(store.freeShippingThreshold) %>.
       </p>
       <div class="hero-actions">
         <a class="btn btn-solid" href="/shop">Browse everything</a>
@@ -123,12 +139,19 @@
         <% }) %>
       </div>
 
-      <div class="row" style="gap:10px;flex-wrap:wrap;margin-top:20px">
-        <span class="tiny faint" style="letter-spacing:0.16em;text-transform:uppercase;align-self:center">Every collection</span>
-        <% categories.forEach((c) => { %>
-          <a class="chip" href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %> &middot; <%= c.product_count %></a>
-        <% }) %>
-      </div>
+      <%
+        /*
+         * The twelve-collection chip row used to sit here, and it was the single
+         * messiest thing on the page: a flat list of every category presented as
+         * though they were all peers, directly under the three departments that
+         * already organise them. The departments show their own collections, so
+         * this repeated every one of them a second time.
+         */
+      %>
+      <p class="dept-footer">
+        <span class="tiny faint" style="letter-spacing:0.16em;text-transform:uppercase">Twelve collections</span>
+        <a class="link-underline small" href="/shop">See the whole catalogue &rarr;</a>
+      </p>
     </div>
   </section>
 <% } %>

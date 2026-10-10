@@ -17,9 +17,26 @@
         const otherCats = navCategories.filter(c => c.kind !== 'tea');
       %>
 
+      <%
+        /*
+         * The nav mirrors the shop's own structure: three departments, and tea's
+         * divisions only inside the Tea menu.
+         *
+         * "Tea" used to point at /shop, which is the department chooser now — so
+         * clicking the most obvious link on the site landed on a page that does
+         * not list a single tea. It points at the tea department, and the other
+         * two departments are nav items in their own right rather than being
+         * buried behind a category link.
+         */
+        const navDepartments = (typeof cards !== 'undefined' && cards && cards.departments)
+          ? cards.departments
+          : [];
+        const deptHref = (slug) => `/shop?department=${slug}`;
+      %>
+
       <% if (teaCats.length) { %>
         <div class="nav-item">
-          <a class="nav-link <%= page === 'shop' ? 'is-active' : '' %>" href="/shop">Tea</a>
+          <a class="nav-link <%= page === 'shop' ? 'is-active' : '' %>" href="<%= deptHref('tea') %>">Tea</a>
           <div class="mega">
             <div class="mega-title">By type</div>
             <div class="mega-list cols-2">
@@ -47,7 +64,16 @@
         </div>
       <% } %>
 
-      <% otherCats.forEach(c => { %>
+      <% navDepartments.filter(d => d.slug !== 'tea').forEach(d => { %>
+        <div class="nav-item">
+          <a class="nav-link" href="<%= d.href %>"><%= d.name %></a>
+        </div>
+      <% }) %>
+
+      <%# Teaware and gift sets are not departments of their own, so they stay as
+          plain links rather than being promoted to the same weight as Tea,
+          Jade & Stone and Fine Jewellery. %>
+      <% otherCats.filter(c => c.kind === 'teaware' || c.kind === 'gift').forEach(c => { %>
         <div class="nav-item">
           <a class="nav-link" href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %></a>
         </div>

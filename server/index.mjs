@@ -276,6 +276,9 @@ app.use((req, res, next) => {
   res.locals.categories = chrome.categories;
   res.locals.families = chrome.families;
   res.locals.megaShot = chrome.megaShot;
+  // The header nav is built from the department cards, so every page has them.
+  // Passing them per-route meant the nav rendered empty on any page that forgot.
+  res.locals.cards = chrome.cards;
   res.locals.page = res.locals.page || '';
   res.locals.layoutAdmin = req.path.startsWith('/admin');
   next();

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T17:38:28.643Z",
+  "generatedAt": "2026-10-10T19:40:59.062Z",
   "credits": {
     "hero": {
       "source": "https://commons.wikimedia.org/wiki/File:Tea_Harvesting_03.jpg",
@@ -9,6 +9,16 @@
       "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
       "author": "Coolbrizzy",
       "originalAuthor": "Coolbrizzy",
+      "via": "Wikimedia Commons"
+    },
+    "home-hero": {
+      "source": "https://commons.wikimedia.org/wiki/File:White_Tea_Withering.jpg",
+      "title": "White Tea Withering.jpg",
+      "originalTitle": "White Tea Withering.jpg",
+      "licence": "CC BY-SA 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "author": "KZZZ01",
+      "originalAuthor": "KZZZ01",
       "via": "Wikimedia Commons"
     },
     "story-terraces": {
@@ -123,11 +133,11 @@
     },
     "the-tea-voyage-gift-box": {
       "source": "https://commons.wikimedia.org/wiki/File:凤庆滇红茶博物馆-滇红茶包装字模.jpg",
-      "title": "凤庆滇红茶博物馆-滇红茶包装字模.jpg",
+      "title": "Fengqing Dianhong tea museum",
       "originalTitle": "凤庆滇红茶博物馆-滇红茶包装字模.jpg",
       "licence": "CC BY-SA 4.0",
       "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-      "author": "瑞丽江的河水",
+      "author": "Ruili River",
       "originalAuthor": "瑞丽江的河水",
       "via": "Wikimedia Commons"
     },
@@ -137,7 +147,7 @@
       "originalTitle": "清蓝地描金盖碗.jpg",
       "licence": "CC BY-SA 4.0",
       "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-      "author": "三猎",
+      "author": "San Lie",
       "originalAuthor": "三猎",
       "via": "Wikimedia Commons"
     },
@@ -303,7 +313,7 @@
     },
     "jadeite-and-gold-earrings": {
       "source": "https://commons.wikimedia.org/wiki/File:卑南遺址人獸形玉玦.jpg",
-      "title": "卑南遺址人獸形玉玦.jpg",
+      "title": "Jadeite slit ring, Beinan archaeological site",
       "originalTitle": "卑南遺址人獸形玉玦.jpg",
       "licence": "CC BY-SA 4.0",
       "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -513,7 +523,7 @@
     },
     "silver-needle-aged-2021": {
       "source": "https://commons.wikimedia.org/wiki/File:Байхао_Иньчжэнь_в_заварнике.jpg",
-      "title": "Байхао Иньчжэнь в заварнике.jpg",
+      "title": "Baihao Yinzhen (Wikimedia contributor)",
       "originalTitle": "Байхао Иньчжэнь в заварнике.jpg",
       "licence": "CC BY-SA 4.0",
       "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -523,7 +533,7 @@
     },
     "silver-needle-aged-2018": {
       "source": "https://commons.wikimedia.org/wiki/File:Байхао_Иньчжэнь_в_заварнике.jpg",
-      "title": "Байхао Иньчжэнь в заварнике.jpg",
+      "title": "Baihao Yinzhen (Wikimedia contributor)",
       "originalTitle": "Байхао Иньчжэнь в заварнике.jpg",
       "licence": "CC BY-SA 4.0",
       "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -613,7 +623,7 @@
     },
     "aged-white-2019-shoumei": {
       "source": "https://commons.wikimedia.org/wiki/File:Байхао_Иньчжэнь.jpg",
-      "title": "Байхао Иньчжэнь.jpg",
+      "title": "Baihao Yinzhen (Wikimedia contributor)",
       "originalTitle": "Байхао Иньчжэнь.jpg",
       "licence": "CC BY-SA 4.0",
       "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -1187,7 +1197,7 @@
       "originalTitle": "110601 204646.jpg",
       "licence": "CC BY-SA 3.0",
       "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-      "author": "静葉",
+      "author": "Jing Ye",
       "originalAuthor": "静葉",
       "via": "Wikimedia Commons"
     },

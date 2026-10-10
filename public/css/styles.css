@@ -1960,6 +1960,14 @@ select.select option { background: var(--ink-800); color: var(--text); }
 .story-media-side figure:hover img { transform: scale(1.06); }
 
 /* --------------------------------------------------------------- photo row */
+/*
+ * A filmstrip, not a second gallery.
+ *
+ * These were portrait 3:4 tiles, so four of them in a row stood 413px tall
+ * immediately below the story section's own four images — eight large pictures
+ * back to back, which is what made the page feel heavy and cluttered. Landscape
+ * crops at 3:2 read as a strip of context and are less than half the height.
+ */
 .photo-row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1972,7 +1980,7 @@ select.select option { background: var(--ink-800); color: var(--text); }
 }
 .photo-row-item img {
   width: 100%;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
   transition: transform 1s var(--ease);
 }
@@ -2206,6 +2214,63 @@ select.select option { background: var(--ink-800); color: var(--text); }
  * before seeing anything they could buy. The headline, one line of copy, the
  * primary actions and the family links all fit here now.
  */
+/* --------------------------------------------------------------------------
+   Homepage banner
+
+   A real banner rather than a strip. The compact hero this replaces was 356px
+   tall on a 1440 screen with the copy pinned to the top, which read as a
+   headline dropped onto a photograph rather than composed with it. Height is
+   capped so it never becomes a full screen with nothing in it.
+   -------------------------------------------------------------------------- */
+
+.hero-banner {
+  min-height: clamp(400px, 52vh, 540px);
+  align-items: center;
+}
+
+.hero-banner .hero-inner { display: block; }
+
+.hero-banner .hero-copy {
+  /* Wide enough that the two-line headline stays two lines. At 40ch it broke
+     "Single-origin Chinese tea," into three, which is not a headline any more. */
+  max-width: 52ch;
+  padding-block: clamp(40px, 6vw, 76px);
+}
+
+.hero-banner h1 {
+  font-size: clamp(2.1rem, 4.6vw, 3.5rem);
+  line-height: 1.12;
+  margin: 14px 0 18px;
+}
+
+.hero-banner .hero-sub {
+  font-size: clamp(0.95rem, 1.1vw, 1.06rem);
+  line-height: 1.75;
+  color: var(--text-dim);
+  max-width: 46ch;
+}
+
+.hero-banner .hero-actions { margin-top: clamp(24px, 3vw, 36px); gap: 12px; }
+
+/* The rule between the departments and the rest of the catalogue. */
+.dept-footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin: 26px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--line-soft);
+}
+
+@media (max-width: 760px) {
+  .hero-banner { min-height: clamp(340px, 58vh, 460px); }
+  .hero-banner .hero-copy { max-width: none; padding-block: 28px 32px; }
+  .hero-banner h1 { font-size: clamp(1.75rem, 8vw, 2.3rem); }
+  .dept-footer { margin-top: 18px; padding-top: 14px; }
+}
+
 .hero-compact {
   min-height: 0;
   padding-block: clamp(16px, 2.2vw, 32px) clamp(14px, 1.8vw, 24px);

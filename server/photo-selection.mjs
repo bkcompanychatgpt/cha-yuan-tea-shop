@@ -29,6 +29,16 @@ export const EDITORIAL_PHOTOS = {
   // The homepage and about-page hero banner. Uses the `banner` grade, which is
   // deliberately bright because the page lays its own dark overlay over it.
   hero: { pick: 'ambiance#22', grade: 'banner' },
+  /*
+   * The homepage banner, graded separately from the same photograph used in the
+   * story strip.
+   *
+   * The homepage lays its own dark gradient over the image, so a photograph
+   * graded `editorial` arrives dark and then gets darkened again — the withering
+   * beds read as a grey wall. Same tile, `banner` grade, which is the bright one
+   * deliberately: one image, two uses, two grades.
+   */
+  'home-hero': { pick: 'silver-needle#4', grade: 'banner' },
   'story-terraces': { pick: 'ambiance#22', grade: 'editorial' },
   'story-plantation': { pick: 'ambiance#19', grade: 'editorial' },
   'story-harvest': { pick: 'ambiance#21', grade: 'editorial' },
