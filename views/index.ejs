@@ -29,12 +29,18 @@
   const buildDept = (kind) => {
     const members = categories.filter((c) => c.kind === kind);
     if (!members.length) return null;
+    const hero = members.reduce((a, b) => (b.product_count > a.product_count ? b : a));
     return {
       kind,
       label: KIND_LABELS[kind].label,
+      // Spread onto the same shape the department cards use, so the "Beyond the
+      // three" row and the departments row can be rendered by the same markup.
+      // Without this the teaware and gift cards rendered `<img src="">` — two
+      // broken images that the visual check caught and the eye would not.
+      coverSrc: hero.hero_image,
       blurb: KIND_LABELS[kind].blurb,
       count: members.reduce((n, c) => n + c.product_count, 0),
-      hero: members.reduce((a, b) => (b.product_count > a.product_count ? b : a)),
+      hero,
       members,
     };
   };
