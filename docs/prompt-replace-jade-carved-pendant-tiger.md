@@ -42,7 +42,7 @@ THE ITEMS
 
 ### Jade & Stone — 1 image
 
-* jade-carved-pendant-tiger.jpg — Subject: Carved Nephrite Pendant — Crouching tiger, a finished hand-carved piece of Chinese jade. Material: Dark nephrite, hand-carved, showing its true translucency, its fine internal clouding and the wet-looking polish of worked stone. Framed in three-quarter view so both the carved face and the edge of the stone are visible.
+* jade-carved-pendant-tiger.jpg — Subject: Carved Nephrite Pendant — Crouching tiger, a finished hand-carved piece of Chinese jade. The carving is a TIGER and must be unmistakably feline: a rounded head, small rounded ears, closely striped flanks, four paws. It is not a dragon — no horns, no long whiskers, no scales, no sinuous serpent body — and it is not a lion or a qilin. If the result reads as any of those, regenerate it. Material: Dark nephrite, hand-carved, showing its true translucency, its fine internal clouding and the wet-looking polish of worked stone. Framed in three-quarter view so both the carved face and the edge of the stone are visible.
 
 Once the ZIP is ready, that is the deliverable. Nothing else is needed.
 ```

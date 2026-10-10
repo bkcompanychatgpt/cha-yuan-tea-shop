@@ -70,12 +70,37 @@ function subjectOf(product) {
   return `${product.name} — ${clause}`;
 }
 
+/**
+ * Products whose prompt needs a disambiguation that the name and subtitle cannot
+ * carry.
+ *
+ * The first attempt at the tiger pendant came back as a dragon. It was a
+ * perfectly good carved nephrite pendant on exactly the right deep green ground,
+ * which is why it passed every check — the animal carved on it was simply the
+ * wrong one. Asked for "a carved pendant with a crouching tiger", a generator
+ * reaches for the far more common dragon motif unless the difference is spelled
+ * out, and the difference is not something the product name can state: the
+ * listing is called "Carved Nephrite Pendant", and the tiger lives in the
+ * subtitle alongside the stone colour.
+ *
+ * So the note says what the piece must be *and* what it must not be. Naming the
+ * wrong answer is what makes this work; "a tiger" alone did not.
+ */
+const PROMPT_NOTES = {
+  'jade-carved-pendant-tiger':
+    'The carving is a TIGER and must be unmistakably feline: a rounded head, small rounded ears, ' +
+    'closely striped flanks, four paws. It is not a dragon — no horns, no long whiskers, no scales, ' +
+    'no sinuous serpent body — and it is not a lion or a qilin. If the result reads as any of those, ' +
+    'regenerate it.',
+};
+
 /** Per-department phrasing that keeps the object itself the subject. */
 function describe(product) {
   const kind = product.kind;
   const material = String(product.cultivar || '').trim();
   const unit = String(product.art_unit || '').trim().toLowerCase();
   const name = subjectOf(product);
+  const note = PROMPT_NOTES[product.slug] || '';
 
   if (kind === 'jade') {
     return [
@@ -83,12 +108,13 @@ function describe(product) {
       // choose how it is framed. "a bangle of moss-in-snow oval bangle" is what
       // happens when both are pasted in.
       `Subject: ${name}, a finished hand-carved piece of Chinese jade.`,
+      note,
       `Material: ${material || 'polished nephrite jade'}, showing its true translucency,`,
       'its fine internal clouding and the wet-looking polish of worked stone.',
       unit.includes('bangle')
         ? 'Framed as a complete circle in three-quarter view so the thickness of the ring is clear.'
         : 'Framed in three-quarter view so both the carved face and the edge of the stone are visible.',
-    ].join(' ');
+    ].filter(Boolean).join(' ');
   }
   if (kind === 'jewellery') {
     return [
