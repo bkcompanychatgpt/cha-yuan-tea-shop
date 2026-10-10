@@ -154,7 +154,27 @@ export const JADE_PHOTOS = {
  * full in public/img/credits.json.
  */
 const TRANSLITERATION_FILE = path.join(__dirname, 'scripts', 'data', 'photo-transliterations.json');
-const TRANSLITERATIONS = JSON.parse(fs.readFileSync(TRANSLITERATION_FILE, 'utf8'));
+
+/**
+ * Load the transliteration tables, tolerating the file being absent.
+ *
+ * This read used to be unconditional, and an unconditional read from a file that
+ * was not in the repository took the whole site down on a fresh clone: the import
+ * threw, the process exited, and Render reported only "deploy failed". Losing the
+ * transliterations costs some non-Latin titles on the credits page and nothing
+ * else, so it must not be fatal.
+ */
+function loadTransliterations() {
+  try {
+    const parsed = JSON.parse(fs.readFileSync(TRANSLITERATION_FILE, 'utf8'));
+    return { titles: parsed.titles || {}, authors: parsed.authors || {} };
+  } catch (err) {
+    console.warn(`[photos] transliteration table unavailable (${err.code || err.message}) — credits will show original titles`);
+    return { titles: {}, authors: {} };
+  }
+}
+
+const TRANSLITERATIONS = loadTransliterations();
 
 /**
  * Return an English display string for a title or author field.
