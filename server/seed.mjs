@@ -341,6 +341,28 @@ function applyPhotos() {
   // say so on the storefront.
   const rest = run("UPDATE products SET image_kind = 'illustration' WHERE hero_image = '' OR hero_image LIKE '/img/product/%'");
   result.illustrated = Number(rest?.changes || 0);
+
+  /*
+   * Products whose image was generated from a text prompt.
+   *
+   * The manifest marks everything it covers as `photo`, which is right for a
+   * licensed photograph and wrong for a generated one: a generated photograph is
+   * still not a photograph of the goods, so the disclosure has to stay. The
+   * importer writes those slugs to generated.json for exactly this purpose.
+   */
+  let generatedSlugs = [];
+  try {
+    generatedSlugs = JSON.parse(
+      fs.readFileSync(path.join(config.rootDir, 'public', 'img', 'generated.json'), 'utf8'),
+    ).slugs || [];
+  } catch {
+    generatedSlugs = [];
+  }
+  for (const slug of generatedSlugs) {
+    run("UPDATE products SET image_kind = 'illustration' WHERE slug = ?", slug);
+  }
+  result.generated = generatedSlugs.length;
+
   result.galleries = giveIllustratedProductsAGallery();
 
   result.story = (manifest.story || []).length;
