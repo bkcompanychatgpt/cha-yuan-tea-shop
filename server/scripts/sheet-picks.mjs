@@ -23,7 +23,7 @@ const ROOT = path.resolve(HERE, '..', '..');
 const SHEET_DIR = path.join(ROOT, 'data', 'photos', 'sheets');
 const OUT_DIR = path.join(ROOT, '_shots');
 
-const INDEX_FILES = ['sheets-index.json', 'targeted-index.json', 'openverse-index.json'];
+const INDEX_FILES = ['sheets-index.json', 'targeted-index.json', 'openverse-index.json', 'museum-index.json'];
 
 /** group name -> array of { n, file, title, licence, author } */
 function loadIndex() {
