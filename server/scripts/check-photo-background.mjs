@@ -31,20 +31,16 @@ const fixedIdx = args.indexOf('--threshold');
 const FIXED = fixedIdx >= 0 ? Number(args[fixedIdx + 1]) : null;
 
 /**
- * Listings known to be out of step, with the reason.
+ * Listings known to be out of step, with the reason — currently empty.
  *
  * A check that is red for a defect already recorded is a check nobody reads, and
  * a check that is green because the defect was deleted from the script is worse.
- * So the known one is named here and reported as information; anything *else*
- * appearing is a failure. Remove an entry when its replacement image lands — the
- * empty list is the goal, and it is worth keeping visible.
+ * So a known one is named here and reported as information while anything *else*
+ * appearing is a failure. The last entry was `jade-carved-pendant-tiger`, whose
+ * photograph was a museum archival shot on a pale grey ground; the replacement
+ * render landed on 2026-11-10 and the entry came out with it.
  */
-const KNOWN_OUT_OF_STEP = [
-  {
-    slug: 'jade-carved-pendant-tiger',
-    why: 'awaiting a replacement render: the generated one showed a dragon, not a tiger',
-  },
-];
+const KNOWN_OUT_OF_STEP = [];
 
 /**
  * Mean luminance of the four corner patches, on the 0–255 scale sharp reports.
