@@ -194,21 +194,25 @@ export const DEPARTMENTS = [
     name: 'Tea',
     kinds: ['tea'],
     eyebrow: 'Leaf',
-    blurb: 'Single-origin lots from Fujian, Yunnan, Anhui, Zhejiang and Guangdong, dated by harvest.',
+    // One line each, and deliberately about the same length. The homepage shows
+    // these three side by side, and a blurb wrapping to two lines next to two
+    // that wrap to one leaves a ragged row that reads as a mistake rather than
+    // as a design.
+    blurb: 'Single-origin lots from Fujian, Yunnan and Anhui.',
   },
   {
     slug: 'jade',
     name: 'Jade & Stone',
     kinds: ['jade'],
     eyebrow: 'Stone',
-    blurb: 'Nephrite and jadeite, hand-carved and polished until the stone gives up its depth.',
+    blurb: 'Nephrite and jadeite, hand-carved and polished.',
   },
   {
     slug: 'jewellery',
     name: 'Fine Jewellery',
     kinds: ['jewellery'],
     eyebrow: 'Metal',
-    blurb: 'Gold, pearls and set stones, worked by hand rather than cast.',
+    blurb: 'Gold, pearls and set stones, worked by hand.',
   },
 ];
 

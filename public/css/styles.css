@@ -2037,15 +2037,30 @@ select.select option { background: var(--ink-800); color: var(--text); }
 .dept-grid-outros { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 .dept {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  /*
+   * Thumbnail beside the text rather than a banner above it.
+   *
+   * The covers are portrait category tiles, and slicing a portrait into a wide
+   * banner produced a thin horizontal band of blurred leaf. A square crop keeps
+   * the composition, and at 148px the image stops being the loudest thing in the
+   * row — which was the complaint. The card is now 148px tall instead of 500px.
+   */
+  grid-template-columns: 148px 1fr;
+  align-items: stretch;
   border: 1px solid var(--line-soft);
-  background: linear-gradient(180deg, var(--ink-800), var(--ink-850));
+  background: linear-gradient(120deg, var(--ink-800), var(--ink-850));
   overflow: hidden;
   transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
 }
 .dept:hover { border-color: var(--gold-400); transform: translateY(-3px); }
-.dept-media { overflow: hidden; aspect-ratio: 4 / 3; }
+/*
+ * No aspect-ratio here on desktop: with a definite height it also dictates the
+ * width, which pushed the image to 227px inside a 148px column and slid the text
+ * underneath it. The column sets the width, the row stretch sets the height, and
+ * object-fit handles the crop — which suits these portrait covers anyway.
+ */
+.dept-media { overflow: hidden; width: 100%; height: 100%; }
 .dept-media img {
   width: 100%;
   height: 100%;
@@ -2055,28 +2070,52 @@ select.select option { background: var(--ink-800); color: var(--text); }
 .dept:hover .dept-media img { transform: scale(1.05); }
 
 .dept-body {
-  padding: 24px 22px 26px;
+  padding: 20px 22px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  flex: 1;
+  gap: 7px;
+  min-width: 0;
 }
 .dept-body h2,
-.dept-body h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); margin-top: 2px; font-weight: 400; }
-.dept-body p { font-size: 0.87rem; color: var(--text-dim); line-height: 1.68; }
+.dept-body h3 { font-size: 1.32rem; margin: 0; font-weight: 400; line-height: 1.2; }
+.dept-body p { font-size: 0.82rem; color: var(--text-dim); line-height: 1.6; margin: 0; }
 
 /* The count sits directly under the name, so three departments of very
    different size do not look like a mistake. */
 .dept-count {
   font-family: var(--font-mono);
-  font-size: 0.72rem !important;
+  font-size: 0.68rem !important;
   letter-spacing: 0.1em;
   color: var(--gold-400) !important;
-  margin: -4px 0 0;
+  margin: 0 !important;
 }
 
-.dept-blurb { margin: 0; }
+.dept-cta {
+  margin-top: auto;
+  padding-top: 12px;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+.dept:hover .dept-cta { color: var(--gold-100); }
 
+@media (max-width: 760px) {
+  /* Stacked on a phone, where a 148px thumbnail beside 40 characters of text is
+     too narrow for either. */
+  .dept { grid-template-columns: 1fr; }
+  .dept-media { aspect-ratio: 16 / 9; height: auto; }
+}
+
+/*
+ * `.dept-links` is kept even though nothing renders it now.
+ *
+ * The shop chooser used to print a department's collections inside its card, and
+ * the homepage used to as well. Both were removed — Tea has eight collections and
+ * the other two have one, so the cards were never the same height and two of them
+ * were mostly empty. The rule stays so that anything reintroducing the list gets
+ * the styled version rather than an unstyled one.
+ */
 .dept-links {
   display: grid;
   gap: 0;
@@ -2094,16 +2133,6 @@ select.select option { background: var(--ink-800); color: var(--text); }
   color: var(--text-dim);
 }
 .dept-links li span { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); }
-
-.dept-cta {
-  margin-top: auto;
-  padding-top: 14px;
-  font-size: 0.74rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--gold-300);
-}
-.dept:hover .dept-cta { color: var(--gold-100); }
 
 /* --------------------------------------------------------------------------
    Shop chooser and sub-navigation
