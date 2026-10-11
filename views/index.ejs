@@ -248,7 +248,7 @@
         <span class="eyebrow">How we buy</span>
         <h2 style="margin:14px 0 18px">A shop built on a tasting table, not a warehouse</h2>
         <p class="lede" style="margin-bottom:26px"><%= ed.intro %></p>
-        <div class="pillars" style="grid-template-columns:1fr 1fr;gap:22px">
+        <div class="pillars pillars-pair">
           <% (ed.pillars || []).forEach((p, i) => { %>
             <div class="pillar">
               <span class="num"><%= String(i + 1).padStart(2, '0') %></span>

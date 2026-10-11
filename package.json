@@ -37,6 +37,8 @@
     "compare": "node server/scripts/compare-deploy.mjs",
     "lang": "node server/scripts/lang-audit.mjs",
     "visual": "node server/scripts/visual-check.mjs",
+    "mobile": "node server/scripts/check-mobile-layout.mjs",
+    "verify": "npm test && npm run visual && npm run mobile",
     "contrast": "node server/scripts/contrast-check.mjs",
     "photos:background": "node server/scripts/check-photo-background.mjs",
     "shots": "node server/scripts/screenshot.mjs",

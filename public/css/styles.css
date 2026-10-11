@@ -636,7 +636,23 @@ section { position: relative; }
 .cat-tile h3, .cat-tile p, .cat-count { overflow-wrap: anywhere; }
 
 /* ------------------------------------------------------------ editorial */
+/**
+ * `.pillars` sizes its own columns from the space it is given, which is right
+ * when it spans the page. Inside the homepage's two-column "how we buy" block it
+ * does not, so that one is pinned to a pair.
+ *
+ * The pinning used to be an inline `style="grid-template-columns:1fr 1fr"` on the
+ * element, and an inline declaration beats the stylesheet — including the
+ * responsive behaviour above it. On a 390px phone that meant two columns of
+ * ninety pixels, and every paragraph wrapped to one or two words per line:
+ * four hundred pixels of ragged text where a single column of readable prose
+ * belongs. A class can be overridden by a media query; an inline style cannot.
+ */
 .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(232px, 1fr)); gap: 34px; }
+.pillars-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+@media (max-width: 640px) {
+  .pillars-pair { grid-template-columns: 1fr; gap: 26px; }
+}
 .pillar { border-top: 1px solid var(--line); padding-top: 22px; }
 .pillar .num {
   font-family: var(--font-mono);
@@ -2011,6 +2027,20 @@ select.select option { background: var(--ink-800); color: var(--text); }
 .story-media-side img { width: 100%; aspect-ratio: 1; object-fit: cover; transition: transform 0.8s var(--ease); }
 .story-media-side figure:hover img { transform: scale(1.06); }
 
+/*
+ * Stack the story block on a phone.
+ *
+ * Two fixed fractional columns with no breakpoint meant that at 390px the text
+ * half was 183px wide, so every paragraph in the four numbered pillars wrapped
+ * to one or two words a line and the block ran to four hundred pixels of ragged
+ * type. The images were halved for no reason as well. Nothing overflowed, which
+ * is why the overflow check was happy with it — a layout can be badly wrong
+ * without being wider than the viewport.
+ */
+@media (max-width: 900px) {
+  .story-layout { grid-template-columns: 1fr; gap: 30px; align-items: start; }
+}
+
 /* --------------------------------------------------------------- photo row */
 /*
  * A filmstrip, not a second gallery.
@@ -2074,6 +2104,19 @@ select.select option { background: var(--ink-800); color: var(--text); }
 }
 .credits-row a { color: var(--gold-200); }
 .credits-row span:last-child { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); }
+
+/*
+ * One column on a phone.
+ *
+ * Three fixed tracks do not fit 390px, so the author column came out at 56px and
+ * a typical Wikimedia credit — "The original uploader was Iateasquirrel at
+ * English Wikipedia" — ran to 288px of stacked words, one or two per line. A
+ * credit nobody can read is not attribution.
+ */
+@media (max-width: 760px) {
+  .credits-row { grid-template-columns: 1fr; gap: 3px; padding: 13px 0; font-size: 0.82rem; }
+  .credits-row span:last-child { font-size: 0.68rem; }
+}
 
 /* ------------------------------------------------------------ contact page */
 .contact-grid {
