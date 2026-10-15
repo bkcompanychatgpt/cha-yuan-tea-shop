@@ -75,15 +75,27 @@ const paymentMode = str('PAYMENT_MODE', 'mock').toLowerCase();
  * placeholder that looks plausible is easier to spot on a page than one that
  * looks like a placeholder — and the pages say outright that they are samples.
  */
+/**
+ * Sample trading details, used until the operator supplies the real ones.
+ *
+ * They are deliberately Ontario-shaped rather than generic, because the shop
+ * charges Ontario HST at 13% — see `store.taxLabel`. A sample address in
+ * British Columbia alongside HST would be a contradiction on the same page
+ * (BC levies GST plus PST, not HST), and a placeholder that argues with the
+ * tax line is harder to review than one that does not.
+ *
+ * The trading entity and the fulfilment location are separate things: this is
+ * where the company is registered, and every parcel ships from China.
+ */
 const COMPANY_DEFAULTS = {
   legalName: 'Cha Yuan Tea Ltd.',
-  address: 'Unit 200 — 1234 Main Street|Vancouver, British Columbia V6B 1A1|Canada',
+  address: 'Unit 200 — 1234 King Street West|Toronto, Ontario M5V 1N6|Canada',
   country: 'Canada',
-  registrationNumber: 'BC0000000',
-  taxNumber: 'GST/HST 000000000 RT0001',
+  registrationNumber: 'ON0000000',
+  taxNumber: 'HST 000000000 RT0001',
   email: 'hello@chayuan.test',
   privacyEmail: 'privacy@chayuan.test',
-  phone: '+1 604 000 0000',
+  phone: '+1 416 000 0000',
 };
 
 /**

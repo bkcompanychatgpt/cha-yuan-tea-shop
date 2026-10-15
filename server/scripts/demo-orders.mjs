@@ -41,8 +41,9 @@ const SCENARIOS = [
   },
   {
     label: 'shipped, domestic express',
-    customer: { name: 'Review Express', email: 'review-express@chayuan.test', phone: '+1 604 555 0144' },
-    shipping: { name: 'Review Express', line1: '1200 Robson Street', line2: '', city: 'Vancouver', province: 'BC', postalCode: 'V6E 1B5', country: 'CA' },
+    customer: { name: 'Review Express', email: 'review-express@chayuan.test', phone: '+1 416 555 0144' },
+    // Ontario, to match the HST the shop charges on this build.
+    shipping: { name: 'Review Express', line1: '1200 King Street West', line2: '', city: 'Toronto', province: 'ON', postalCode: 'M5V 1N6', country: 'CA' },
     shippingMethod: 'express',
     status: 'shipped',
   },

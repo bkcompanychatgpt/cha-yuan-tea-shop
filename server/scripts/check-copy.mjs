@@ -60,6 +60,19 @@ const BANNED = [
     why: 'quotes a transit time',
   },
   { pattern: /\bExpected (?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\b/, why: 'quotes an arrival date' },
+  /*
+   * A delivery claim does not have to come from a policy page. The editorial
+   * copy held a testimonial reading "arrived two days after I ordered it" —
+   * a promise in a customer's mouth, which is read as evidence in a way a
+   * policy paragraph is not. That one is caught by the source scan below rather
+   * than here, because no view renders testimonials yet: a rendered-page check
+   * cannot see copy that is not on a page.
+   */
+  { pattern: /\barrived?\b[^.]{0,30}\b(?:\d+|two|three|four|five|six|seven)\s*(?:days?|weeks?)\b/i, why: 'quotes a delivery time' },
+  { pattern: /\barrived (?:the )?(?:very )?(?:next|following) day\b/i, why: 'quotes a delivery time' },
+  { pattern: /\b(?:took|came|got here)\b[^.]{0,20}\b(?:\d+|two|three|four|five)\s*days?\b/i, why: 'quotes a delivery time' },
+  { pattern: /\bshipped (?:in|within) \d/i, why: 'quotes a dispatch or transit time' },
+  { pattern: /\bdays? after (?:I|we) ordered\b/i, why: 'quotes a delivery time' },
 ];
 
 /** Pages that must carry the dispatch promise, and what proves it. */
@@ -124,6 +137,48 @@ for (const page of MUST_PROMISE) {
   const ok = /48 hours/.test(text);
   if (!ok) problems += 1;
   console.log(`  ${ok ? '\u001b[32mPASS\u001b[0m' : '\u001b[31mFAIL\u001b[0m'}  ${page} — states the 48-hour dispatch promise`);
+}
+
+/* --------------------------------------------------- unrendered copy */
+/*
+ * The same rules applied to editorial copy that is seeded but not yet shown.
+ *
+ * `EDITORIAL` carries the ticker, the trust strip, the FAQ and the testimonials.
+ * Most of it renders, some of it does not yet — testimonials in particular are
+ * seeded into settings and drawn by no view. Copy that is merely waiting to be
+ * switched on is exactly the copy nobody re-reads, so it is checked here from
+ * the source rather than from a page.
+ */
+console.log('\n  Editorial copy (including what no view renders yet)\n');
+{
+  const { EDITORIAL } = await import('../catalog-data.mjs');
+
+  /** Every string anywhere in the structure, with a path so a hit is findable. */
+  function strings(value, path = 'EDITORIAL') {
+    if (typeof value === 'string') return [{ path, text: value }];
+    if (Array.isArray(value)) return value.flatMap((v, i) => strings(v, `${path}[${i}]`));
+    if (value && typeof value === 'object') {
+      return Object.entries(value).flatMap(([k, v]) => strings(v, `${path}.${k}`));
+    }
+    return [];
+  }
+
+  const all = strings(EDITORIAL);
+  const hits = [];
+  for (const { path: where, text } of all) {
+    for (const rule of BANNED) {
+      const m = text.match(rule.pattern);
+      if (m) hits.push({ where, why: rule.why, sample: m[0] });
+    }
+  }
+
+  if (hits.length) {
+    problems += hits.length;
+    console.log(`  \u001b[31mFAIL\u001b[0m  ${hits.length} problem(s) in ${all.length} string(s)`);
+    for (const h of hits) console.log(`          ${h.where}\n            ${h.why}: "${h.sample}"`);
+  } else {
+    console.log(`  \u001b[32mPASS\u001b[0m  ${all.length} editorial string(s) clean`);
+  }
 }
 
 console.log(`\n${'-'.repeat(58)}`);

@@ -2194,8 +2194,17 @@ export const EDITORIAL = {
 
   /* Customer testimonials. Illustrative copy for this demo build. */
   testimonials: [
+    /*
+     * No testimonial may mention how long a parcel took.
+     *
+     * The first one used to read "arrived two days after I ordered it", which is
+     * a delivery promise in a customer's mouth — and one the shop cannot keep
+     * from China, where transit and customs are neither ours to control nor to
+     * forecast. A quote is read as evidence in a way a policy page is not, so it
+     * is the worst possible place for a date. See server/fulfilment.mjs.
+     */
     {
-      quote: 'The Da Hong Pao arrived two days after I ordered it and tasted like the tea I drank in Wuyishan. I have stopped buying tea anywhere else.',
+      quote: 'The Da Hong Pao tasted like the tea I drank in Wuyishan. I have stopped buying tea anywhere else.',
       name: 'Marcus L.',
       location: 'Vancouver, CA',
       product: 'Da Hong Pao',
