@@ -156,10 +156,11 @@ check(
 /* ------------------------------------------------------------------ prices */
 console.log('\nPrices\n');
 /*
- * The jewellery band is the one the operator set: CAD 150 to 1,500. A bead
- * bracelet has no business at four figures, and a carved strand in a scarce
- * material has no business below two, so the range is asserted rather than left
- * to the price ladder.
+ * The jewellery band is the one the operator set — CAD 150 to 1,500 — with the
+ * thirty per cent department-wide reduction they asked for applied on top, so
+ * the band under test is 105 to 1,050. A bead bracelet has no business at four
+ * figures, and a carved strand in a scarce material has no business at the
+ * bottom, so the range is asserted rather than left to the price ladder.
  *
  * Tea is not banded by anyone — it is priced per tin, from a ten-dollar everyday
  * green to a three-thousand-dollar aged cake — so its check is only that every
@@ -168,7 +169,7 @@ console.log('\nPrices\n');
  */
 const PRICE_BANDS = {
   tea: { low: 1000, high: 400000, label: 'CAD 10–4,000' },
-  jewellery: { low: 15000, high: 150000, label: 'CAD 150–1,500' },
+  jewellery: { low: 10500, high: 105000, label: 'CAD 105–1,050' },
 };
 
 for (const [name, band] of Object.entries(PRICE_BANDS)) {

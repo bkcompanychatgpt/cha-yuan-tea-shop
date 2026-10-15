@@ -23,14 +23,31 @@
 import { BRACELET_MATERIALS, BEAD_SHAPES, STRING_STYLES, BRACELET_ROWS } from './data-bracelets.mjs';
 
 /**
- * The published band for this department, in CAD.
+ * The band the operator set for this department, in CAD, before any adjustment.
  *
- * Wide on purpose: the operator asked for 150 to 1,500 so a bead bracelet can
- * sit at an accessible price without the top of the range being unreachable for
- * a carved strand in a scarce material.
+ * Wide on purpose: 150 to 1,500 so a bead bracelet can sit at an accessible
+ * price without the top of the range being unreachable for a carved strand in a
+ * scarce material.
  */
-const PRICE_FLOOR = 150;
-const PRICE_CEILING = 1500;
+const BASE_FLOOR = 150;
+const BASE_CEILING = 1500;
+
+/**
+ * Department-wide price adjustment.
+ *
+ * The operator asked for every bracelet to come down by thirty per cent. The
+ * factor is applied to the material bases **and** to the band together, rather
+ * than to each finished figure, for two reasons: it keeps the steps inside a
+ * size ladder intact, and it stops the cheapest strands all landing on the same
+ * number against a floor that no longer matches the prices they are scaled from.
+ *
+ * At 1 this is the band as published; at 0.7 it is thirty per cent off. Setting
+ * it back restores both at once, which is the point of naming it.
+ */
+const PRICE_ADJUSTMENT = 0.7;
+
+const PRICE_FLOOR = BASE_FLOOR * PRICE_ADJUSTMENT;
+const PRICE_CEILING = BASE_CEILING * PRICE_ADJUSTMENT;
 
 /** Round to a figure a shop would actually print. */
 function tidyPrice(dollars) {
@@ -104,7 +121,7 @@ export function buildBracelets(existing = []) {
       takenSkus.add(sku);
       n += 1;
 
-      const base = material.price * shape.work * style.work * jitter(slug);
+      const base = material.price * shape.work * style.work * jitter(slug) * PRICE_ADJUSTMENT;
       const prices = [
         clampPrice(base),
         clampPrice(base * 1.45),
