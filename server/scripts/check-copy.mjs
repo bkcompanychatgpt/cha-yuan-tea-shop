@@ -31,8 +31,8 @@
 const BASE = (process.env.BASE_URL || 'http://127.0.0.1:3080').replace(/\/+$/, '');
 
 const PAGES = [
-  '/', '/shop', '/shop?department=tea', '/shop?department=jade', '/shop?department=jewellery',
-  '/tea/lion-peak-longjing', '/tea/jade-carved-pendant-tiger', '/guides', '/guides/how-to-brew-gongfu',
+  '/', '/shop', '/shop?department=tea', '/shop?department=jewellery', '/shop?department=jewellery',
+  '/tea/lion-peak-longjing', '/tea/amethyst-coin-asymmetric-muse-bracelet', '/guides', '/guides/how-to-brew-gongfu',
   '/cart', '/checkout', '/about', '/shipping', '/refund', '/terms', '/privacy', '/contact', '/credits', '/order',
 ];
 

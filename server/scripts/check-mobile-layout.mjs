@@ -40,8 +40,8 @@ const MIN_TEXT = Number(flag('--min-text', 200));
 const MIN_TRACK = Number(flag('--min-track', 140));
 
 const PAGES = [
-  '/', '/shop', '/shop?department=tea', '/shop?department=jade', '/shop?department=jewellery',
-  '/tea/lion-peak-longjing', '/tea/jade-carved-pendant-tiger', '/guides', '/guides/how-to-brew-gongfu',
+  '/', '/shop', '/shop?department=tea', '/shop?department=jewellery', '/shop?department=jewellery',
+  '/tea/lion-peak-longjing', '/tea/amethyst-coin-asymmetric-muse-bracelet', '/guides', '/guides/how-to-brew-gongfu',
   '/cart', '/checkout', '/about', '/shipping', '/refund', '/terms', '/privacy', '/contact', '/credits', '/order',
 ];
 

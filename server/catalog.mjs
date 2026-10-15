@@ -213,19 +213,18 @@ export const DEPARTMENTS = [
     kinds: ['tea'],
     eyebrow: 'Leaf',
     // One line each, and deliberately about the same length. The homepage shows
-    // these three side by side, and a blurb wrapping to two lines next to two
-    // that wrap to one leaves a ragged row that reads as a mistake rather than
-    // as a design.
+    // these side by side, and a blurb wrapping to two lines next to one that
+    // wraps to one leaves a ragged row that reads as a mistake rather than as a
+    // design.
     blurb: 'Single-origin lots from Fujian, Yunnan and Anhui.',
     /*
      * The cover photograph, chosen rather than derived.
      *
      * The default is the hero image of the category with the most products in it,
      * which is a sensible rule and picked badly: the tea cover was a blurred
-     * close-up and the jewellery cover sliced its ornament in half. These three
-     * were picked by looking at every candidate cropped to the card's 4:5
-     * (sheet-covers.mjs). They are deliberately dark — the cards sit in a row and
-     * a bright studio shot among them glows like a hole.
+     * close-up. This one was picked by looking at every candidate cropped to the
+     * card's 4:5 (sheet-covers.mjs). It is deliberately dark — the cards sit in a
+     * row and a bright studio shot among them glows like a hole.
      *
      * Note that this is the one thing the generated product imagery will not
      * improve on its own; these are replaced by hand when better covers exist.
@@ -233,25 +232,23 @@ export const DEPARTMENTS = [
     cover: '/img/photos/story-harvest-hero.jpg',
   },
   {
-    slug: 'jade',
-    name: 'Jade & Stone',
-    kinds: ['jade'],
-    eyebrow: 'Stone',
-    blurb: 'Nephrite and jadeite, hand-carved and polished.',
-    cover: '/img/photos/imperial-green-jade-pendant-hero.jpg',
-  },
-  {
     slug: 'jewellery',
     name: 'Fine Jewellery',
     kinds: ['jewellery'],
-    eyebrow: 'Metal',
-    blurb: 'Gold, pearls and set stones, worked by hand.',
-    cover: '/img/photos/south-sea-pearl-pendant-hero.jpg',
+    eyebrow: 'Bead',
+    blurb: 'Beaded bracelets in stone, wood and metal, strung by hand.',
+    /*
+     * The cover has to be a piece the shop still sells. This one used to be a
+     * South Sea pearl pendant, from the rings-and-necklaces department that the
+     * bracelets replaced — the file survived the department being cleared out, so
+     * the chooser went on advertising a product that no longer existed. Nothing
+     * pointed at the mismatch; the retracted listings are simply gone from the
+     * data, and a cover is a bare path in this file rather than a reference to
+     * one.
+     */
+    cover: '/img/photos/amethyst-diamond-facet-asymmetric-muse-bracelet-hero.jpg',
   },
 ];
-
-/** Teaware and gift sets: real departments, but not among the three. */
-export const ALSO = { slug: 'also', name: 'Teaware & gifts', kinds: ['teaware', 'gift'] };
 
 /**
  * Department cards, ready to render.
@@ -286,15 +283,12 @@ export function departmentCards() {
       members,
     };
   };
-  return {
-    departments: DEPARTMENTS.map(toCard).filter(Boolean),
-    also: toCard(ALSO),
-  };
+  return { departments: DEPARTMENTS.map(toCard).filter(Boolean) };
 }
 
 export function getDepartment(slug) {
   const key = String(slug || '');
-  return DEPARTMENTS.find((d) => d.slug === key) || (key === ALSO.slug ? ALSO : null);
+  return DEPARTMENTS.find((d) => d.slug === key) || null;
 }
 
 /**
@@ -314,7 +308,6 @@ export function departmentCounts() {
   const sum = (kinds) => kinds.reduce((total, k) => total + (byKind[k] || 0), 0);
   return {
     ...Object.fromEntries(DEPARTMENTS.map((d) => [d.slug, sum(d.kinds)])),
-    [ALSO.slug]: sum(ALSO.kinds),
     all: rows.reduce((total, r) => total + r.n, 0),
   };
 }

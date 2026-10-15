@@ -70,15 +70,6 @@
         </div>
       <% }) %>
 
-      <%# Teaware and gift sets are not departments of their own, so they stay as
-          plain links rather than being promoted to the same weight as Tea,
-          Jade & Stone and Fine Jewellery. %>
-      <% otherCats.filter(c => c.kind === 'teaware' || c.kind === 'gift').forEach(c => { %>
-        <div class="nav-item">
-          <a class="nav-link" href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %></a>
-        </div>
-      <% }) %>
-
       <div class="nav-item">
         <a class="nav-link <%= page === 'guides' ? 'is-active' : '' %>" href="/guides">Guides</a>
         <div class="mega" style="min-width:400px">

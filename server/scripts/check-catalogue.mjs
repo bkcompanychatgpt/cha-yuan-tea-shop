@@ -1,8 +1,8 @@
 /**
  * Assert the catalogue promises the shop makes about itself.
  *
- * The targets here are the ones the owner set: a hundred teas, fifty jade
- * pieces, fifty jewellery pieces, every product with an image, and every product
+ * The targets here are the ones the owner set: a hundred teas and a hundred and
+ * eight bracelets, every product with an image, and every product
  * whose image is house artwork labelled as such. A shop that quietly stops
  * meeting them — a lot whose base tea was renamed, a piece added without a
  * silhouette — should fail here rather than on the storefront.
@@ -35,29 +35,34 @@ const products = db.prepare(
 ).all();
 
 const TEAS = products.filter((p) => p.kind === 'tea');
-const JADE = products.filter((p) => p.kind === 'jade');
 const JEWELLERY = products.filter((p) => p.kind === 'jewellery');
-const ALL_PIECES = [...JADE, ...JEWELLERY];
+const PIECES = [...TEAS, ...JEWELLERY];
 
 /**
- * What each department should hold.
+ * What each department should hold, and what must not be offered at all.
  *
- * Deliberately uneven. The owner asked for counts that do not look like a round
- * number picked in advance, and the totals are bounded by the photographs that
- * exist anyway: a tea with six usable photographs supports six products and no
- * more, so the real numbers were never going to be 100/50/50. These are the
- * measured results rather than targets, and they are asserted so a change to the
- * catalogue has to be a deliberate one.
+ * The counts are deliberately uneven — the owner asked for numbers that do not
+ * look like a round figure picked in advance — and they are the measured results
+ * rather than targets, so a change to the catalogue has to be a deliberate one.
+ *
+ * The withdrawn list matters as much as the counts. The shop used to carry jade,
+ * teaware and gift sets; all three were removed on request, and a stray product
+ * or category reappearing in one of them would otherwise be invisible.
  */
-const EXPECTED = { tea: 102, jade: 61, jewellery: 53 };
+const EXPECTED = { tea: 102, jewellery: 108 };
+const WITHDRAWN_KINDS = ['jade', 'teaware', 'gift'];
 
 console.log('\nCatalogue\n');
 check(`tea department holds ${EXPECTED.tea} products`, TEAS.length === EXPECTED.tea, `got ${TEAS.length}`);
-check(`jade department holds ${EXPECTED.jade} products`, JADE.length === EXPECTED.jade, `got ${JADE.length}`);
 check(`jewellery department holds ${EXPECTED.jewellery} products`, JEWELLERY.length === EXPECTED.jewellery, `got ${JEWELLERY.length}`);
 
+for (const kind of WITHDRAWN_KINDS) {
+  const n = products.filter((p) => p.kind === kind).length;
+  check(`no product is left in the withdrawn "${kind}" department`, n === 0, `got ${n}`);
+}
+
 // A round number in every department is the thing to avoid, so make it explicit.
-const round = [TEAS.length, JADE.length, JEWELLERY.length].filter((n) => n % 10 === 0);
+const round = [TEAS.length, JEWELLERY.length].filter((n) => n % 10 === 0);
 check('no department count is a round ten', round.length === 0, round.join(', '));
 
 /* ------------------------------------------------------------------ images */
@@ -150,14 +155,30 @@ check(
 
 /* ------------------------------------------------------------------ prices */
 console.log('\nPrices\n');
-for (const [name, list] of [['jade', JADE], ['jewellery', JEWELLERY]]) {
+/*
+ * The jewellery band is the one the operator set: CAD 150 to 1,500. A bead
+ * bracelet has no business at four figures, and a carved strand in a scarce
+ * material has no business below two, so the range is asserted rather than left
+ * to the price ladder.
+ *
+ * Tea is not banded by anyone — it is priced per tin, from a ten-dollar everyday
+ * green to a three-thousand-dollar aged cake — so its check is only that every
+ * price is positive and inside the range the catalogue actually produces. It is
+ * here so a decimal-point slip in the lot data is caught rather than published.
+ */
+const PRICE_BANDS = {
+  tea: { low: 1000, high: 400000, label: 'CAD 10–4,000' },
+  jewellery: { low: 15000, high: 150000, label: 'CAD 150–1,500' },
+};
+
+for (const [name, band] of Object.entries(PRICE_BANDS)) {
   const prices = db.prepare(
     `SELECT v.price_cents AS c FROM variants v JOIN products p ON p.id = v.product_id
       WHERE p.category_id IN (SELECT id FROM categories WHERE kind = ?)`,
   ).all(name).map((r) => r.c);
   const low = Math.min(...prices);
   const high = Math.max(...prices);
-  check(`${name} prices stay inside CAD 300–10,000`, low >= 30000 && high <= 1000000,
+  check(`${name} prices stay inside ${band.label}`, low >= band.low && high <= band.high,
     `range ${(low / 100).toFixed(2)} to ${(high / 100).toFixed(2)}`);
 }
 

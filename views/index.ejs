@@ -20,10 +20,7 @@
   // wants to choose a piece will go.
   const KIND_LABELS = {
     tea: { label: 'Tea', blurb: 'Single-origin lots from Fujian, Yunnan, Anhui and Guangdong' },
-    jade: { label: 'Jade & Stone', blurb: 'Nephrite and jadeite, hand-carved' },
-    jewellery: { label: 'Fine Jewellery', blurb: 'Gold, pearls, and jade set in gold' },
-    teaware: { label: 'Teaware', blurb: 'Gaiwan, clay pots and the vessels that brew it best' },
-    gift: { label: 'Gift Sets', blurb: 'Boxed flights, ready to give' },
+    jewellery: { label: 'Fine Jewellery', blurb: 'Beaded bracelets in stone, wood and metal' },
   };
 
   const buildDept = (kind) => {
@@ -33,10 +30,6 @@
     return {
       kind,
       label: KIND_LABELS[kind].label,
-      // Spread onto the same shape the department cards use, so the "Beyond the
-      // three" row and the departments row can be rendered by the same markup.
-      // Without this the teaware and gift cards rendered `<img src="">` — two
-      // broken images that the visual check caught and the eye would not.
       coverSrc: hero.hero_image,
       blurb: KIND_LABELS[kind].blurb,
       count: members.reduce((n, c) => n + c.product_count, 0),
@@ -45,8 +38,15 @@
     };
   };
 
-  const departments = ['tea', 'jade', 'jewellery'].map(buildDept).filter(Boolean);
-  const outros = ['teaware', 'gift'].map(buildDept).filter(Boolean);
+  /*
+   * Two departments, and both are rendered from the same card.
+   *
+   * There used to be a three-up departments row and a separate "Beyond the
+   * three" row under it for teaware and gift sets. Both are gone: jade, teaware
+   * and gift sets have been withdrawn, so the row that would have rendered them
+   * is now the whole catalogue.
+   */
+  const departments = ['tea', 'jewellery'].map(buildDept).filter(Boolean);
   const totalProducts = categories.reduce((n, c) => n + c.product_count, 0);
 %>
 
@@ -72,7 +72,7 @@
   <div class="wrap hero-inner">
     <div class="hero-copy">
       <span class="eyebrow">Single-origin &middot; small lots</span>
-      <h1>Chinese tea, jade and&nbsp;jewellery</h1>
+      <h1>Chinese tea and fine&nbsp;jewellery</h1>
       <p class="hero-sub">
         <%= totalProducts %> pieces across <%= categories.length %> collections, bought in small
         lots and tasted before they are listed. Free shipping over
@@ -129,49 +129,6 @@
     </div>
   </div>
 </section>
-
-<!-- ============================================ the rest of the catalogue -->
-<% if (outros.length) { %>
-  <section class="section-tight">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow">Also</span>
-          <h2>Beyond the three</h2>
-        </div>
-        <div class="section-head-rule"></div>
-      </div>
-
-      <div class="dept-grid dept-grid-outros">
-        <% outros.forEach((dept) => { %>
-          <a class="dept dept-small" href="/shop?category=<%= encodeURIComponent(dept.hero.slug) %>">
-            <div class="dept-media"><img src="<%= dept.coverSrc %>" alt="" loading="lazy" /></div>
-            <div class="dept-body">
-              <span class="eyebrow"><%= dept.count %> pieces</span>
-              <h3><%= dept.label %></h3>
-              <p><%= dept.blurb %></p>
-              <span class="dept-cta">Enter &rarr;</span>
-            </div>
-          </a>
-        <% }) %>
-      </div>
-
-      <%
-        /*
-         * The twelve-collection chip row used to sit here, and it was the single
-         * messiest thing on the page: a flat list of every category presented as
-         * though they were all peers, directly under the three departments that
-         * already organise them. The departments show their own collections, so
-         * this repeated every one of them a second time.
-         */
-      %>
-      <p class="dept-footer">
-        <span class="tiny faint" style="letter-spacing:0.16em;text-transform:uppercase">Twelve collections</span>
-        <a class="link-underline small" href="/shop">See the whole catalogue &rarr;</a>
-      </p>
-    </div>
-  </section>
-<% } %>
 
 <!-- ================================================================ brewing -->
 <% if (ed.brewing) { %>

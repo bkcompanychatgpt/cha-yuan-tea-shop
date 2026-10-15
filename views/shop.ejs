@@ -73,21 +73,11 @@
       <% }) %>
     </div>
 
-    <% if (cards.also) { %>
-      <div class="also-row">
-        <span class="tiny faint" style="letter-spacing:0.16em;text-transform:uppercase">Also in the shop</span>
-        <div class="chip-row" style="margin-top:12px">
-          <% cards.also.members.forEach(c => { %>
-            <a class="chip" href="/shop?category=<%= encodeURIComponent(c.slug) %>"><%= c.name %> <span class="chip-n"><%= c.product_count %></span></a>
-          <% }) %>
-          <a class="chip chip-quiet" href="<%= cards.also.href %>">All <%= cards.also.name.toLowerCase() %> <span class="chip-n"><%= cards.also.count %></span></a>
-        </div>
-        <p class="tiny faint" style="margin-top:16px">
-          Or <a class="link-underline" href="/shop?department=tea&amp;sort=name">start with the tea</a> —
-          <%= counts.tea %> lots, each dated by harvest.
-        </p>
-      </div>
-    <% } %>
+    <%# The "also in the shop" chip row is gone with teaware and gift sets. %>
+    <p class="tiny faint" style="margin-top:26px">
+      Or <a class="link-underline" href="/shop?department=tea&amp;sort=name">start with the tea</a> —
+      <%= counts.tea %> lots, each dated by harvest.
+    </p>
   </section>
 
 <% } else { %>

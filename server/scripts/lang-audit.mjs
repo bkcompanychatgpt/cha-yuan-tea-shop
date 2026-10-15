@@ -113,8 +113,8 @@ function scanFiles() {
 }
 
 const PAGES = [
-  '/', '/shop', '/shop?category=green-tea', '/shop?category=teaware', '/shop?q=oolong',
-  '/tea/lion-peak-longjing', '/tea/yixing-zisha-shi-piao-pot', '/tea/bamboo-tea-tray',
+  '/', '/shop', '/shop?category=green-tea', '/shop?category=green-tea', '/shop?q=oolong',
+  '/tea/lion-peak-longjing', '/tea/lion-peak-longjing', '/tea/da-hong-pao',
   '/cart', '/checkout', '/guides', '/guides/how-to-brew-gongfu', '/about', '/shipping',
   '/refund', '/terms', '/privacy', '/contact', '/credits', '/order', '/admin/login',
 ];

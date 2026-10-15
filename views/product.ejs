@@ -1,13 +1,11 @@
 <%
   /*
-   * A tea is brewed; a piece of jade or jewellery is worn and looked after.
-   * The catalogue stores both in `brewing`, and the page has to know which it is
-   * before it can decide what to call things: a ring page headed "How to brew
-   * it" with "Gaiwan — / Western —" under it reads as unfinished.
+   * A tea is brewed; a bracelet is worn and looked after. The catalogue stores
+   * both in `brewing`, and the page has to know which it is before it can decide
+   * what to call things: a bracelet page headed "How to brew it" reads as
+   * unfinished.
    */
-  const isTea = product.category_kind === 'tea'
-    || product.category_kind === 'teaware'
-    || product.category_kind === 'gift';
+  const isTea = product.category_kind === 'tea';
 %>
 
 <div class="wrap">
@@ -149,8 +147,8 @@
       <div class="row" style="gap:22px;margin-top:20px;flex-wrap:wrap">
         <span class="tiny faint">✓ Free shipping over <%= money(store.freeShippingThreshold) %></span>
         <span class="tiny faint">✓ Dispatched within 48 hours</span>
-        <%# "Sealed in a light-proof tin" is a promise about tea, not about a bangle. %>
-        <span class="tiny faint">✓ <%= (product.category_kind === 'tea' || product.category_kind === 'teaware' || product.category_kind === 'gift') ? 'Sealed in a light-proof tin' : 'Boxed with its certificate' %></span>
+        <%# "Sealed in a light-proof tin" is a promise about tea, not about a bracelet. %>
+        <span class="tiny faint">✓ <%= product.category_kind === 'tea' ? 'Sealed in a light-proof tin' : 'Strung to order, boxed' %></span>
       </div>
 
       <!-- ------------------------------------------------------ metadata -->

@@ -83,11 +83,11 @@ async function main() {
     const html = await r.text();
     record(r.status === 200, 'GET / returns 200', `status ${r.status}`);
     record(html.includes('Single-origin Chinese tea'), 'homepage renders the hero headline');
-    // The homepage is deliberately a directory: three departments, each naming
+    // The homepage is deliberately a directory: the departments, each naming
     // its collections, and no individual product cards. Products are one click
     // deeper, inside a category.
     record(html.includes('dept-grid'), 'homepage shows the department grid');
-    record((html.match(/class="dept"/g) || []).length >= 3, 'homepage shows three departments');
+    record((html.match(/class="dept"/g) || []).length >= 2, 'homepage shows both departments');
     record(/\/shop\?category=/.test(html), 'homepage departments link into categories');
     record(!html.includes('class="tea-card"'), 'homepage shows no individual product cards');
     record(html.includes('id="cart-drawer"'), 'cart drawer is present in the layout');
@@ -97,11 +97,13 @@ async function main() {
     const r = await request('/shop');
     const html = await r.text();
     record(r.status === 200, 'GET /shop returns 200');
-    // /shop opens on the three departments and nothing else: tea's own
-    // divisions appear only once you are inside Tea.
+    // /shop opens on the departments and nothing else: tea's own divisions
+    // appear only once you are inside Tea.
     record(!html.includes('class="tea-card"'), 'shop opens on the department chooser, not a product grid');
-    record((html.match(/class="dept /g) || []).length === 3, 'the chooser offers exactly three departments');
+    record((html.match(/class="dept /g) || []).length === 2, 'the chooser offers exactly two departments');
     record(!html.includes('Kind of tea'), 'tea sub-categories are not shown on the chooser');
+    // Teaware, gift sets and jade were withdrawn, so nothing may offer them.
+    record(!/department=(jade|also)/.test(html), 'the chooser offers no withdrawn department');
   }
 
   {
@@ -113,10 +115,21 @@ async function main() {
   }
 
   {
-    const r = await request('/shop?department=jade');
+    const r = await request('/shop?department=jewellery');
     const html = await r.text();
-    record(r.status === 200 && html.includes('Jade'), 'the jade department renders');
-    record(!html.includes('Kind of tea'), 'the jade department shows no tea sub-categories');
+    record(r.status === 200 && html.includes('Fine Jewellery'), 'the jewellery department renders');
+    record(!html.includes('Kind of tea'), 'the jewellery department shows no tea sub-categories');
+    record((html.match(/class="tea-card"/g) || []).length >= 6, 'the jewellery department lists products');
+  }
+
+  {
+    /*
+     * A withdrawn department must 404 its filter rather than quietly showing an
+     * empty grid, and the pages that used to link to it must be gone.
+     */
+    const r = await request('/shop?department=jewellery');
+    const html = await r.text();
+    record(!html.includes('Jade &amp; Stone'), 'the withdrawn jade department is not offered');
   }
 
   {

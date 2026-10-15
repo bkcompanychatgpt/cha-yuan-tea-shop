@@ -570,7 +570,7 @@ app.get('/shop', (req, res) => {
     return renderPage(res, 'shop', {
       page: 'shop',
       title: `Shop — ${config.store.name}`,
-      description: 'Three departments: single-origin Chinese tea, jade and stone, and fine jewellery.',
+      description: 'Two departments: single-origin Chinese tea, and beaded bracelets in stone, wood and metal.',
       chooser: true,
       cards: catalog.departmentCards(),
       counts: catalog.departmentCounts(),
