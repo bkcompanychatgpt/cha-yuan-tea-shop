@@ -1,14 +1,23 @@
 /**
- * Deterministic checks on the fulfilment date arithmetic.
+ * Deterministic checks on the fulfilment promises.
  *
- * The order-confirmation promises are the only place the shop commits to a date
- * the customer will hold it to, so they are pinned to fixtures rather than to
- * whatever the clock happens to say. Each case fixes `now` and the order's
- * timestamps and asserts the resulting stage states and deadlines.
+ * The order-confirmation promises are the only place the shop commits to
+ * something the customer will hold it to, so they are pinned to fixtures rather
+ * than to whatever the clock happens to say.
+ *
+ * Two rules are tested here, and the second one matters as much as the first:
+ *
+ *   1. Every promise is "within 48 hours of your order", computed from the order
+ *      timestamp and nothing else — not from a cut-off, not from business days,
+ *      not from the timezone the page happens to be read in.
+ *   2. **No arrival date is ever produced.** The shop ships from China, so
+ *      transit and customs are not ours to forecast, and an estimate that
+ *      appears anywhere is a regression. Several of these checks exist purely to
+ *      fail if one comes back.
  *
  *   node server/scripts/check-fulfilment.mjs
  */
-import { fulfilment, shortDate } from '../fulfilment.mjs';
+import { fulfilment, shortDate, DISPATCH_HOURS } from '../fulfilment.mjs';
 
 let pass = 0;
 const failures = [];
@@ -31,7 +40,7 @@ function order(overrides = {}) {
   return {
     status: 'paid',
     shipping_method: 'standard',
-    shipping_country: 'CA',
+    shipping_country: 'US',
     created_at: '2026-10-12 09:00:00',   // Monday
     paid_at: '2026-10-12 09:00:30',
     ...overrides,
@@ -40,84 +49,86 @@ function order(overrides = {}) {
 
 const noonMonday = new Date(Date.UTC(2026, 9, 12, 12, 0, 0));
 
-console.log('\nFulfilment deadlines\n');
+/** Any promise that names a weekday is a date, and a date is a delivery promise. */
+const DAY_WORDS = /\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\b/;
 
-/* ------------------------------------------------------- the 2pm cut-off */
+console.log('\nFulfilment promises\n');
+
+/* ------------------------------------------------- the 48-hour promise */
 {
-  // 09:00 UTC on a Monday is comfortably before the cut-off.
   const f = fulfilment(order(), { now: noonMonday });
-  check('a Monday morning order packs the same day', f.packSameDay);
-  eq('same-day packing is stated to the customer', f.stages[2].promise.startsWith('Same business day'), true);
-  // pack Monday, dispatch within two business days -> Tuesday 13th.
-  eq('dispatch deadline is the next business day', shortDate(f.dispatchBy), 'Tue 13 Oct');
-  // Canada standard is 2-5 business days in transit from dispatch.
-  eq('arrival window opens two business days after dispatch', shortDate(f.etaFrom), 'Thu 15 Oct');
-  eq('arrival window closes five business days after dispatch', shortDate(f.etaTo), 'Tue 20 Oct');
+  eq('dispatch is 48 hours after the order', shortDate(f.dispatchBy), 'Wed 14 Oct');
+  eq('the packing stage quotes the promise', f.stages[2].promise, 'Within 48 hours of your order');
+  eq('the dispatch stage quotes the same promise', f.stages[3].promise, 'Within 48 hours of your order');
+  eq('the promise is exported for reuse', f.dispatchPromise, 'Within 48 hours of your order');
+  eq('the constant matches the wording', DISPATCH_HOURS, 48);
 }
 
 {
-  // 21:00 UTC is past the 2pm Eastern cut-off in either offset.
-  const late = order({ created_at: '2026-10-12 21:00:00' });
-  const f = fulfilment(late, { now: noonMonday });
-  check('an order past the cut-off does not pack the same day', !f.packSameDay);
-  check('it is promised the next business day instead', f.stages[2].promise.includes('next business day'));
+  /*
+   * The whole point of dropping the cut-off is that the answer no longer
+   * depends on the hour of day the order landed. 23:59 and 00:01 are two
+   * minutes apart and must produce promises two minutes apart, not a day.
+   */
+  const late = fulfilment(order({ created_at: '2026-10-12 23:59:00' }), { now: noonMonday });
+  const early = fulfilment(order({ created_at: '2026-10-13 00:01:00' }), { now: noonMonday });
+  const gapHours = (late.dispatchBy - early.dispatchBy) / 3600000;
+  check('two minutes apart in the day are not a day apart in the promise', Math.abs(gapHours) < 0.1, `${gapHours}h`);
+  eq('a late-evening order is still promised 48 hours', late.stages[3].promise, 'Within 48 hours of your order');
 }
 
 {
-  // 18:30 UTC is 14:30 EDT — past the cut-off in summer. The shop uses the
-  // summer offset all year, so this must be held back rather than promised
-  // same-day packing.
-  const boundary = order({ created_at: '2026-10-12 18:30:00' });
-  const f = fulfilment(boundary, { now: noonMonday });
-  check('the cut-off is read conservatively across DST', !f.packSameDay);
-}
-
-{
-  const boundary = order({ created_at: '2026-10-12 17:59:00' });
-  const f = fulfilment(boundary, { now: noonMonday });
-  check('an order just before the cut-off still packs the same day', f.packSameDay);
-}
-
-/* -------------------------------------------------------------- weekends */
-{
-  // Saturday 10 October 2026.
+  // A weekend order gets the same promise as a weekday one: 48 hours is 48
+  // hours, and the shop is not making a claim about which staff are in on
+  // Saturday. Saturday 14:54 plus 48 hours is Monday 14:54.
   const saturday = order({ created_at: '2026-10-10 14:54:58', paid_at: '2026-10-10 14:54:58' });
   const f = fulfilment(saturday, { now: noonMonday });
-  check('a Saturday order never packs the same day', !f.packSameDay);
-  eq('it packs on the Monday', f.packDayLabel, 'Mon 12 Oct');
-  eq('dispatch is pushed to the Tuesday', shortDate(f.dispatchBy), 'Tue 13 Oct');
-  eq('the order weekend is reported as Saturday', shortDate(new Date(Date.UTC(2026, 9, 10))), 'Sat 10 Oct');
+  eq('a Saturday order is promised the same 48 hours', f.stages[3].promise, 'Within 48 hours of your order');
+  eq('and its deadline is the Monday', shortDate(f.dispatchBy), 'Mon 12 Oct');
 }
 
+/* ------------------------------------------------- no arrival estimate */
 {
-  // Sunday 11 October 2026, and the arrival window must skip the next weekend.
-  const sunday = order({ created_at: '2026-10-11 12:00:00', paid_at: '2026-10-11 12:00:00' });
-  const f = fulfilment(sunday, { now: noonMonday });
-  eq('a Sunday order packs on the Monday', f.packDayLabel, 'Mon 12 Oct');
-  // Monday 12 dispatch-eligible, dispatch by Tuesday 13, +5 business days
-  // crosses the 17-18 Oct weekend, so arrival closes on Tuesday 20 Oct.
-  eq('the arrival window skips the intervening weekend', shortDate(f.etaTo), 'Tue 20 Oct');
+  const f = fulfilment(order(), { now: noonMonday });
+  eq('no arrival window is exposed', f.etaFrom, undefined);
+  eq('no arrival window is exposed (end)', f.etaTo, undefined);
+  eq('no arrival label is exposed', f.etaLabel, undefined);
+  eq('no cut-off label is exposed', f.cutoffLabel, undefined);
+  eq('no same-day flag is exposed', f.packSameDay, undefined);
+
+  const dated = f.stages.filter((s) => s.key !== 'received' && s.key !== 'confirmed' && DAY_WORDS.test(s.promise));
+  eq('no stage after payment names a weekday', dated.map((s) => `${s.key}: ${s.promise}`).join(' | '), '');
+  check('the transit stage promises tracking rather than a date',
+    !DAY_WORDS.test(f.stages[4].promise), f.stages[4].promise);
 }
 
-/* --------------------------------------------------------------- express */
+/* ----------------------------------------------------- overseas copy */
 {
+  const overseas = fulfilment(order({ shipping_country: 'US' }), { now: noonMonday });
+  check('a non-Chinese address is treated as overseas', overseas.overseas);
+  check('the transit copy warns about customs',
+    /customs/i.test(overseas.stages[4].body), overseas.stages[4].body);
+  check('the transit copy names duty as the recipient\'s',
+    /recipient/i.test(overseas.stages[4].body), overseas.stages[4].body);
+
+  const domestic = fulfilment(order({ shipping_country: 'CN' }), { now: noonMonday });
+  check('a Chinese address is not overseas', !domestic.overseas);
+  check('domestic transit copy does not mention customs',
+    !/customs/i.test(domestic.stages[4].body), domestic.stages[4].body);
+
+  // An order with no country recorded is treated as overseas: that is the
+  // common case here and the one that warns the customer about duty.
+  check('an unknown country is treated as overseas', fulfilment(order({ shipping_country: '' }), { now: noonMonday }).overseas);
+}
+
+/* --------------------------------------------------------- service line */
+{
+  eq('standard is named', fulfilment(order(), { now: noonMonday }).methodLabel, 'Standard');
+  eq('express is named', fulfilment(order({ shipping_method: 'express' }), { now: noonMonday }).methodLabel, 'Express');
   const f = fulfilment(order({ shipping_method: 'express' }), { now: noonMonday });
-  check('express is labelled as express', f.express);
-  eq('express is named in the service line', f.methodLabel, 'Express');
-  eq('express arrives one business day after dispatch', shortDate(f.etaFrom), 'Wed 14 Oct');
-  eq('express arrives two business days after dispatch', shortDate(f.etaTo), 'Thu 15 Oct');
-}
-
-/* -------------------------------------------------------- international */
-{
-  const f = fulfilment(order({ shipping_country: 'US' }), { now: noonMonday });
-  check('a non-Canadian address is treated as international', f.international);
-  eq('international standard is named in the service line', f.methodLabel, 'International standard');
-  eq('international transit opens after seven business days', shortDate(f.etaFrom), 'Thu 22 Oct');
-  // Fourteen business days from Tue 13 Oct: 14-16 Oct (3), 19-23 Oct (8),
-  // 26-30 Oct (13), then Mon 2 Nov is the fourteenth — the weekend intervenes.
-  eq('international transit closes after fourteen business days', shortDate(f.etaTo), 'Mon 2 Nov');
-  check('the stage copy warns about customs', f.stages[4].body.includes('customs'));
+  check('express is flagged', f.express);
+  eq('express gets the same 48-hour promise', f.stages[3].promise, 'Within 48 hours of your order');
+  eq('express gets the same deadline', shortDate(f.dispatchBy), 'Wed 14 Oct');
 }
 
 /* ------------------------------------------------------- stage progress */
@@ -218,21 +229,52 @@ console.log('\nFulfilment deadlines\n');
 {
   // Non-ISO input must not silently produce Invalid Date output.
   const f = fulfilment(order({ created_at: 'not a date' }), { now: noonMonday });
-  check('unparseable input falls back rather than printing NaN', !f.etaLabel.includes('NaN'));
+  check('unparseable input falls back rather than printing NaN', !f.dispatchByLabel.includes('NaN'));
+  check('and still promises 48 hours', f.stages[3].promise === 'Within 48 hours of your order');
 }
 
-/* -------------------------------------------------- business-day safety */
+/* ------------------------------------------------ clock independence */
 {
-  // Ten consecutive dispatch deadlines must never land on a weekend.
-  let weekendHit = null;
+  /*
+   * The promise is a property of the order, not of when the page is read. Read
+   * the same order a week later and every word must be identical — otherwise a
+   * customer who reloads their confirmation sees a different promise.
+   */
+  const o = order();
+  const first = fulfilment(o, { now: new Date(Date.UTC(2026, 9, 12, 12)) });
+  const later = fulfilment(o, { now: new Date(Date.UTC(2026, 9, 19, 3)) });
+  eq('the dispatch deadline does not move', shortDate(later.dispatchBy), shortDate(first.dispatchBy));
+  eq('the promise text does not change',
+    later.stages.map((s) => s.promise).join('|'),
+    first.stages.map((s) => s.promise).join('|'));
+}
+
+/* -------------------------------------------------- wording safety net */
+{
+  /*
+   * A blunt guard on the exact strings this shop must never publish again. If
+   * someone reintroduces a transit estimate, one of these fails.
+   */
+  const banned = /\b(delivery takes|arrives in|in transit for|business days? (?:in transit|domestically)|Expected \w{3} \d)/i;
+  const offenders = [];
   for (let day = 1; day <= 28; day += 1) {
-    const created = `2026-10-${String(day).padStart(2, '0')} 09:00:00`;
-    const f = fulfilment(order({ created_at: created, paid_at: created }), { now: noonMonday });
-    if ([0, 6].includes(f.dispatchBy.getUTCDay())) weekendHit = shortDate(f.dispatchBy);
-    if ([0, 6].includes(f.etaFrom.getUTCDay())) weekendHit = `etaFrom ${shortDate(f.etaFrom)}`;
-    if ([0, 6].includes(f.etaTo.getUTCDay())) weekendHit = `etaTo ${shortDate(f.etaTo)}`;
+    for (const country of ['US', 'CN', 'GB']) {
+      for (const method of ['standard', 'express']) {
+        const created = `2026-10-${String(day).padStart(2, '0')} 09:00:00`;
+        const f = fulfilment(
+          order({ created_at: created, paid_at: created, shipping_country: country, shipping_method: method }),
+          { now: noonMonday },
+        );
+        for (const stage of f.stages) {
+          if (banned.test(stage.promise) || banned.test(stage.body)) {
+            offenders.push(`${created} ${country} ${method} ${stage.key}: ${stage.promise}`);
+          }
+        }
+      }
+    }
   }
-  check('no promised date ever falls on a weekend', weekendHit === null, String(weekendHit));
+  check('no combination of date, country and service produces a delivery estimate',
+    offenders.length === 0, offenders.slice(0, 3).join(' | '));
 }
 
 console.log(`\n  ${pass} passed, ${failures.length} failed\n`);

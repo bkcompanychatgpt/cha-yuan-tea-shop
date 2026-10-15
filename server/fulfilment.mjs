@@ -1,30 +1,29 @@
 /**
  * Fulfilment promises, in one place.
  *
- * Every date or deadline the shop shows a customer about their own order is
- * computed here, so the confirmation page, the order record and the shipping
- * policy cannot drift apart. The numbers deliberately match views/shipping.ejs:
- * packing before 2:00pm Eastern on a business day, dispatch within two business
- * days, then 2-5 business days domestic standard, 1-2 express, 7-14
- * international. If a promise changes, change it here.
+ * Every deadline the shop shows a customer about their own order is computed
+ * here, so the confirmation page, the order record, the checkout and the
+ * shipping policy cannot drift apart. Two rules govern all of it:
  *
- * Business days exclude Saturdays and Sundays. Statutory holidays are not
- * modelled, so every date is presented as a target rather than a guarantee.
+ *   1. **Dispatch within 48 hours.** Not a cut-off time, not a business-day
+ *      calculation, not a same-day promise that depends on which timezone the
+ *      customer is reading it in. Forty-eight hours, stated once, true of every
+ *      order. A promise that simple cannot be misread and cannot be missed by
+ *      accident.
+ *
+ *   2. **No arrival estimates.** The shop ships from China, and how long a
+ *      parcel then takes is the carrier's business and the customs officer's
+ *      business, not ours. Transit time is not something we control or can
+ *      forecast honestly, and an estimate we cannot keep is worse than no
+ *      estimate at all — it is the single most common reason a customer feels
+ *      misled. So the timeline stops at "dispatched with tracking" and the
+ *      tracking number carries the rest.
+ *
+ * Both rules are deliberately conservative. The shop would rather a customer be
+ * pleasantly surprised than be owed an apology.
  */
 
-const MS_PER_DAY = 86400000;
-
-/**
- * 2:00pm Eastern expressed in UTC.
- *
- * Eastern is UTC-5 in winter and UTC-4 in summer, so the cut-off lands at 19:00
- * UTC in winter and 18:00 UTC in summer. This uses 18:00, the summer value,
- * because it is the conservative one: an order that beat 14:00 EDT but not
- * 14:00 EST is told it goes out the next business day rather than being promised
- * same-day packing it may not get. DST is deliberately not tracked — the shop
- * under-promises for part of the year instead of ever over-promising.
- */
-const CUTOFF_UTC_HOUR = 18;
+const MS_PER_HOUR = 3600000;
 
 /** SQLite stores `datetime('now')` as `YYYY-MM-DD HH:MM:SS` in UTC. */
 function parseUtc(value) {
@@ -42,29 +41,8 @@ function parseUtc(value) {
   ));
 }
 
-function isWeekend(date) {
-  const day = date.getUTCDay();
-  return day === 0 || day === 6;
-}
-
-/** Add whole calendar days, then step forward to the next weekday. */
-function addBusinessDays(date, days) {
-  const out = new Date(date.getTime());
-  let remaining = Math.max(0, Math.round(days));
-  while (remaining > 0) {
-    out.setUTCDate(out.getUTCDate() + 1);
-    if (!isWeekend(out)) remaining -= 1;
-  }
-  while (isWeekend(out)) out.setUTCDate(out.getUTCDate() + 1);
-  return out;
-}
-
-/** The next weekday on or after `date`. */
-function toBusinessDay(date) {
-  const out = new Date(date.getTime());
-  while (isWeekend(out)) out.setUTCDate(out.getUTCDate() + 1);
-  return out;
-}
+/** The dispatch deadline: 48 hours from the moment the order was placed. */
+export const DISPATCH_HOURS = 48;
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -89,6 +67,9 @@ export function longDate(date) {
 /**
  * Order of the stages a paid order moves through. `cancelled` and `refunded`
  * orders do not follow it and get told so instead.
+ *
+ * `delivered` stays even though we promise no date for it: the status exists,
+ * and a customer who has had a parcel needs to see the order finish.
  */
 export const STAGE_KEYS = ['received', 'confirmed', 'packed', 'dispatched', 'transit', 'delivered'];
 
@@ -162,19 +143,28 @@ function copyFor(table, dept) {
   return table.tea;
 }
 
+/** The one promise, written once so no surface can reword it. */
+export const DISPATCH_PROMISE = 'Within 48 hours of your order';
+
 /**
  * Build the customer-facing fulfilment picture for one order.
  *
- * Returns `{ isBad, isComplete, stages, dispatchBy, etaFrom, etaTo, etaLabel,
- * express, international, packSameDay, cutoffLabel, departments }`. `stages` is
- * an ordered array of `{ key, title, body, promise, state }` where state is one
- * of `done`, `current`, `pending`, `void`.
+ * Returns `{ isBad, isComplete, stages, dispatchBy, dispatchByLabel,
+ * dispatchPromise, methodLabel, overseas, departments }`. `stages` is an ordered
+ * array of `{ key, title, body, promise, state }` where state is one of `done`,
+ * `current`, `pending`, `void`.
  */
 export function fulfilment(order, { now = new Date() } = {}) {
   const method = String(order?.shipping_method || 'standard').toLowerCase();
   const express = method === 'express';
-  const country = String(order?.shipping_country || 'CA').toUpperCase();
-  const international = country !== 'CA';
+  const country = String(order?.shipping_country || '').toUpperCase();
+  /*
+   * The shop ships from China, so anything leaving the country is an overseas
+   * order and carries customs. An empty country is treated as overseas: it is
+   * the common case here, and it is the one that warns the customer about duty
+   * rather than the one that hides it.
+   */
+  const overseas = country !== 'CN';
 
   const dept = departments(order);
   const packCopy = copyFor(PACK_COPY, dept);
@@ -183,19 +173,7 @@ export function fulfilment(order, { now = new Date() } = {}) {
   const received = parseUtc(order?.created_at) || now;
   const paid = parseUtc(order?.paid_at);
 
-  const packSameDay = !isWeekend(received) && received.getUTCHours() < CUTOFF_UTC_HOUR;
-  const packDay = packSameDay ? received : addBusinessDays(received, 1);
-  // "Dispatched within two business days" is the outer bound we publish.
-  const dispatchBy = addBusinessDays(packDay, 1);
-
-  const transitFrom = addBusinessDays(dispatchBy, express ? 1 : international ? 7 : 2);
-  const transitTo = addBusinessDays(dispatchBy, express ? 2 : international ? 14 : 5);
-
-  const transitBody = express
-    ? 'Express is 1 to 2 business days once the parcel is with the carrier.'
-    : international
-      ? 'International standard is 7 to 14 business days in transit, and customs can hold a parcel beyond that.'
-      : 'Standard delivery in Canada is 2 to 5 business days in transit.';
+  const dispatchBy = new Date(received.getTime() + DISPATCH_HOURS * MS_PER_HOUR);
 
   const stages = [
     {
@@ -207,28 +185,29 @@ export function fulfilment(order, { now = new Date() } = {}) {
     {
       key: 'confirmed',
       title: 'Payment confirmed',
-      body: 'Your bank authorised the card through 3-D Secure 2 and OTT Pay captured the payment. A receipt is on its way to your email.',
+      body: 'Your bank authorised the card through 3-D Secure 2 and the payment was captured. A receipt is on its way to your email.',
       promise: paid ? `Paid ${shortDate(paid)}` : 'Usually within a minute of ordering',
     },
     {
       key: 'packed',
       title: copyFor(PACK_TITLE, dept),
       body: packCopy,
-      promise: packSameDay
-        ? 'Same business day — you ordered before the 2:00pm Eastern cut-off'
-        : `By ${shortDate(packDay)} — the next business day`,
+      promise: DISPATCH_PROMISE,
     },
     {
       key: 'dispatched',
       title: 'Dispatched with tracking',
-      body: 'The parcel is scanned by the carrier and a tracking number is emailed to you the moment it leaves us.',
-      promise: `Within 2 business days, by ${shortDate(dispatchBy)}`,
+      body: 'The parcel is scanned by the carrier and a tracking number is emailed to you the moment it leaves our warehouse in China.',
+      promise: DISPATCH_PROMISE,
     },
     {
       key: 'transit',
-      title: 'In transit',
-      body: transitBody,
-      promise: `Expected ${shortDate(transitFrom)} to ${shortDate(transitTo)}`,
+      title: 'On its way to you',
+      body: overseas
+        ? 'The tracking number shows every scan. Customs clearance is outside our control and is the one part of the journey that can add time without warning; duties and import taxes are payable by the recipient.'
+        : 'The tracking number shows every scan, from our warehouse to the delivery address.',
+      // Deliberately not a date. See the note at the top of this file.
+      promise: 'Tracked door to door',
     },
     {
       key: 'delivered',
@@ -264,27 +243,26 @@ export function fulfilment(order, { now = new Date() } = {}) {
     isBad,
     isComplete,
     express,
-    international,
-    packSameDay,
+    overseas,
     departments: dept,
     dispatchBy,
     // Preformatted so a template never has to reach for a module property:
     // app.locals.fulfilment is the bare function, not the namespace.
     dispatchByLabel: shortDate(dispatchBy),
-    packDayLabel: shortDate(packDay),
-    etaFrom: transitFrom,
-    etaTo: transitTo,
-    etaLabel: `${shortDate(transitFrom)} to ${shortDate(transitTo)}`,
-    cutoffLabel: '2:00pm Eastern on a business day',
-    methodLabel: express ? 'Express' : international ? 'International standard' : 'Standard',
+    dispatchPromise: DISPATCH_PROMISE,
+    methodLabel: express ? 'Express' : 'Standard',
   };
 }
 
-/** A one-line promise for the top of a confirmation page. */
+/**
+ * A one-line promise for the top of a confirmation page.
+ *
+ * It says when the parcel leaves us and stops there. No arrival date is offered,
+ * because the shop cannot keep one.
+ */
 export function etaSentence(order, opts) {
   const f = fulfilment(order, opts);
   if (f.isBad) return 'This order was not completed, so nothing will be shipped.';
   if (f.isComplete) return 'Delivered. We would love to know how the tea tasted.';
-  if (f.express) return `Expected ${f.etaLabel} with Express delivery.`;
-  return `Expected ${f.etaLabel}${f.international ? ', customs permitting' : ''}.`;
+  return 'We dispatch within 48 hours and email you the tracking number the moment it leaves us.';
 }

@@ -379,8 +379,11 @@ async function main() {
     record((html.match(/class="fulfil-step /g) || []).length === 6, 'the confirmation shows all six fulfilment stages');
     record(html.includes('Weighed and packed') && html.includes('Dispatched with tracking'), 'the stages name handling and dispatch');
     record(/Dispatch by|Not shipping/.test(html), 'the confirmation states a dispatch deadline');
-    record(/Arrives|Not shipping/.test(html), 'the confirmation states an arrival window');
-    record(html.includes('business day'), 'the confirmation promises business-day handling');
+    record(html.includes('Within 48 hours of your order'), 'the confirmation promises dispatch within 48 hours');
+    // The shop ships from China and does not forecast transit, so an arrival
+    // window on the confirmation would be a promise it cannot keep.
+    record(!/class="fulfil-meta-row"><span>Arrives/.test(html), 'the confirmation promises no arrival window');
+    record(!/OTT Pay/.test(html), 'the confirmation does not name the payment processor');
     record(html.includes('returns') || html.includes('refund'), 'the confirmation states the returns position');
     // A stage marker must never be emitted with an unknown state, which would
     // silently render an unstyled dot.

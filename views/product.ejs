@@ -62,7 +62,7 @@
 
       <div class="secure-note" style="margin-top:6px">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-        <span>Card payments are handled by OTT Pay with 3-D Secure 2. We never see or store your card number.</span>
+        <span>Card payments are handled by our payment provider with 3-D Secure 2. We never see or store your card number.</span>
       </div>
     </div>
 
@@ -148,7 +148,7 @@
 
       <div class="row" style="gap:22px;margin-top:20px;flex-wrap:wrap">
         <span class="tiny faint">✓ Free shipping over <%= money(store.freeShippingThreshold) %></span>
-        <span class="tiny faint">✓ Shipped within 1 business day</span>
+        <span class="tiny faint">✓ Dispatched within 48 hours</span>
         <%# "Sealed in a light-proof tin" is a promise about tea, not about a bangle. %>
         <span class="tiny faint">✓ <%= (product.category_kind === 'tea' || product.category_kind === 'teaware' || product.category_kind === 'gift') ? 'Sealed in a light-proof tin' : 'Boxed with its certificate' %></span>
       </div>
@@ -211,10 +211,14 @@
           <button class="acc-head" type="button" aria-expanded="false">Shipping &amp; returns <span class="plus">+</span></button>
           <div class="acc-body">
             <div class="acc-inner">
-              <p>Orders placed before 2pm are packed the same business day and shipped from Canada within one business day.
-                Standard delivery is 2–5 business days domestically and 7–14 business days internationally.</p>
+              <p>We dispatch within <strong class="gold">48 hours</strong> of your order, from our warehouse in
+                China, with tracking on every parcel.</p>
+              <p>We do not quote a delivery date. Once a parcel leaves us it is carried by an international courier
+                and cleared by customs in your country, and a date we cannot control is a date we will not promise.
+                The tracking number, which you get when the label is created, shows every scan to your door.</p>
               <p>Shipping is complimentary on orders over <%= money(store.freeShippingThreshold) %>; below that a flat
-                <%= money(store.flatShippingFee) %> applies. <%= store.taxLabel %> is calculated at checkout.</p>
+                <%= money(store.flatShippingFee) %> applies. <%= store.taxLabel %> is calculated at checkout.
+                Duties and import taxes are the recipient's responsibility.</p>
               <p>Unopened tins can be returned within 30 days for a full refund. If a tea is not to your taste, tell us —
                 we would rather send you something you like than keep the money.</p>
             </div>
@@ -226,11 +230,11 @@
           <div class="acc-body">
             <div class="acc-inner">
               <p>We accept Visa, Mastercard, American Express, Discover, JCB, Diners Club and China UnionPay through
-                OTT Pay's local card gateway, protected by 3-D Secure 2 authentication. Your bank may ask you to confirm
-                the payment in your banking app or with a one-time code.</p>
-              <p>Card details are entered on our checkout and transmitted directly to OTT Pay over TLS. They are never
-                written to our database — we only keep the card brand and the last four digits so you can recognise the
-                charge on your statement. All prices are in <%= store.currency %>.</p>
+                our payment provider's local card gateway, protected by 3-D Secure 2 authentication. Your bank may ask
+                you to confirm the payment in your banking app or with a one-time code.</p>
+              <p>Card details are entered on our checkout and transmitted directly to the payment provider over TLS.
+                They are never written to our database — we only keep the card brand and the last four digits so you
+                can recognise the charge on your statement. All prices are in <%= store.currency %>.</p>
             </div>
           </div>
         </div>

@@ -25,7 +25,7 @@
       <span class="mono">5454 5454 5454 5454</span>, any future expiry, CVC <span class="mono">737</span>, and the 3-D Secure
       password <span class="mono">password</span>. Add your <span class="mono">OTT_APP_ID</span> /
       <span class="mono">OTT_APP_KEY</span> / <span class="mono">OTT_SIGN_KEY</span> to <span class="mono">.env</span> and set
-      <span class="mono">PAYMENT_MODE=sandbox</span> to hit the real OTT Pay sandbox.
+      <span class="mono">PAYMENT_MODE=sandbox</span> to hit the real gateway sandbox.
     </div>
   <% } %>
 
@@ -141,15 +141,15 @@
               <label class="pay-option" style="cursor:pointer">
                 <input type="radio" name="shippingMethod" value="standard" checked style="width:17px;height:17px;accent-color:var(--gold-300);margin-top:3px" />
                 <span class="grow">
-                  <strong>Standard — 2 to 5 business days</strong>
-                  <span>Tracked parcel. Complimentary on orders over <%= money(store.freeShippingThreshold) %>, otherwise <%= money(store.flatShippingFee) %>.</span>
+                  <strong>Standard</strong>
+                  <span>Tracked parcel, dispatched within 48 hours. Complimentary on orders over <%= money(store.freeShippingThreshold) %>, otherwise <%= money(store.flatShippingFee) %>.</span>
                 </span>
               </label>
               <label class="pay-option" style="cursor:pointer;border-color:var(--line);background:transparent">
                 <input type="radio" name="shippingMethod" value="express" style="width:17px;height:17px;accent-color:var(--gold-300);margin-top:3px" />
                 <span class="grow">
-                  <strong>Express — 1 to 2 business days</strong>
-                  <span>Priority handling and courier delivery. <%= money(store.flatShippingFee * 2) %>.</span>
+                  <strong>Express</strong>
+                  <span>Priority carrier service, likewise dispatched within 48 hours. <%= money(store.flatShippingFee * 2) %>.</span>
                 </span>
               </label>
             </div>
@@ -166,7 +166,7 @@
               <span class="radio" aria-hidden="true"></span>
               <span class="grow">
                 <strong>Credit or debit card</strong>
-                <span>Processed securely by <strong>OTT Pay</strong> with 3-D Secure 2 authentication.
+                <span>Processed securely by our payment provider with 3-D Secure 2 authentication.
                   You may be asked by your bank to confirm the payment.</span>
                 <span class="card-logos">
                   <%- include('partials/pay-marks') %>
@@ -227,7 +227,7 @@
               <div class="secure-note">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
                 <span>
-                  Your card is sent directly to OTT Pay over an encrypted connection for authorisation.
+                  Your card is sent directly to our payment provider over an encrypted connection for authorisation.
                   We store only the card brand and last four digits. This site is PCI-DSS SAQ-A compliant:
                   card data never reaches our database.
                 </span>
@@ -263,7 +263,7 @@
           </p>
 
           <p class="tiny faint center" style="margin-top:10px">
-            Currency: <span class="gold"><%= store.currency %></span> · secured by OTT Pay
+            Currency: <span class="gold"><%= store.currency %></span> · 3-D Secure 2 · dispatched within 48 hours
           </p>
         </aside>
       </div>

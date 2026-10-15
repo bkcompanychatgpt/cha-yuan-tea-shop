@@ -76,7 +76,7 @@
       <div>
         <span class="eyebrow">Payment</span>
         <p class="small muted" style="margin-top:10px;line-height:1.75">
-          Card via OTT Pay<br />
+          Credit or debit card<br />
           <% if (order.ott_cc_type) { %><%= order.ott_cc_type %> ····<%= order.ott_card_last4 %><br /><% } %>
           <% if (order.ott_payment_id) { %><span class="mono tiny">ID <%= order.ott_payment_id %></span><br /><% } %>
           <% if (order.ott_reference) { %><span class="mono tiny">REF <%= order.ott_reference %></span><% } %>

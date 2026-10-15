@@ -31,8 +31,9 @@
         <% } else if (f.isComplete) { %>
           Delivered. Everything below is the completed record of how this order was handled.
         <% } else { %>
-          Expected <strong class="gold"><%= f.etaLabel %></strong><%= f.international ? ', customs permitting' : '' %>,
-          to <%= order.shipping_city %><%= order.shipping_province ? `, ${order.shipping_province}` : '' %>.
+          We dispatch within <strong class="gold">48 hours</strong>, to
+          <%= order.shipping_city %><%= order.shipping_province ? `, ${order.shipping_province}` : '' %>, and email
+          your tracking number the moment the parcel leaves us.
         <% } %>
       </p>
     </div>
@@ -42,10 +43,12 @@
         <%# No dates: nothing is being dispatched, and printing a dispatch date on a
             refunded order reads as a promise that will not be kept. %>
         <div class="fulfil-meta-row"><span>Dispatch by</span><strong>—</strong></div>
-        <div class="fulfil-meta-row"><span>Arrives</span><strong>Not shipping</strong></div>
+        <div class="fulfil-meta-row"><span>Delivery</span><strong>Not shipping</strong></div>
       <% } else { %>
         <div class="fulfil-meta-row"><span>Dispatch by</span><strong><%= f.dispatchByLabel %></strong></div>
-        <div class="fulfil-meta-row"><span>Arrives</span><strong><%= f.etaLabel %></strong></div>
+        <%# No arrival row, deliberately. The shop ships from China and does not
+            promise a delivery date it cannot keep — see server/fulfilment.mjs. %>
+        <div class="fulfil-meta-row"><span>Delivery</span><strong>Tracked door to door</strong></div>
       <% } %>
     </div>
   </div>
@@ -81,19 +84,18 @@
     <div class="fulfil-note">
       <span class="eyebrow">Handling</span>
       <p>
-        Orders placed before <%= f.cutoffLabel %> are weighed and packed the same day. Weekends and statutory
-        holidays are not business days. If anything in your order needs a decision from us — a substituted harvest,
-        a tin that will not seal, a stone with a fault we would not ship — we email you before the parcel is closed
-        rather than after it has left.
+        We dispatch within <strong class="gold">48 hours</strong> of your order. If anything in it needs a decision
+        from us — a substituted harvest, a tin that will not seal, a stone with a fault we would not ship — we email
+        you before the parcel is closed rather than after it has left.
       </p>
     </div>
     <div class="fulfil-note">
       <span class="eyebrow">Shipping</span>
       <p>
-        <strong class="gold">Standard</strong> is 2 to 5 business days within Canada and 7 to 14 business days
-        internationally, with tracking on every parcel.
-        <strong class="gold">Express</strong> is 1 to 2 business days.
-        Duties and import taxes on international orders are the customer's responsibility.
+        Every order is packed and dispatched from our warehouse in China and carries tracking from the moment it
+        leaves us. We do not publish a delivery estimate: how long a parcel then takes depends on the carrier and on
+        customs, neither of which we control, and we would rather not promise you a date we cannot keep.
+        <%= f.overseas ? 'Duties and import taxes are the recipient\'s responsibility.' : '' %>
       </p>
     </div>
     <div class="fulfil-note">
@@ -101,7 +103,7 @@
       <p>
         A parcel that does not arrive, a tin that has not survived the journey or a piece that is not what you
         expected is our problem to fix, not yours to prove. Write to us with the order number and we will replace it
-        or refund it. Refunds return to the original card through OTT Pay, usually within 5 to 10 business days.
+        or refund it. Refunds return to the original card, usually within 5 to 10 business days.
       </p>
     </div>
   </div>

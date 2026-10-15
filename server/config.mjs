@@ -86,6 +86,27 @@ const COMPANY_DEFAULTS = {
   phone: '+1 604 000 0000',
 };
 
+/**
+ * The social accounts an operator has set, in the order the footer shows them.
+ *
+ * Each carries its own label so the accessible name is the platform rather than
+ * "social link", and its own icon key so the template does not have to guess
+ * from the URL. Empty entries are dropped: see the note on `config.social`.
+ */
+function buildSocialAccounts() {
+  const candidates = [
+    { icon: 'instagram', label: 'Instagram', url: str('SOCIAL_INSTAGRAM') },
+    { icon: 'facebook', label: 'Facebook', url: str('SOCIAL_FACEBOOK') },
+    { icon: 'youtube', label: 'YouTube', url: str('SOCIAL_YOUTUBE') },
+    { icon: 'whatsapp', label: 'WhatsApp', url: str('SOCIAL_WHATSAPP') },
+    { icon: 'telegram', label: 'Telegram', url: str('SOCIAL_TELEGRAM') },
+    { icon: 'x', label: 'X', url: str('SOCIAL_X') },
+  ];
+  return candidates
+    .map((a) => ({ ...a, url: a.url.trim() }))
+    .filter((a) => /^https?:\/\//i.test(a.url));
+}
+
 const ottBaseUrl =
   paymentMode === 'live'
     ? str('OTT_LIVE_BASE_URL', 'https://ecom-api.ottpay.com')
@@ -131,7 +152,7 @@ const config = {
     email: str('COMPANY_EMAIL', COMPANY_DEFAULTS.email),
     privacyEmail: str('COMPANY_PRIVACY_EMAIL', COMPANY_DEFAULTS.privacyEmail),
     phone: str('COMPANY_PHONE', COMPANY_DEFAULTS.phone),
-    hours: str('COMPANY_HOURS', 'Monday to Friday, 9:00am to 5:00pm Pacific'),
+    hours: str('COMPANY_HOURS', 'Monday to Friday, 9:00am to 6:00pm'),
     responseTime: str('COMPANY_RESPONSE_TIME', 'one business day'),
 
     /*
@@ -145,6 +166,30 @@ const config = {
      */
     isPlaceholder: !process.env.COMPANY_LEGAL_NAME || !process.env.COMPANY_ADDRESS,
   },
+
+  /**
+   * Social and messaging accounts.
+   *
+   * Listed here as a set of names rather than a single URL, because a shop that
+   * says "follow us" has to say where, and the answer differs by market. Only
+   * the accounts an operator has actually set appear in the footer: a row of
+   * icons pointing at nothing is worse than no row at all, and every one of
+   * these has to be a real, monitored account before it is published — an
+   * unanswered message is a worse first impression than no inbox.
+   *
+   * Set any of them on the host:
+   *
+   *   SOCIAL_INSTAGRAM=https://instagram.com/yourhandle
+   *   SOCIAL_FACEBOOK=https://facebook.com/yourpage
+   *   SOCIAL_YOUTUBE=https://youtube.com/@yourchannel
+   *   SOCIAL_WHATSAPP=https://wa.me/8613800000000
+   *   SOCIAL_TELEGRAM=https://t.me/yourhandle
+   *   SOCIAL_X=https://x.com/yourhandle
+   *
+   * A WhatsApp entry takes the full `wa.me` link, because that is what works
+   * from a browser and from the app on every platform.
+   */
+  social: buildSocialAccounts(),
 
   payment: {
     mode: PAYMENT_MODES.includes(paymentMode) ? paymentMode : 'mock',

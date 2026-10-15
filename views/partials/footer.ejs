@@ -14,29 +14,46 @@
         <div class="footer-contact">
           <span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-            <a href="mailto:hello@chayuan.test" class="link-underline">hello@chayuan.test</a>
+            <a href="mailto:<%= company.email %>" class="link-underline"><%= company.email %></a>
           </span>
           <span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-            <span>Packed and shipped from Canada</span>
+            <span>Packed and shipped from China</span>
           </span>
           <span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-            <span>Orders before 2pm posted the same day</span>
+            <span>Dispatched within 48 hours</span>
           </span>
         </div>
 
+        <%
+          /*
+           * Social accounts, from config.
+           *
+           * The row used to be four hard-coded icons all pointing at /about,
+           * which is a dead link dressed as an account. Only accounts an
+           * operator has actually set appear now, and email is always last
+           * because it always works. See `config.social` for why the list is
+           * empty until someone fills it in.
+           */
+          const SOCIAL_ICONS = {
+            instagram: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>',
+            facebook: '<path d="M14 9h3V5h-3a4 4 0 0 0-4 4v2H8v4h2v6h4v-6h3l1-4h-4V9Z"/>',
+            youtube: '<rect x="2.5" y="6" width="19" height="12" rx="4"/><path d="m11 9.5 4 2.5-4 2.5z" fill="currentColor"/>',
+            whatsapp: '<path d="M20 12a8 8 0 0 1-11.8 7L4 20l1.1-4A8 8 0 1 1 20 12Z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5"/>',
+            telegram: '<path d="M21 5 3 12l5 1.6L18 8l-7 7v4l3-3 4 2Z"/>',
+            x: '<path d="M4 4h4l12 16h-4L4 4Z"/><path d="M20 4 4 20"/>',
+          };
+          const socials = (config && config.social) ? config.social : [];
+        %>
         <div class="footer-social">
-          <a href="/about" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
-          </a>
-          <a href="/about" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 9h3V5h-3a4 4 0 0 0-4 4v2H8v4h2v6h4v-6h3l1-4h-4V9Z"/></svg>
-          </a>
-          <a href="/about" aria-label="YouTube">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="6" width="19" height="12" rx="4"/><path d="m11 9.5 4 2.5-4 2.5z" fill="currentColor"/></svg>
-          </a>
-          <a href="mailto:hello@chayuan.test" aria-label="Email">
+          <% socials.forEach(account => { %>
+            <a href="<%= account.url %>" aria-label="<%= account.label %>" title="<%= account.label %>"
+               target="_blank" rel="noopener noreferrer me">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><%- SOCIAL_ICONS[account.icon] || SOCIAL_ICONS.instagram %></svg>
+            </a>
+          <% }) %>
+          <a href="mailto:<%= company.email %>" aria-label="Email">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
           </a>
         </div>
@@ -81,14 +98,14 @@
       <div class="footer-col">
         <h4>Secure payment</h4>
         <p style="font-size:0.82rem">
-          Card payments are processed by OTT Pay over a PCI-DSS compliant gateway with
-          3-D Secure 2 authentication. Card details never reach our servers.
+          Card payments are processed by our payment provider over a PCI-DSS compliant
+          gateway with 3-D Secure 2 authentication. Card details never reach our servers.
         </p>
 
         <div class="footer-badges">
           <span>Harvest dated</span>
           <span>Small lots</span>
-          <span>Shipped from Canada</span>
+          <span>Dispatched in 48 hours</span>
         </div>
       </div>
     </div>

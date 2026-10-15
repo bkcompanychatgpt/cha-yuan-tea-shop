@@ -103,6 +103,23 @@ services:
       - key: COMPANY_RESPONSE_TIME
         sync: false
 
+      # --------------------------------------------------------- social links
+      # Set whichever accounts exist. Only the ones with a value appear in the
+      # footer and on /contact; an empty one is simply omitted, because an icon
+      # pointing at nothing is worse than no icon. Full URLs, including https://.
+      - key: SOCIAL_INSTAGRAM
+        sync: false
+      - key: SOCIAL_FACEBOOK
+        sync: false
+      - key: SOCIAL_YOUTUBE
+        sync: false
+      - key: SOCIAL_WHATSAPP
+        sync: false
+      - key: SOCIAL_TELEGRAM
+        sync: false
+      - key: SOCIAL_X
+        sync: false
+
       # ------------------------------------------------------ OTT Pay gateway
       # `mock` needs no credentials and simulates the acquirer end to end, which
       # is the right setting for a first deploy. Switch to `sandbox`, then `live`,

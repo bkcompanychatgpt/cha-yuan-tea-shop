@@ -55,20 +55,46 @@
         <div><span>Opening hours</span><span><%= company.hours %></span></div>
         <div><span>Reply time</span><span>Within <%= company.responseTime %></span></div>
         <div><span>Language</span><span>English</span></div>
-        <div><span>Returns address</span><span>Use the address above, and email us first for a return authorisation</span></div>
+        <div><span>Returns address</span><span>Email us first for a return authorisation, and we will send the address to use</span></div>
       </div>
 
       <% if (company.isPlaceholder) { %>
         <div class="alert alert-warn" style="margin-top:22px">
-          <strong>Sample details.</strong> The registered name, address and registration numbers above are
-          placeholders. Set <span class="mono">COMPANY_LEGAL_NAME</span>, <span class="mono">COMPANY_ADDRESS</span>,
+          <strong>Still to be supplied.</strong> The registered name, address, registration numbers and telephone
+          number above are placeholders, and will be replaced with the real ones. Until they are, they are not
+          evidence of anything — please do not rely on them. A shop that takes card payments has to publish the
+          identity of the business behind it, so this is the first thing to finish before launch: set
+          <span class="mono">COMPANY_LEGAL_NAME</span>, <span class="mono">COMPANY_ADDRESS</span>,
           <span class="mono">COMPANY_REGISTRATION_NUMBER</span>, <span class="mono">COMPANY_TAX_NUMBER</span>,
-          <span class="mono">COMPANY_PHONE</span> and <span class="mono">COMPANY_EMAIL</span> on the host and this
-          notice disappears. A shop that takes card payments has to publish the identity of the business behind it,
-          so this is the first thing to fill in.
+          <span class="mono">COMPANY_PHONE</span>, <span class="mono">COMPANY_EMAIL</span> and
+          <span class="mono">COMPANY_PRIVACY_EMAIL</span>, and this notice disappears on its own.
         </div>
       <% } %>
     </div>
+
+    <%
+      /*
+       * Social accounts, if any are configured.
+       *
+       * Only accounts an operator has actually set appear — see config.social.
+       * The panel is omitted entirely rather than rendered empty, because a
+       * "Follow us" heading with nothing under it is worse than no heading.
+       */
+      const socials = (config && config.social) ? config.social : [];
+    %>
+    <% if (socials.length) { %>
+      <div class="panel">
+        <h3 style="margin-bottom:16px">Where else to reach us</h3>
+        <div class="stack-12" style="color:var(--text-dim);line-height:1.85;font-size:0.94rem">
+          <p>Messages sent to any of these reach the same people who answer the email above.</p>
+        </div>
+        <div class="row" style="gap:12px;margin-top:18px;flex-wrap:wrap">
+          <% socials.forEach(account => { %>
+            <a class="btn btn-ghost" href="<%= account.url %>" target="_blank" rel="noopener noreferrer me"><%= account.label %></a>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
 
     <div class="panel">
       <h3 style="margin-bottom:16px">How we answer</h3>

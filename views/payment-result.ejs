@@ -99,7 +99,7 @@
           <span class="eyebrow">Payment</span>
           <p class="small muted" style="margin-top:10px;line-height:1.75">
             <% if (order.ott_cc_type) { %><%= order.ott_cc_type %> ending <%= order.ott_card_last4 %><br /><% } %>
-            <% if (order.ott_payment_id) { %>OTT Pay ID <span class="mono"><%= order.ott_payment_id %></span><br /><% } %>
+            <% if (order.ott_payment_id) { %>Payment ID <span class="mono"><%= order.ott_payment_id %></span><br /><% } %>
             <% if (order.ott_reference) { %>Reference <span class="mono"><%= order.ott_reference %></span><br /><% } %>
             Status: <%= (order.ott_payment_status || order.payment_status) %>
           </p>

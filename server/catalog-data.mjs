@@ -2144,7 +2144,7 @@ export const EDITORIAL = {
     'Pre-Qingming Longjing is in — 24 tins only',
     'Harvest-dated lots, re-ordered every season',
     '3-D Secure 2 · Visa · Mastercard · Amex · UnionPay',
-    'Shipped from Canada within one business day',
+    'Dispatched from China within 48 hours',
   ],
 
   /* Four promises under the hero. */
@@ -2152,7 +2152,7 @@ export const EDITORIAL = {
     { icon: 'leaf', title: 'Direct from the grower', body: 'No middleman and no export blend. We know the mountain, the cultivar and the pick date.' },
     { icon: 'calendar', title: 'Dated by harvest', body: 'Every listing carries its season and processing method — a 2024 Dan Cong is not a 2022 one.' },
     { icon: 'gaiwan', title: 'Brewed before listed', body: 'Each tea is scored gongfu and Western style before it earns a place on this site.' },
-    { icon: 'shield', title: 'Secure card payment', body: 'OTT Pay with 3-D Secure 2. Your card number never reaches our servers.' },
+    { icon: 'shield', title: 'Secure card payment', body: '3-D Secure 2 authentication. Your card number never reaches our servers.' },
   ],
 
   /* The featured spotlight on the homepage. */
@@ -2226,15 +2226,15 @@ export const EDITORIAL = {
     },
     {
       q: 'How much is shipping, and where do you ship from?',
-      a: 'Parcels leave our tea room in Canada within one business day. Shipping is complimentary over $79, otherwise a flat $9.50; express is $19. International delivery takes 7–14 business days.',
+      a: 'Every order is packed and dispatched from our warehouse in China within 48 hours, with tracking from the moment it leaves us. Shipping is complimentary over $79, otherwise a flat $9.50; express is $19. We do not quote a delivery date — the carrier and customs decide that, not us.',
     },
     {
       q: 'What payment methods do you accept?',
-      a: 'Visa, Mastercard, American Express, Discover, JCB, Diners Club and China UnionPay credit and debit cards, processed by OTT Pay with 3-D Secure 2 authentication.',
+      a: 'Visa, Mastercard, American Express, Discover, JCB, Diners Club and China UnionPay credit and debit cards, with 3-D Secure 2 authentication.',
     },
     {
       q: 'Is my card safe?',
-      a: 'Your card details are transmitted directly to OTT Pay over an encrypted connection and are never stored on our servers. We keep only the card brand and the last four digits so you can recognise the charge on your statement.',
+      a: 'Your card details go straight from your browser to our payment provider over an encrypted connection and are never stored on our servers. We keep only the card brand and the last four digits so you can recognise the charge on your statement.',
     },
     {
       q: 'What if I do not like the tea?',

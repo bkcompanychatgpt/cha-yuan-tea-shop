@@ -29,9 +29,10 @@
         <p><strong class="gold">To fulfil an order.</strong> Your name, email address, delivery address, and a contact
           telephone number where the carrier requires one. Without these we cannot ship, and under the terms of sale
           we cannot enter into the contract at all.</p>
-        <p><strong class="gold">To take payment.</strong> The card details you type at checkout are sent directly to
-          <strong>OTT Pay</strong>, our payment processor. They are not sent to us. What is returned to us, and what
-          our database keeps, is the card brand, the last four digits, the amount, the currency and the gateway's own
+        <p><strong class="gold">To take payment.</strong> The card details you type at checkout go straight from your
+          browser to our payment processor, a PCI-DSS compliant payment institution. They are not sent to us. What is
+          returned to us, and what
+          our database keeps, is the card brand, the last four digits, the amount, the currency and the processor's own
           payment and order identifiers — enough to reconcile an order, answer a query and issue a refund, and nothing
           more.</p>
         <p><strong class="gold">To screen for fraud.</strong> Every card payment is scored for fraud risk before it is
@@ -85,8 +86,8 @@
       <div class="stack-12">
         <p>Four parties, and no others:</p>
         <ul class="stack-8" style="padding-left:18px;list-style:disc">
-          <li><strong>OTT Pay</strong> — the payment processor. Receives the card data you enter, your name, email
-            address and billing address, plus the fraud-screening session identifier.</li>
+          <li><strong>Our payment processor</strong> — a PCI-DSS compliant payment institution. Receives the card
+            data you enter, your name, email address and billing address, plus the fraud-screening session identifier.</li>
           <li><strong>Kount</strong> — fraud screening, where enabled. Receives device characteristics and the order
             amount, not your name or address.</li>
           <li><strong>Our shipping carrier</strong> — receives your name, delivery address and a telephone number
@@ -103,10 +104,10 @@
     <div class="panel">
       <h3 style="margin-bottom:14px">Where it is stored</h3>
       <div class="stack-12">
-        <p>Our database and backups are hosted in Canada. OTT Pay is a Canadian payment institution and processes the
-          transaction in Canada. Kount is operated in the United States, so if you are in the European Economic Area
-          the device data described above is transferred there under standard contractual clauses. Nothing else leaves
-          Canada.</p>
+        <p>Our database and backups are hosted in Canada on our hosting provider's infrastructure. Our payment
+          processor is a Canadian payment institution and processes the transaction in Canada. Our fraud-screening
+          provider is operated in the United States, so if you are in the European Economic Area the device data
+          described above is transferred there under standard contractual clauses. Nothing else leaves Canada.</p>
       </div>
     </div>
 
@@ -128,10 +129,10 @@
     <div class="panel">
       <h3 style="margin-bottom:14px">Security, and children</h3>
       <div class="stack-12">
-        <p>The site is served over TLS. Card data is transmitted directly from your browser to OTT Pay and never
-          touches our servers, which is what keeps our own obligations under the card scheme rules at the lowest
-          level. Passwords for the back office are stored as scrypt hashes, and the back office is reachable only over
-          an authenticated session.</p>
+        <p>The site is served over TLS. Card data is transmitted directly from your browser to our payment processor
+          and never touches our servers, which is what keeps our own obligations under the card scheme rules at the
+          lowest level. Passwords for the back office are stored as scrypt hashes, and the back office is reachable
+          only over an authenticated session.</p>
         <p>This shop sells to adults. We do not knowingly collect personal data from anyone under 16, and if you
           believe a child has given us data, write to us and we will delete it.</p>
         <p>We may update this policy. The version that applies to your order is the one published when you placed it,
