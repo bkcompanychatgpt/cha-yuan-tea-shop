@@ -103,21 +103,19 @@ services:
       - key: COMPANY_RESPONSE_TIME
         sync: false
 
-      # --------------------------------------------------------- social links
-      # Set whichever accounts exist. Only the ones with a value appear in the
-      # footer and on /contact; an empty one is simply omitted, because an icon
-      # pointing at nothing is worse than no icon. Full URLs, including https://.
-      - key: SOCIAL_INSTAGRAM
+      # -------------------------------------------------------- WhatsApp
+      # The one messaging channel the shop uses. Leave both blank and nothing is
+      # rendered anywhere — no button, no icon, no mention. Fill in the number
+      # and the footer icon and the /contact panel appear by themselves.
+      #
+      # International form; spaces and punctuation are fine and are kept for the
+      # label while being stripped for the wa.me link:
+      #   WHATSAPP_NUMBER=+86 138 0013 8000
+      - key: WHATSAPP_NUMBER
         sync: false
-      - key: SOCIAL_FACEBOOK
-        sync: false
-      - key: SOCIAL_YOUTUBE
-        sync: false
-      - key: SOCIAL_WHATSAPP
-        sync: false
-      - key: SOCIAL_TELEGRAM
-        sync: false
-      - key: SOCIAL_X
+      # Only if you have a full link instead (a chat.whatsapp.com invite, say).
+      # Takes precedence over the number.
+      - key: WHATSAPP_URL
         sync: false
 
       # ------------------------------------------------------ OTT Pay gateway

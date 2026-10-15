@@ -28,31 +28,23 @@
 
         <%
           /*
-           * Social accounts, from config.
+           * Contact channels.
            *
-           * The row used to be four hard-coded icons all pointing at /about,
-           * which is a dead link dressed as an account. Only accounts an
-           * operator has actually set appear now, and email is always last
-           * because it always works. See `config.social` for why the list is
-           * empty until someone fills it in.
+           * The row used to be four hard-coded icons all pointing at /about —
+           * a dead link dressed as an account. It now shows email, which always
+           * works, plus WhatsApp once a number has been supplied. Until then the
+           * shop does not advertise a channel it cannot answer on; see
+           * `config.whatsapp`.
            */
-          const SOCIAL_ICONS = {
-            instagram: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>',
-            facebook: '<path d="M14 9h3V5h-3a4 4 0 0 0-4 4v2H8v4h2v6h4v-6h3l1-4h-4V9Z"/>',
-            youtube: '<rect x="2.5" y="6" width="19" height="12" rx="4"/><path d="m11 9.5 4 2.5-4 2.5z" fill="currentColor"/>',
-            whatsapp: '<path d="M20 12a8 8 0 0 1-11.8 7L4 20l1.1-4A8 8 0 1 1 20 12Z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5"/>',
-            telegram: '<path d="M21 5 3 12l5 1.6L18 8l-7 7v4l3-3 4 2Z"/>',
-            x: '<path d="M4 4h4l12 16h-4L4 4Z"/><path d="M20 4 4 20"/>',
-          };
-          const socials = (config && config.social) ? config.social : [];
+          const whatsapp = (config && config.whatsapp) ? config.whatsapp : null;
         %>
         <div class="footer-social">
-          <% socials.forEach(account => { %>
-            <a href="<%= account.url %>" aria-label="<%= account.label %>" title="<%= account.label %>"
-               target="_blank" rel="noopener noreferrer me">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><%- SOCIAL_ICONS[account.icon] || SOCIAL_ICONS.instagram %></svg>
+          <% if (whatsapp) { %>
+            <a href="<%= whatsapp.url %>" aria-label="Chat on WhatsApp" title="WhatsApp <%= whatsapp.display %>"
+               target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 12a8 8 0 0 1-11.8 7L4 20l1.1-4A8 8 0 1 1 20 12Z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5"/></svg>
             </a>
-          <% }) %>
+          <% } %>
           <a href="mailto:<%= company.email %>" aria-label="Email">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
           </a>

@@ -99,24 +99,38 @@ const COMPANY_DEFAULTS = {
 };
 
 /**
- * The social accounts an operator has set, in the order the footer shows them.
+ * WhatsApp, which is the one messaging channel this shop uses.
  *
- * Each carries its own label so the accessible name is the platform rather than
- * "social link", and its own icon key so the template does not have to guess
- * from the URL. Empty entries are dropped: see the note on `config.social`.
+ * The number is supplied later, so this is `null` until then and nothing is
+ * rendered anywhere. That matters: a WhatsApp button pointing at a number
+ * nobody answers is worse than no button at all, and it is the kind of link
+ * that gets published once and never tested again.
+ *
+ * Give the number in international form and the link is built here:
+ *
+ *   WHATSAPP_NUMBER=+86 138 0013 8000
+ *
+ * Punctuation and spaces are stripped for the `wa.me` URL and kept for the
+ * label, because "wa.me/8613800138000" is unreadable to a customer and a
+ * hand-written `wa.me` link is easy to get subtly wrong. Set WHATSAPP_URL
+ * instead if you have a full link (a `chat.whatsapp.com` group invite, say).
+ *
+ * A short number is rejected rather than published: fewer than eight digits is
+ * a typo, not a phone number, and it would render a button that goes nowhere.
  */
-function buildSocialAccounts() {
-  const candidates = [
-    { icon: 'instagram', label: 'Instagram', url: str('SOCIAL_INSTAGRAM') },
-    { icon: 'facebook', label: 'Facebook', url: str('SOCIAL_FACEBOOK') },
-    { icon: 'youtube', label: 'YouTube', url: str('SOCIAL_YOUTUBE') },
-    { icon: 'whatsapp', label: 'WhatsApp', url: str('SOCIAL_WHATSAPP') },
-    { icon: 'telegram', label: 'Telegram', url: str('SOCIAL_TELEGRAM') },
-    { icon: 'x', label: 'X', url: str('SOCIAL_X') },
-  ];
-  return candidates
-    .map((a) => ({ ...a, url: a.url.trim() }))
-    .filter((a) => /^https?:\/\//i.test(a.url));
+function buildWhatsApp() {
+  const url = str('WHATSAPP_URL').trim();
+  const raw = str('WHATSAPP_NUMBER').trim();
+  if (url) return { url, display: raw || url, label: 'WhatsApp' };
+
+  const digits = raw.replace(/[^0-9]/g, '');
+  if (digits.length < 8) return null;
+
+  return {
+    url: `https://wa.me/${digits}`,
+    display: raw.startsWith('+') ? raw : `+${raw}`,
+    label: 'WhatsApp',
+  };
 }
 
 const ottBaseUrl =
@@ -180,28 +194,13 @@ const config = {
   },
 
   /**
-   * Social and messaging accounts.
+   * Messaging.
    *
-   * Listed here as a set of names rather than a single URL, because a shop that
-   * says "follow us" has to say where, and the answer differs by market. Only
-   * the accounts an operator has actually set appear in the footer: a row of
-   * icons pointing at nothing is worse than no row at all, and every one of
-   * these has to be a real, monitored account before it is published — an
-   * unanswered message is a worse first impression than no inbox.
-   *
-   * Set any of them on the host:
-   *
-   *   SOCIAL_INSTAGRAM=https://instagram.com/yourhandle
-   *   SOCIAL_FACEBOOK=https://facebook.com/yourpage
-   *   SOCIAL_YOUTUBE=https://youtube.com/@yourchannel
-   *   SOCIAL_WHATSAPP=https://wa.me/8613800000000
-   *   SOCIAL_TELEGRAM=https://t.me/yourhandle
-   *   SOCIAL_X=https://x.com/yourhandle
-   *
-   * A WhatsApp entry takes the full `wa.me` link, because that is what works
-   * from a browser and from the app on every platform.
+   * `null` until a number is supplied — see buildWhatsApp below. Every surface
+   * that offers WhatsApp checks for null first, so the shop simply does not
+   * mention a channel it cannot answer on yet.
    */
-  social: buildSocialAccounts(),
+  whatsapp: buildWhatsApp(),
 
   payment: {
     mode: PAYMENT_MODES.includes(paymentMode) ? paymentMode : 'mock',
