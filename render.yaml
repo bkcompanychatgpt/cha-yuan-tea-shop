@@ -93,7 +93,7 @@ services:
       - key: COMPANY_COUNTRY
         value: Canada
       - key: COMPANY_EMAIL
-        value: hello@northstarcart.com
+        value: support@northstarcart.com
       - key: COMPANY_PRIVACY_EMAIL
         value: privacy@northstarcart.com
       - key: COMPANY_PHONE

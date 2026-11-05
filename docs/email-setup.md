@@ -12,7 +12,7 @@ Three separate things, and only one of them involves the site:
    The website is not involved at all.
 2. **The address appearing on the site.** The site already prints it: `hello@` and
    `privacy@` come from `COMPANY_EMAIL` and `COMPANY_PRIVACY_EMAIL`, which are set
-   to `hello@northstarcart.com` and `privacy@northstarcart.com` in `render.yaml`
+   to `support@northstarcart.com` and `privacy@northstarcart.com` in `render.yaml`
    and in `server/config.mjs`. Change the mailbox name and both places change.
 3. **The site sending mail to you.** It does not, and never has. There is no
    contact form; every "write to us" on the site is a `mailto:` link that opens the
@@ -28,7 +28,7 @@ password come in. Not before.
 2. Fastmail asks for the domain, then shows you a set of DNS records. Leave that
    page open — the values below come from it, and it is the authoritative copy.
 3. Create the mailboxes you will actually read. Two is the right number to start:
-   - `hello@northstarcart.com` — everything, including orders
+   - `support@northstarcart.com` — everything, including orders
    - `privacy@northstarcart.com` — access and deletion requests, so they do not
      get lost in the general inbox
 4. Optional but worth it: a **catch-all** so `orders@`, `returns@` and any typo
@@ -47,7 +47,7 @@ Fastmail showed you, and nothing else. It is normally:
 | CNAME | `fm1._domainkey` | `fm1.<yourdomain>.dkim.fmhosted.com` | |
 | CNAME | `fm2._domainkey` | `fm2.<yourdomain>.dkim.fmhosted.com` | |
 | CNAME | `fm3._domainkey` | `fm3.<yourdomain>.dkim.fmhosted.com` | |
-| TXT | `_dmarc` | `v=DMARC1; p=quarantine; rua=mailto:hello@northstarcart.com` | |
+| TXT | `_dmarc` | `v=DMARC1; p=quarantine; rua=mailto:support@northstarcart.com` | |
 
 Three things people get wrong here:
 
@@ -72,7 +72,7 @@ dig MX northstarcart.com +short
 ```
 
 should list the two `messagingengine` hosts. Then send a real message to
-`hello@northstarcart.com` from a Gmail or Outlook account and reply to it. A reply
+`support@northstarcart.com` from a Gmail or Outlook account and reply to it. A reply
 that lands in the sender's inbox is the only proof that SPF and DKIM are both
 right — receiving alone proves only the MX records.
 
@@ -85,7 +85,7 @@ already name these addresses, and `/contact`, the footer, `/privacy`, `/refund` 
 If you ever use a different mailbox name:
 
 ```
-COMPANY_EMAIL=hello@northstarcart.com
+COMPANY_EMAIL=support@northstarcart.com
 COMPANY_PRIVACY_EMAIL=privacy@northstarcart.com
 ```
 

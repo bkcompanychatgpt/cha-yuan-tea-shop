@@ -100,7 +100,21 @@ const COMPANY_DEFAULTS = {
   // Left blank on purpose — see the note above.
   registrationNumber: '',
   taxNumber: '',
-  email: 'hello@northstarcart.com',
+  /*
+   * Two addresses, for two different jobs.
+   *
+   * `support@` is what the site prints, because every one of its uses is a
+   * customer who needs something done — an order, a return, a question before
+   * buying. `privacy@` is separate so an access or deletion request does not
+   * queue behind order mail and get answered late; that is the address a data
+   * protection regulator expects to find, and the one a customer is most likely
+   * to be anxious about.
+   *
+   * `info@` and `hello@` are still worth having as aliases in Fastmail, so mail
+   * sent to the conventional prefixes arrives instead of bouncing — a supplier
+   * will guess `info@` before they read the footer.
+   */
+  email: 'support@northstarcart.com',
   privacyEmail: 'privacy@northstarcart.com',
   phone: '+1 (942) 380-9665',
 };

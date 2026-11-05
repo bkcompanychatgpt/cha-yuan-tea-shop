@@ -1948,7 +1948,18 @@ select.select option { background: var(--ink-800); color: var(--text); }
   font-size: 0.82rem;
   color: var(--text-dim);
 }
-.footer-contact span { display: flex; gap: 10px; align-items: flex-start; }
+/*
+ * The rule targets the direct children only.
+ *
+ * It used to say `.footer-contact span`, which matched any span inside the
+ * block — including the one wrapping the registered address — and turned that
+ * wrapper into a flex row. The company name and the street address then sat
+ * side by side, each wrapping independently, which read as a broken table
+ * rather than as an address.
+ */
+.footer-contact > span { display: flex; gap: 10px; align-items: flex-start; }
+.footer-contact span span, .footer-contact span strong { display: inline; }
+.footer-contact span > span { line-height: 1.6; }
 .footer-contact svg { width: 14px; height: 14px; color: var(--gold-400); flex: none; margin-top: 4px; }
 .footer-social { display: flex; gap: 9px; margin-top: 18px; }
 .footer-social a {

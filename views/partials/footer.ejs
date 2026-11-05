@@ -11,18 +11,38 @@
           Guangdong. Every lot is tasted in a gaiwan before it is listed.
         </p>
 
+        <%
+          /*
+           * The trading identity, in the footer, on every page.
+           *
+           * A registered company's address and telephone belong here rather than
+           * only on /contact: a customer checking who they are buying from looks
+           * at the bottom of whatever page they are on, and card-scheme and
+           * consumer-protection practice both expect the identity of the seller
+           * to be easy to find rather than one click away. The shipping note that
+           * used to sit in this slot moved down into the badges, where the other
+           * service promises already are.
+           */
+        %>
         <div class="footer-contact">
           <span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
             <a href="mailto:<%= company.email %>" class="link-underline"><%= company.email %></a>
           </span>
           <span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 3h3l1.7 4.2-2.1 1.4a12 12 0 0 0 6.3 6.3l1.4-2.1L21 14.5v3a2.5 2.5 0 0 1-2.7 2.5A17.5 17.5 0 0 1 3 6.7 2.5 2.5 0 0 1 5.5 4Z"/></svg>
+            <a href="tel:<%= company.phone.replace(/[^+0-9]/g, '') %>" class="link-underline"><%= company.phone %></a>
+          </span>
+          <span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-            <span>Packed and shipped from China</span>
+            <span>
+              <strong style="font-weight:500;color:var(--text)"><%= company.legalName %></strong><br />
+              <% company.addressLines.forEach((line, i) => { %><%= line %><% if (i < company.addressLines.length - 1) { %><br /><% } %><% }) %>
+            </span>
           </span>
           <span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-            <span>Dispatched within 48 hours</span>
+            <span>Dispatched from China within 48 hours</span>
           </span>
         </div>
 
