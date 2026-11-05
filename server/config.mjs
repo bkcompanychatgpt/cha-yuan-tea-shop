@@ -76,26 +76,33 @@ const paymentMode = str('PAYMENT_MODE', 'mock').toLowerCase();
  * looks like a placeholder — and the pages say outright that they are samples.
  */
 /**
- * Sample trading details, used until the operator supplies the real ones.
+ * The trading entity.
  *
- * They are deliberately Ontario-shaped rather than generic, because the shop
- * charges Ontario HST at 13% — see `store.taxLabel`. A sample address in
- * British Columbia alongside HST would be a contradiction on the same page
- * (BC levies GST plus PST, not HST), and a placeholder that argues with the
- * tax line is harder to review than one that does not.
+ * Real details, supplied by the operator. The company is registered in Markham,
+ * Ontario, which is why the shop charges Ontario HST at 13% — the tax line and
+ * the address now agree with each other, and the placeholder note that used to
+ * sit on /contact is gone for the fields that are filled in below.
+ *
+ * Two numbers are still outstanding and are marked so on the page rather than
+ * being invented: the Ontario corporate registration number and the HST
+ * registration number. Both are on the operator to supply; until then the site
+ * says "to be supplied" next to them instead of printing a plausible-looking
+ * false number, because a registration number is the one thing on a policy page
+ * that someone might actually look up.
  *
  * The trading entity and the fulfilment location are separate things: this is
  * where the company is registered, and every parcel ships from China.
  */
 const COMPANY_DEFAULTS = {
-  legalName: 'Cha Yuan Tea Ltd.',
-  address: 'Unit 200 — 1234 King Street West|Toronto, Ontario M5V 1N6|Canada',
+  legalName: 'Northstar Cart Inc.',
+  address: '4-400 Esna Park Drive|Markham, Ontario L3R 3K2|Canada',
   country: 'Canada',
-  registrationNumber: 'ON0000000',
-  taxNumber: 'HST 000000000 RT0001',
-  email: 'hello@chayuan.test',
-  privacyEmail: 'privacy@chayuan.test',
-  phone: '+1 416 000 0000',
+  // Left blank on purpose — see the note above.
+  registrationNumber: '',
+  taxNumber: '',
+  email: 'hello@northstarcart.com',
+  privacyEmail: 'privacy@northstarcart.com',
+  phone: '+1 (942) 380-9665',
 };
 
 /**
@@ -144,8 +151,16 @@ const config = {
   isProduction: str('NODE_ENV', 'development') === 'production',
 
   store: {
-    name: str('STORE_NAME', 'Cha Yuan'),
-    tagline: str('STORE_TAGLINE', 'Single-origin Chinese tea, sourced at the mountain.'),
+    name: str('STORE_NAME', 'Northstar Cart'),
+    /*
+     * The word under the wordmark. It used to read "CHINESE TEA", which was true
+     * when the shop sold one thing; it now sells tea and beaded bracelets, so the
+     * line names both. It is a separate setting from the name because it is
+     * letter-spaced artwork rather than prose, and changing one should not force
+     * changing the other.
+     */
+    logoSubtitle: str('STORE_LOGO_SUBTITLE', 'TEA & JEWELLERY'),
+    tagline: str('STORE_TAGLINE', 'Chinese tea and beaded jewellery, bought in small lots.'),
     publicBaseUrl: str('PUBLIC_BASE_URL', 'http://localhost:3080').replace(/\/+$/, ''),
     currency: str('CURRENCY', 'CAD').toUpperCase(),
     currencySymbol: str('CURRENCY_SYMBOL', '$'),
@@ -166,7 +181,7 @@ const config = {
    */
   company: {
     legalName: str('COMPANY_LEGAL_NAME', COMPANY_DEFAULTS.legalName),
-    tradingName: str('COMPANY_TRADING_NAME', str('STORE_NAME', 'Cha Yuan')),
+    tradingName: str('COMPANY_TRADING_NAME', str('STORE_NAME', 'Northstar Cart')),
     addressLines: str('COMPANY_ADDRESS', COMPANY_DEFAULTS.address)
       .split('|')
       .map((line) => line.trim())
@@ -182,15 +197,27 @@ const config = {
     responseTime: str('COMPANY_RESPONSE_TIME', 'one business day'),
 
     /*
-     * Whether the details above are still the shipped examples.
+     * Which details are still missing, field by field.
      *
-     * A policy page that names a company nobody can find is worse than one that
-     * admits it is a sample, so the pages say so out loud until the real
-     * registration is entered. This is derived rather than configured: it turns
-     * itself off the moment COMPANY_LEGAL_NAME is set, so it cannot be left on
-     * by accident once the shop is real.
+     * The company name, address, phone and email are real now; the Ontario
+     * corporate number and the HST number are not, and are left empty rather
+     * than filled with something that looks real. A single "these are samples"
+     * flag no longer says the right thing — most of the block is genuine — so the
+     * page marks the individual rows instead.
+     *
+     * Both fields are empty rather than invented because a registration number
+     * is the one line on a policy page a customer or a card scheme might actually
+     * look up, and a plausible false one is worse than an obvious gap.
      */
-    isPlaceholder: !process.env.COMPANY_LEGAL_NAME || !process.env.COMPANY_ADDRESS,
+    missing: {
+      registrationNumber: str('COMPANY_REGISTRATION_NUMBER', COMPANY_DEFAULTS.registrationNumber) === '',
+      taxNumber: str('COMPANY_TAX_NUMBER', COMPANY_DEFAULTS.taxNumber) === '',
+    },
+
+    /** True while anything at all is still outstanding. */
+    get isPlaceholder() {
+      return this.missing.registrationNumber || this.missing.taxNumber;
+    },
   },
 
   /**
@@ -230,7 +257,7 @@ const config = {
   },
 
   admin: {
-    email: str('ADMIN_EMAIL', 'owner@chayuan.test').toLowerCase(),
+    email: str('ADMIN_EMAIL', 'owner@northstarcart.test').toLowerCase(),
     password: str('ADMIN_PASSWORD', 'changeme-please'),
   },
 
@@ -246,7 +273,7 @@ const config = {
  */
 const PUBLIC_DEFAULTS = {
   adminPassword: 'changeme-please',
-  adminEmail: 'owner@chayuan.test',
+  adminEmail: 'owner@northstarcart.test',
   sessionSecret: 'change-me-to-a-long-random-string',
 };
 

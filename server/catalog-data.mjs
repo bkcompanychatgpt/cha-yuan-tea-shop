@@ -1128,7 +1128,7 @@ export const EDITORIAL = {
     },
     {
       q: 'Do you sell wholesale?',
-      a: 'Yes, from 200 g per tea. Write to hello@chayuan.test with what you are looking for and we will send a price list and samples.',
+      a: 'Yes, from 200 g per tea. Write to hello@northstarcart.test with what you are looking for and we will send a price list and samples.',
     },
   ],
   pillars: [

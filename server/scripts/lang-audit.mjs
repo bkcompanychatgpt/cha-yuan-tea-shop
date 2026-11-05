@@ -33,16 +33,16 @@ const MOJIBAKE = /Ã[\u0080-\u00bf]|â€|â†|â‚¬|Â[\u00a0-\u00bf]/;
 /**
  * Text that is deliberately *about* rather than *in* another language, or that is
  * a brand mark rather than copy. Each entry must state why.
+ *
+ * The storefront used to carry the Chinese character for tea in its logotype and
+ * needed an allowance for it. It does not any more — the mark is a compass star
+ * — so the only CJK that remains in the codebase is in a font stack, where it
+ * renders nothing unless a customer's own text needs it. Any actual Chinese glyph
+ * appearing in a page is now a failure rather than an allowed brand mark.
  */
 const ALLOWED = [
-  // The Cha Yuan logotype carries a 茶 chop, the way a Western tea merchant puts
-  // a leaf on its label. It is a trademark, not UI copy, and appears only in the
-  // logo SVG and the favicon. Delete this rule if you drop the chop.
-  { file: 'server/imagery.mjs', quote: 'Chinese Tea' },
-  // CJK glyphs must stay in the font stack: they are what renders the logotype
-  // and any customer's own tea name correctly.
-  { file: 'server/imagery.mjs', quote: 'Songti SC' },
-  { file: 'server/imagery.mjs', quote: 'SimSun' },
+  // CJK glyph names must stay in the font stack: they are what renders a
+  // customer's own tea name correctly if one is ever entered.
   { file: 'public/css/styles.css', quote: 'Songti SC' },
   // This file, by definition.
   { file: 'server/scripts/lang-audit.mjs', quote: 'NON_LATIN' },

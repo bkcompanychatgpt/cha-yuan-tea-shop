@@ -55,9 +55,11 @@ services:
 
       # ------------------------------------------------ storefront identity
       - key: STORE_NAME
-        value: Cha Yuan
+        value: Northstar Cart
+      - key: STORE_LOGO_SUBTITLE
+        value: TEA & JEWELLERY
       - key: STORE_TAGLINE
-        value: Single-origin Chinese tea, sourced at the mountain.
+        value: Chinese tea and beaded jewellery, bought in small lots.
       - key: CURRENCY
         value: CAD
       - key: CURRENCY_SYMBOL
@@ -66,37 +68,37 @@ services:
         value: "79"
       - key: FLAT_SHIPPING_FEE
         value: "9.5"
+      # Ontario HST, which matches the Markham registration below.
       - key: TAX_RATE
         value: "0.13"
       - key: TAX_LABEL
         value: HST (13%)
 
       # ------------------------------------------------- trading entity details
-      # These are printed on /contact, /terms, /privacy and /refund. They ship
-      # with sample values so the pages render, and the policy pages say outright
-      # that they are samples until COMPANY_LEGAL_NAME and COMPANY_ADDRESS are
-      # set. A shop that takes card payments has to publish the identity of the
-      # business behind it, so fill these in before going live.
+      # Printed on /contact, /terms, /privacy and /refund. These are the real
+      # details and are declared here rather than left to be typed into the
+      # dashboard, so a fresh deploy is correct without a manual step.
+      #
+      # The two registration numbers are deliberately absent: neither has been
+      # supplied, and /contact says "To be supplied" next to them rather than
+      # printing an invented number. Add them as `sync: false` entries here once
+      # they exist.
       - key: COMPANY_LEGAL_NAME
-        sync: false
+        value: Northstar Cart Inc.
       - key: COMPANY_TRADING_NAME
-        sync: false
+        value: Northstar Cart
       # One line per address row, separated by "|".
       - key: COMPANY_ADDRESS
-        sync: false
+        value: 4-400 Esna Park Drive|Markham, Ontario L3R 3K2|Canada
       - key: COMPANY_COUNTRY
-        sync: false
-      - key: COMPANY_REGISTRATION_NUMBER
-        sync: false
-      - key: COMPANY_TAX_NUMBER
-        sync: false
-      - key: COMPANY_CONTACT_PERSON
-        sync: false
+        value: Canada
       - key: COMPANY_EMAIL
-        sync: false
+        value: hello@northstarcart.com
       - key: COMPANY_PRIVACY_EMAIL
-        sync: false
+        value: privacy@northstarcart.com
       - key: COMPANY_PHONE
+        value: +1 (942) 380-9665
+      - key: COMPANY_CONTACT_PERSON
         sync: false
       - key: COMPANY_HOURS
         sync: false
@@ -125,9 +127,14 @@ services:
       - key: PAYMENT_MODE
         value: mock
 
-      # Set PUBLIC_BASE_URL to this service's own URL after the first deploy,
-      # e.g. https://cha-yuan-tea-shop.onrender.com — OTT Pay posts the payment
-      # result there, so it must be the public hostname, not localhost.
+      # The public hostname. The payment gateway posts its callback here, so this
+      # is not cosmetic — while it names the onrender.com address, a payment can
+      # complete at the gateway while the shop never hears about it.
+      #
+      # Leave it as `sync: false` and set it in the dashboard once the custom
+      # domain is attached at Cloudflare, rather than pinning it here: the
+      # onrender.com service name is not known until Render has created it, and a
+      # wrong literal would be worse than an empty value.
       - key: PUBLIC_BASE_URL
         sync: false
 

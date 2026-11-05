@@ -37,6 +37,7 @@ const PAGES = [
 /** Artwork that is intentionally generated, with the reason. */
 const EXPECTED_GENERATED = [
   { pattern: /^\/img\/logo\.svg$/, why: 'brand logotype' },
+  { pattern: /^\/img\/logo-mark\.svg$/, why: 'brand mark, used alone in the header' },
   { pattern: /^\/favicon\.svg$/, why: 'brand favicon' },
   { pattern: /^\/img\/badge\//, why: 'payment badge' },
 ];

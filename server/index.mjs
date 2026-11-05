@@ -1,5 +1,5 @@
 /**
- * Cha Yuan — HTTP application.
+ * Northstar Cart — HTTP application.
  *
  * Express server hosting the storefront, the JSON API, the OTT Pay callback
  * endpoint, the 3-D Secure challenge relay and the admin back office.
@@ -431,7 +431,21 @@ app.get('/img/hero/:key.svg', (req, res) => {
   }));
 });
 
-app.get('/img/logo.svg', (req, res) => sendSvg(res, imagery.logo({ name: config.store.name }), { immutable: true }));
+app.get('/img/logo.svg', (req, res) => sendSvg(res, imagery.logo({
+  name: config.store.name,
+  subtitle: config.store.logoSubtitle,
+}), { immutable: true }));
+/*
+ * The mark on its own, for the header.
+ *
+ * The header sets the store name as live text beside the mark rather than baking
+ * it into an image: text can be selected, scales with the font settings, and is
+ * read by a screen reader as a heading rather than as an alt attribute. Baking
+ * the wordmark into one SVG for every surface produced the name twice in the
+ * header above 1180px, because the `.brand-text` span beside it was only hidden
+ * below that width.
+ */
+app.get('/img/logo-mark.svg', (req, res) => sendSvg(res, imagery.logoMark(), { immutable: true }));
 /**
  * Payment-network marks.
  *

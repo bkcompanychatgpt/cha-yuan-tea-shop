@@ -77,8 +77,14 @@
           <span><% company.addressLines.forEach((line, i) => { %><%= line %><% if (i < company.addressLines.length - 1) { %><br /><% } %><% }) %></span>
         </div>
         <div><span>Country of establishment</span><span><%= company.country %></span></div>
-        <div><span>Company registration</span><span class="mono"><%= company.registrationNumber %></span></div>
-        <div><span>Tax registration</span><span class="mono"><%= company.taxNumber %></span></div>
+        <div>
+          <span>Company registration</span>
+          <span class="mono"><%= company.missing.registrationNumber ? 'To be supplied' : company.registrationNumber %></span>
+        </div>
+        <div>
+          <span>Tax registration</span>
+          <span class="mono"><%= company.missing.taxNumber ? 'To be supplied' : company.taxNumber %></span>
+        </div>
         <div><span>Contact person</span><span><%= company.contactPerson %></span></div>
         <div><span>Telephone</span><span><a class="link-underline" href="tel:<%= company.phone.replace(/[^+0-9]/g, '') %>"><%= company.phone %></a></span></div>
         <div><span>Opening hours</span><span><%= company.hours %></span></div>
@@ -88,15 +94,33 @@
       </div>
 
       <% if (company.isPlaceholder) { %>
+        <%
+          /*
+           * Only the rows that are actually missing are called out.
+           *
+           * The company name, address, telephone and email are real, so a blanket
+           * "these are samples" warning would now be wrong in a way that makes the
+           * whole block look untrustworthy. What is genuinely outstanding is the
+           * Ontario corporate number and the HST number, and they are marked in
+           * the table above rather than invented.
+           */
+          const missingRows = [];
+          if (company.missing.registrationNumber) missingRows.push({
+            env: 'COMPANY_REGISTRATION_NUMBER',
+            what: 'the Ontario corporate registration number',
+          });
+          if (company.missing.taxNumber) missingRows.push({
+            env: 'COMPANY_TAX_NUMBER',
+            what: 'the HST registration number',
+          });
+        %>
         <div class="alert alert-warn" style="margin-top:22px">
-          <strong>Still to be supplied.</strong> The registered name, address, registration numbers and telephone
-          number above are placeholders, and will be replaced with the real ones. Until they are, they are not
-          evidence of anything — please do not rely on them. A shop that takes card payments has to publish the
-          identity of the business behind it, so this is the first thing to finish before launch: set
-          <span class="mono">COMPANY_LEGAL_NAME</span>, <span class="mono">COMPANY_ADDRESS</span>,
-          <span class="mono">COMPANY_REGISTRATION_NUMBER</span>, <span class="mono">COMPANY_TAX_NUMBER</span>,
-          <span class="mono">COMPANY_PHONE</span>, <span class="mono">COMPANY_EMAIL</span> and
-          <span class="mono">COMPANY_PRIVACY_EMAIL</span>, and this notice disappears on its own.
+          <strong>Two numbers still to be supplied:</strong>
+          <%= missingRows.map((r) => r.what).join(' and ') %>. They are left blank rather than filled with
+          something that looks right, because a registration number is the one line on this page a customer or a
+          card scheme might actually look up. Set
+          <% missingRows.forEach((r, i) => { %><span class="mono"><%= r.env %></span><% if (i < missingRows.length - 1) { %> and <% } %><% }) %>
+          on the host and this notice disappears.
         </div>
       <% } %>
     </div>

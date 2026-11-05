@@ -223,7 +223,7 @@ if (!arg) {
     credits.credits[product.slug] = {
       source: '',
       title: prompt ? `Generated illustration of ${product.name}` : `Generated image of ${product.name}`,
-      author: 'Generated for Cha Yuan',
+      author: 'Generated for Northstar Cart',
       licence: 'Own work, generated',
       licenceUrl: '',
       generated: true,

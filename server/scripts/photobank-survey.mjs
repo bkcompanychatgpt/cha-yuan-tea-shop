@@ -13,7 +13,7 @@
  * The point is to replace guesswork about "how many products can I add" with a
  * number that was measured.
  */
-const UA = 'ChaYuanTeaShopAssetSourcing/1.0 (https://github.com/local/cha-yuan; dev@chayuan.test)';
+const UA = 'NorthstarCartAssetSourcing/1.0 (https://github.com/local/northstar-cart; dev@northstarcart.test)';
 const API = 'https://commons.wikimedia.org/w/api.php';
 
 /** Broad query sets per category. Deliberately generous: this is an upper bound. */

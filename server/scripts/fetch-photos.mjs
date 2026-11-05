@@ -23,7 +23,7 @@ const RAW_DIR = path.join(PHOTO_DIR, 'raw');
 const SHEET_DIR = path.join(PHOTO_DIR, 'sheets');
 const MANIFEST = path.join(PHOTO_DIR, 'candidates.json');
 
-const UA = 'ChaYuanTeaShopAssetSourcing/1.0 (https://github.com/local/cha-yuan; dev@chayuan.test)';
+const UA = 'NorthstarCartAssetSourcing/1.0 (https://github.com/local/northstar-cart; dev@northstarcart.test)';
 const API = 'https://commons.wikimedia.org/w/api.php';
 
 /**

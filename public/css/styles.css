@@ -2594,7 +2594,20 @@ select.select option { background: var(--ink-800); color: var(--text); }
   .dept-media { aspect-ratio: 16 / 9; }
   .dept-body { padding: 16px 16px 15px; }
   .dept-links { display: none; }
-  .brand-text { display: none; }
+  /*
+   * The brand name stays on a phone.
+   *
+   * It used to be hidden here, because the logo SVG carried the wordmark and the
+   * mark alone was thought to be enough. When the header moved to the mark-only
+   * SVG — so that the name is live text rather than baked into an image — hiding
+   * this left a phone showing a star and no name at all. The subtitle goes
+   * instead: the name is what identifies the shop, and "TEA & JEWELLERY" is
+   * already implied by the nav directly below.
+   */
+  .brand-text { display: flex; }
+  .brand-sub { display: none; }
+  .brand-name { font-size: 1.1rem; }
+  .brand { gap: 9px; }
   .brand img { height: 40px; }
   .header-inner { gap: 10px; }
   .header-actions { gap: 2px; }

@@ -74,7 +74,7 @@ function csrfFromCookie() {
 }
 
 async function main() {
-  console.log(`\nCha Yuan smoke test against ${BASE}\n`);
+  console.log(`\nNorthstar Cart smoke test against ${BASE}\n`);
   console.log('Storefront');
 
   /* ---------------------------------------------------------- storefront */
@@ -82,7 +82,11 @@ async function main() {
     const r = await request('/');
     const html = await r.text();
     record(r.status === 200, 'GET / returns 200', `status ${r.status}`);
-    record(html.includes('Single-origin Chinese tea'), 'homepage renders the hero headline');
+    // The headline names the two departments the shop actually has; it used to
+    // name three, and narrowing it is exactly the sort of change that should
+    // break a test rather than slip through.
+    record(/Chinese tea and fine/.test(html), 'homepage renders the hero headline');
+    record(!/jade/i.test(html), 'the homepage does not offer the withdrawn jade department');
     // The homepage is deliberately a directory: the departments, each naming
     // its collections, and no individual product cards. Products are one click
     // deeper, inside a category.
@@ -254,7 +258,7 @@ async function main() {
   };
 
   const baseOrder = {
-    email: 'smoke@chayuan.test',
+    email: 'smoke@northstarcart.test',
     name: 'Smoke Tester',
     phone: '+1 416 555 0123',
     address: '1123 Leslie Street',
@@ -377,7 +381,7 @@ async function main() {
   }
 
   {
-    const r = await request(`/order/${orderNumber}?email=smoke@chayuan.test`);
+    const r = await request(`/order/${orderNumber}?email=smoke@northstarcart.test`);
     const html = await r.text();
     record(r.status === 200 && html.includes(orderNumber), 'the order confirmation page renders');
     record(html.includes('Smoke Tester'), 'the confirmation shows the customer');
@@ -386,7 +390,7 @@ async function main() {
   /* ------------------------------------------------- fulfilment promises */
   console.log('\nOrder confirmation detail');
   {
-    const r = await request(`/order/${orderNumber}?email=smoke@chayuan.test`);
+    const r = await request(`/order/${orderNumber}?email=smoke@northstarcart.test`);
     const html = await r.text();
     record(html.includes('What happens next'), 'the confirmation explains what happens next');
     record((html.match(/class="fulfil-step /g) || []).length === 6, 'the confirmation shows all six fulfilment stages');
@@ -467,7 +471,7 @@ async function main() {
   {
     const r = await request('/admin/login', {
       method: 'POST',
-      form: { email: 'owner@chayuan.test', password: 'wrong-password', next: '/admin' },
+      form: { email: 'owner@northstarcart.test', password: 'wrong-password', next: '/admin' },
     });
     record(r.status === 401, 'admin rejects a wrong password', `status ${r.status}`);
   }
@@ -475,7 +479,7 @@ async function main() {
   {
     const r = await request('/admin/login', {
       method: 'POST',
-      form: { email: 'owner@chayuan.test', password: 'changeme-please', next: '/admin' },
+      form: { email: 'owner@northstarcart.test', password: 'changeme-please', next: '/admin' },
     });
     record(r.status === 302 && (r.headers.get('location') || '').includes('/admin'), 'admin accepts the configured password', `status ${r.status}`);
   }

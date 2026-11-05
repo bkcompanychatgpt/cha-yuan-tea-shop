@@ -548,7 +548,7 @@ export function heroArtwork({ key = 'home', title = '', subtitle = '', family = 
     bands += `<path d="M-50 ${y} C 400 ${y - 70}, 900 ${y + 60}, 1970 ${y - 30} L 1970 1120 L -50 1120 Z"
       fill="${p.bg1}" opacity="${0.30 - i * 0.05}"/>`;
   }
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img" aria-label="${escapeXml(title || 'Cha Yuan')}">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img" aria-label="${escapeXml(title || 'Northstar Cart')}">
   <defs>
     <linearGradient id="hb" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="${p.bg1}"/>
@@ -776,24 +776,65 @@ export function brandBadge({ label, tone = '#d9b96b', width = 92 } = {}) {
 </svg>`;
 }
 
-/** The store wordmark: a tea chop in gold plus the Latin name. */
-export function logo({ name = 'Cha Yuan', subtitle = 'CHINESE TEA', tone = '#d9b96b', text = '#f4efe3' }) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 110" width="420" height="110" role="img" aria-label="${escapeXml(name)}">
-  <g transform="translate(52 55)">
-    <rect x="-38" y="-38" width="76" height="76" rx="8" fill="none" stroke="${tone}" stroke-width="2.4"/>
-    <text x="0" y="14" text-anchor="middle" font-family="'Songti SC','SimSun',Georgia,serif" font-size="42" fill="${tone}">茶</text>
-  </g>
-  <text x="108" y="52" font-family="Georgia,'Times New Roman',serif" font-size="34" fill="${text}" letter-spacing="1">${escapeXml(name)}</text>
-  <text x="110" y="76" font-family="Helvetica,Arial,sans-serif" font-size="12.5" letter-spacing="5.4" fill="${tone}">${escapeXml(subtitle)}</text>
+/**
+ * The mark on its own: the seal and the star, no words.
+ *
+ * The header pairs this with live text, because a wordmark baked into an SVG is
+ * set at one fixed size and cannot be selected, scaled or read out on its own.
+ * The locked-up `logo()` below is still what the footer and the admin sidebar
+ * use, where a single compact image is the right thing.
+ *
+ * Before this split the header showed the name twice above 1180px — once inside
+ * the logo SVG and once in the `.brand-text` span beside it, which was only
+ * hidden below that width.
+ */
+export function logoMark({ tone = '#d9b96b', bg = 'none' } = {}) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="Northstar Cart">
+  <rect x="1" y="1" width="94" height="94" rx="10" fill="${bg === 'none' ? 'none' : bg}"/>
+  <rect x="8" y="8" width="80" height="80" rx="9" fill="none" stroke="${tone}" stroke-width="2.6"/>
+  <path d="M48,22 Q48,48 74,48 Q48,48 48,74 Q48,48 22,48 Q48,48 48,22 Z" fill="${tone}"/>
+  <path d="M48,34 Q48,48 62,48 Q48,48 48,62 Q48,48 34,48 Q48,48 48,34 Z" fill="${tone}" transform="rotate(45 48 48)"/>
 </svg>`;
 }
 
-/** Favicon: seal mark only. */
+/**
+ * The store wordmark: a north star in gold, plus the name.
+ *
+ * This replaced the seal that carried the Chinese character for tea when the
+ * shop took its own name. The seal frame stayed
+ * — it is the shape the header, the footer and the favicon are all built around,
+ * and it reads as a maker's mark rather than as a logo bolted on — but the
+ * character inside it became an eight-pointed compass star: two four-pointed
+ * stars, the smaller one turned forty-five degrees, which is the mark a compass
+ * rose uses rather than a generic sparkle.
+ *
+ * Eight points on purpose. Four reads as "shiny"; eight reads as a compass, and
+ * the name is Northstar.
+ */
+export function logo({
+  name = 'Northstar Cart',
+  subtitle = 'TEA & JEWELLERY',
+  tone = '#d9b96b',
+  text = '#f4efe3',
+}) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 110" width="460" height="110" role="img" aria-label="${escapeXml(name)}">
+  <g transform="translate(52 55)">
+    <rect x="-38" y="-38" width="76" height="76" rx="8" fill="none" stroke="${tone}" stroke-width="2.4"/>
+    <path d="M0,-28 Q0,0 28,0 Q0,0 0,28 Q0,0 -28,0 Q0,0 0,-28 Z" fill="${tone}"/>
+    <path d="M0,-13 Q0,0 13,0 Q0,0 0,13 Q0,0 -13,0 Q0,0 0,-13 Z" fill="${tone}" transform="rotate(45)"/>
+  </g>
+  <text x="108" y="50" font-family="Georgia,'Times New Roman',serif" font-size="31" fill="${text}" letter-spacing="0.6">${escapeXml(name)}</text>
+  <text x="110" y="75" font-family="Helvetica,Arial,sans-serif" font-size="11.5" letter-spacing="4.4" fill="${tone}">${escapeXml(subtitle)}</text>
+</svg>`;
+}
+
+/** Favicon: the star mark only. */
 export function favicon({ tone = '#d9b96b', bg = '#0d1f16' } = {}) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <rect width="64" height="64" rx="12" fill="${bg}"/>
   <rect x="8" y="8" width="48" height="48" rx="6" fill="none" stroke="${tone}" stroke-width="2.5"/>
-  <text x="32" y="44" text-anchor="middle" font-family="'Songti SC','SimSun',Georgia,serif" font-size="34" fill="${tone}">茶</text>
+  <path d="M32,17 Q32,32 47,32 Q32,32 32,47 Q32,32 17,32 Q32,32 32,17 Z" fill="${tone}"/>
+  <path d="M32,24 Q32,32 40,32 Q32,32 32,40 Q32,32 24,32 Q32,32 32,24 Z" fill="${tone}" transform="rotate(45 32 32)"/>
 </svg>`;
 }
 

@@ -10,7 +10,7 @@
  *
  *   node server/scripts/probe-museums.mjs
  */
-const UA = 'ChaYuanTeaShopAssetSourcing/1.0 (dev@chayuan.test)';
+const UA = 'NorthstarCartAssetSourcing/1.0 (dev@northstarcart.test)';
 
 async function get(url) {
   const res = await fetch(url, { headers: { 'User-Agent': UA, Accept: 'application/json' } });

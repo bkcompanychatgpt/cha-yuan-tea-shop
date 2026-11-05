@@ -34,14 +34,14 @@ function pickLines({ kind = '', limit = 3 } = {}) {
 const SCENARIOS = [
   {
     label: 'processing, domestic standard, before the cut-off',
-    customer: { name: 'Review Processing', email: 'review-processing@chayuan.test', phone: '+1 416 555 0101' },
+    customer: { name: 'Review Processing', email: 'review-processing@northstarcart.test', phone: '+1 416 555 0101' },
     shipping: { name: 'Review Processing', line1: '88 Spadina Avenue', line2: 'Unit 400', city: 'Toronto', province: 'ON', postalCode: 'M5V 2J4', country: 'CA' },
     shippingMethod: 'standard',
     status: 'processing',
   },
   {
     label: 'shipped, domestic express',
-    customer: { name: 'Review Express', email: 'review-express@chayuan.test', phone: '+1 416 555 0144' },
+    customer: { name: 'Review Express', email: 'review-express@northstarcart.test', phone: '+1 416 555 0144' },
     // Ontario, to match the HST the shop charges on this build.
     shipping: { name: 'Review Express', line1: '1200 King Street West', line2: '', city: 'Toronto', province: 'ON', postalCode: 'M5V 1N6', country: 'CA' },
     shippingMethod: 'express',
@@ -49,14 +49,14 @@ const SCENARIOS = [
   },
   {
     label: 'shipped, international standard',
-    customer: { name: 'Review Overseas', email: 'review-overseas@chayuan.test', phone: '+44 20 7946 0102' },
+    customer: { name: 'Review Overseas', email: 'review-overseas@northstarcart.test', phone: '+44 20 7946 0102' },
     shipping: { name: 'Review Overseas', line1: '42 Redchurch Street', line2: 'Flat 3', city: 'London', province: 'England', postalCode: 'E2 7DJ', country: 'GB' },
     shippingMethod: 'standard',
     status: 'shipped',
   },
   {
     label: 'delivered, international standard',
-    customer: { name: 'Review Delivered', email: 'review-delivered@chayuan.test', phone: '+1 212 555 0188' },
+    customer: { name: 'Review Delivered', email: 'review-delivered@northstarcart.test', phone: '+1 212 555 0188' },
     shipping: { name: 'Review Delivered', line1: '350 Fifth Avenue', line2: 'Suite 5900', city: 'New York', province: 'NY', postalCode: '10118', country: 'US' },
     shippingMethod: 'standard',
     status: 'delivered',
@@ -66,7 +66,7 @@ const SCENARIOS = [
     // of jade is not "weighed to the gram" and does not need tin advice.
     label: 'processing, jade and jewellery only',
     kind: 'jewellery',
-    customer: { name: 'Review Stone', email: 'review-stone@chayuan.test', phone: '+1 416 555 0177' },
+    customer: { name: 'Review Stone', email: 'review-stone@northstarcart.test', phone: '+1 416 555 0177' },
     shipping: { name: 'Review Stone', line1: '25 The West Mall', line2: '', city: 'Etobicoke', province: 'ON', postalCode: 'M9C 1B8', country: 'CA' },
     shippingMethod: 'standard',
     status: 'processing',

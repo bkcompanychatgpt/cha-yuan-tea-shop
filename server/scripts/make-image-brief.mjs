@@ -77,7 +77,7 @@ push('Copy everything in the block below and send it as a single message.');
 push('');
 
 push('```text');
-push('You are producing the product imagery for Cha Yuan, a shop selling Chinese tea, jade and');
+push('You are producing the product imagery for Northstar Cart, a shop selling Chinese tea, jade and');
 push('fine jewellery. Complete the entire task below in one go and hand back a single ZIP file.');
 push('Do not stop to ask questions, and do not deliver the images one at a time.');
 push('');
