@@ -6,7 +6,7 @@
   <title><%= typeof title !== 'undefined' && title ? title : 'Admin' %> — <%= store.name %> admin</title>
   <meta name="robots" content="noindex, nofollow" />
   <meta name="csrf-token" content="<%= csrfToken %>" />
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="<%= asset('/favicon.svg') %>" type="image/svg+xml" />
   <link rel="stylesheet" href="/fonts/cormorant.css" />
   <link rel="stylesheet" href="/fonts/inter.css" />
   <link rel="stylesheet" href="/css/styles.css?v=<%= assetVersion %>" />

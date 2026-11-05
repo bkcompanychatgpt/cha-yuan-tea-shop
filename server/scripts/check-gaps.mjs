@@ -34,11 +34,19 @@ const PAGES = [
   '/order',
 ];
 
-/** Artwork that is intentionally generated, with the reason. */
+/**
+ * Artwork that is intentionally generated, with the reason.
+ *
+ * The brand assets now carry a `?v=` cache-buster, because they are served
+ * `immutable` for a year and their paths do not change when the artwork does —
+ * which is how a rebrand left returning visitors looking at the previous logo.
+ * The patterns therefore allow an optional query string, and still anchor on the
+ * path so a *photograph* falling back to a drawing is still caught.
+ */
 const EXPECTED_GENERATED = [
-  { pattern: /^\/img\/logo\.svg$/, why: 'brand logotype' },
-  { pattern: /^\/img\/logo-mark\.svg$/, why: 'brand mark, used alone in the header' },
-  { pattern: /^\/favicon\.svg$/, why: 'brand favicon' },
+  { pattern: /^\/img\/logo\.svg(\?v=[0-9a-f]+)?$/, why: 'brand logotype' },
+  { pattern: /^\/img\/logo-mark\.svg(\?v=[0-9a-f]+)?$/, why: 'brand mark, used alone in the header' },
+  { pattern: /^\/favicon\.svg(\?v=[0-9a-f]+)?$/, why: 'brand favicon' },
   { pattern: /^\/img\/badge\//, why: 'payment badge' },
 ];
 

@@ -27,7 +27,7 @@ import * as security from './security.mjs';
 // namespace object is not callable.
 import { fulfilment } from './fulfilment.mjs';
 import { englishLabel } from './photo-selection.mjs';
-import { ASSET_VERSION, photoUrl } from './asset-version.mjs';
+import { ASSET_VERSION, photoUrl, assetUrl } from './asset-version.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.join(config.rootDir, 'public');
@@ -270,6 +270,8 @@ app.locals.escapeHtml = security.escapeHtml;
  */
 app.locals.assetVersion = ASSET_VERSION;
 app.locals.img = photoUrl;
+// Versioned brand artwork — logo, mark, favicon. See assetUrl for why.
+app.locals.asset = assetUrl;
 // Fulfilment promises, so any view can render the same deadlines the customer
 // was shown. Callable from a template as fulfilment(order); the partial that
 // does so lives at views/partials/order-progress.ejs.

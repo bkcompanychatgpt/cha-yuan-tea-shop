@@ -1128,7 +1128,17 @@ export const EDITORIAL = {
     },
     {
       q: 'Do you sell wholesale?',
-      a: 'Yes, from 200 g per tea. Write to hello@northstarcart.test with what you are looking for and we will send a price list and samples.',
+      /*
+       * No address printed here.
+       *
+       * This line used to name one, and because it is static data it never
+       * followed the company block: it survived two renames and ended up pointing
+       * at a `.test` domain, which is reserved and can never accept mail. The
+       * contact address is on the footer, the contact page and every policy page,
+       * all from configuration, so the answer here just tells the customer to
+       * write.
+       */
+      a: 'Yes, from 200 g per tea. Write to us with what you are looking for and we will send a price list and samples.',
     },
   ],
   pillars: [

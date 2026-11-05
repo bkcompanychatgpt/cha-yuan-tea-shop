@@ -89,6 +89,13 @@
       Every email is answered by the person who chose the tea. Ask about a lot, a harvest, or what to buy for
       someone who thinks they dislike tea.
     </p>
-    <a class="btn btn-solid" href="mailto:hello@northstarcart.test">hello@northstarcart.test</a>
+    <%#
+      The address used to be typed in here by hand, and it survived two renames
+      because nothing connected it to the company block: by the time anyone
+      looked, a live page was inviting customers to write to a ".test" domain,
+      which is reserved and can never receive mail. It comes from config now, so
+      changing the mailbox is one variable and not a search.
+    %>
+    <a class="btn btn-solid" href="mailto:<%= company.email %>"><%= company.email %></a>
   </div>
 </section>

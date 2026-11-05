@@ -181,6 +181,51 @@ console.log('\n  Editorial copy (including what no view renders yet)\n');
   }
 }
 
+/* ------------------------------------------------- published addresses */
+/*
+ * Only the configured mailboxes may appear on a page.
+ *
+ * A contact address typed into a template is invisible in every other check: it
+ * is not a broken link, it does not 404, and the page renders perfectly. The one
+ * that prompted this had been through two renames and was inviting customers to
+ * write to a `.test` domain — reserved by RFC 2606, so guaranteed to bounce.
+ *
+ * Input placeholders (`you@example.com`) are attributes and are stripped with the
+ * markup before this runs, which is why they are not listed here.
+ */
+console.log('\n  Published email addresses\n');
+{
+  const { default: config } = await import('../config.mjs');
+  const allowed = new Set(
+    [config.company.email, config.company.privacyEmail].map((a) => String(a).toLowerCase()),
+  );
+
+  const stray = [];
+  for (const page of PAGES) {
+    let text = '';
+    try {
+      const res = await fetch(`${BASE}${page}`);
+      text = (await res.text()).replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<[^>]*>/g, ' ');
+    } catch {
+      continue;
+    }
+    for (const m of text.matchAll(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g)) {
+      const address = m[0].toLowerCase();
+      if (!allowed.has(address)) stray.push({ page, address });
+    }
+  }
+
+  const unique = [...new Map(stray.map((s) => [`${s.address}|${s.page}`, s])).values()];
+  if (unique.length) {
+    problems += unique.length;
+    console.log(`  \u001b[31mFAIL\u001b[0m  ${unique.length} address(es) not in the configuration:`);
+    for (const s of unique) console.log(`          ${s.address}  on ${s.page}`);
+    console.log(`          allowed: ${[...allowed].join(', ')}`);
+  } else {
+    console.log(`  \u001b[32mPASS\u001b[0m  every published address is a configured one (${[...allowed].join(', ')})`);
+  }
+}
+
 console.log(`\n${'-'.repeat(58)}`);
 console.log(`  ${problems === 0 ? 'PASS' : 'FAIL'}  ${problems} problem(s)\n`);
 process.exit(problems ? 1 : 0);

@@ -88,6 +88,30 @@ export function photoUrl(url) {
   return `${value}?v=${ASSET_VERSION}`;
 }
 
+/**
+ * Version any generated brand asset: the logo, the mark, the favicon, the marks.
+ *
+ * These are served `immutable` for a year, and their paths never change when the
+ * artwork does — so a browser that fetched the previous logo keeps it until its
+ * cache says otherwise. That is not hypothetical: the shop was rebranded with a
+ * new logo and a returning visitor still saw the old one, because
+ * `/img/logo-mark.svg` was byte-identical as far as the cache was concerned.
+ *
+ * Photographs go through `photoUrl` in the data layer; this is the template-side
+ * equivalent for everything else the server draws on demand. Product *artwork*
+ * (`/img/product/<slug>.svg`) is deliberately left alone: the placeholder audit
+ * matches those paths exactly to spot a listing that fell back to a drawing.
+ */
+export function assetUrl(url) {
+  const value = String(url || '');
+  if (value.includes('?')) return value;
+  if (!value.startsWith('/')) return url;
+  if (value === '/favicon.svg' || value === '/favicon.ico') return `${value}?v=${ASSET_VERSION}`;
+  if (value.startsWith('/img/logo')) return `${value}?v=${ASSET_VERSION}`;
+  if (value.startsWith('/img/badge/')) return `${value}?v=${ASSET_VERSION}`;
+  return url;
+}
+
 export const assetStats = {
   version: ASSET_VERSION,
   photos: photoCount,

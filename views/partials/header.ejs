@@ -1,7 +1,7 @@
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="/" aria-label="<%= store.name %> — home">
-      <img src="/img/logo-mark.svg" alt="" />
+      <img src="<%= asset('/img/logo-mark.svg') %>" alt="" />
       <span class="brand-text">
         <span class="brand-name"><%= store.name %></span>
         <span class="brand-sub"><%= store.logoSubtitle %></span>
@@ -51,7 +51,7 @@
               <%
                 // One representative lot. The route supplies it so the header
                 // never has to run a query of its own.
-                const shot = (typeof megaShot !== 'undefined' && megaShot) ? megaShot : '/img/logo.svg';
+                const shot = (typeof megaShot !== 'undefined' && megaShot) ? megaShot : asset('/img/logo.svg');
               %>
               <img src="<%= shot %>" alt="" loading="lazy" />
               <div>
