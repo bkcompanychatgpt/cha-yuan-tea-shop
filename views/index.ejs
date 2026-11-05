@@ -1,17 +1,17 @@
 <% const ed = (typeof editorial !== 'undefined' && editorial) ? editorial : { pillars: [], guides: [], ticker: [], trust: [] }; %>
 
-<!-- ===================================================== announcement ticker -->
-<% if (ed.ticker && ed.ticker.length) { %>
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <% [0, 1].forEach(() => { %>
-        <% ed.ticker.forEach(item => { %>
-          <span class="ticker-item"><%= item %></span>
-        <% }) %>
-      <% }) %>
-    </div>
-  </div>
-<% } %>
+<%#
+  The scrolling announcement bar used to sit here, and it was the single thing
+  most at odds with the rest of the page: a marquee of "FREE SHIPPING OVER $79",
+  "24 TINS ONLY", "3-D SECURE 2 · VISA · MASTERCARD" moving sideways above the
+  hero. Moving text at the top of a page is a discount-store signal, and the two
+  facts worth keeping from it — free shipping over the threshold, dispatch within
+  48 hours — are already stated in the footer, on the shipping policy and on every
+  product page. It also scrolled horizontally, which meant a permanently
+  overflowing element on a phone.
+
+  The editorial data still holds the ticker items; nothing renders them now.
+%>
 
 <!-- ================================================================== hero -->
 <%

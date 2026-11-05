@@ -7,9 +7,15 @@
       <% } %>
     </a>
 
+    <%# One badge, not three. A card carrying "Hand-strung", "Coin" and a
+        "Visualisation" mark above a name, a paragraph, a spec line, a price, a
+        star rating and a Details link reads as a marketplace listing; the same
+        product with one badge, its name and its price reads as a shop. The
+        disclosure mark stays because it is not decoration — it tells the customer
+        the image is a rendering. %>
     <div class="tea-badges">
       <% if (product.is_new) { %><span class="badge badge-gold">New</span><% } %>
-      <% (product.badges || []).slice(0, 2).forEach(b => { %><span class="badge"><%= b %></span><% }) %>
+      <% (product.badges || []).slice(0, 1).forEach(b => { %><span class="badge"><%= b %></span><% }) %>
       <% if (!product.inStock) { %><span class="badge">Sold out</span><% } %>
     </div>
 
@@ -52,39 +58,32 @@
     </div>
     <h3 class="tea-name"><a href="/tea/<%= product.slug %>"><%= product.name %></a></h3>
 
-    <% if (product.tasting_notes && product.tasting_notes.length) { %>
-      <div class="tea-notes">
-        <% product.tasting_notes.slice(0, 3).forEach(n => { %><span class="tea-note"><%= n %></span><% }) %>
-      </div>
-    <% } else { %>
-      <p class="tea-desc"><%= product.short_description %></p>
-    <% } %>
+    <%#
+      The two-line description is gone from the card.
 
-    <% if (product.variants && product.variants.length > 1) { %>
-      <div class="tea-meta-row">
-        <span class="tea-sizes"><%= product.variants.length %> sizes · <%= product.variants[0].label %>–<%= product.variants[product.variants.length - 1].label %></span>
-        <% if (product.harvest) { %><span><%= product.harvest.split(',')[0].slice(0, 22) %></span><% } %>
-      </div>
-    <% } %>
+      It was the thing making the grid look untidy: four cards in a row had four
+      different amounts of text, so the prices sat at four different heights, and
+      the copy was clipped mid-word to fit. A card now carries the image, what the
+      thing is, its name and its price — which is what a shelf label carries. The
+      description is one click away, on the product page, where there is room to
+      read it properly.
+
+      Tasting notes for tea are shown as chips instead, on the product page.
+    %>
+
+    <%# The spec row ("3 sizes · 16 cm–19 cm", "Strung by hand in 2024") is gone.
+        It repeated what the price line already implies and pushed the price off
+        the fold of a phone card. %>
 
     <div class="tea-foot">
-      <div>
-        <div class="price">
-          <% if (product.priceFrom === product.priceTo) { %>
-            <%= money(product.priceFrom) %>
-            <small>· <%= dv ? dv.label : '' %></small>
-          <% } else { %>
-            <small>from</small> <%= money(product.priceFrom) %>
-          <% } %>
-        </div>
-        <% if (product.review_count) { %>
-          <div class="stars" aria-label="Rated <%= product.rating %> out of 5">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.6 7 .8-5.2 4.7 1.4 6.9L12 17.5 5.8 21l1.4-6.9L2 9.4l7-.8Z"/></svg>
-            <span class="small faint" style="margin-left:4px"><%= product.rating.toFixed(1) %> (<%= product.review_count %>)</span>
-          </div>
+      <div class="price">
+        <% if (product.priceFrom === product.priceTo) { %>
+          <%= money(product.priceFrom) %>
+          <small>· <%= dv ? dv.label : '' %></small>
+        <% } else { %>
+          <small>from</small> <%= money(product.priceFrom) %>
         <% } %>
       </div>
-      <a class="small link-underline" href="/tea/<%= product.slug %>">Details</a>
     </div>
   </div>
 </article>

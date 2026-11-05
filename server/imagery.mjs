@@ -777,64 +777,111 @@ export function brandBadge({ label, tone = '#d9b96b', width = 92 } = {}) {
 }
 
 /**
- * The mark on its own: the seal and the star, no words.
+ * The gold gradient the mark and the wordmark are filled with.
  *
- * The header pairs this with live text, because a wordmark baked into an SVG is
- * set at one fixed size and cannot be selected, scaled or read out on its own.
- * The locked-up `logo()` below is still what the footer and the admin sidebar
- * use, where a single compact image is the right thing.
- *
- * Before this split the header showed the name twice above 1180px — once inside
- * the logo SVG and once in the `.brand-text` span beside it, which was only
- * hidden below that width.
+ * The operator's logo artwork is gold with a vertical fall-off — light at the top
+ * of each point, deep at the bottom — which is what stops a flat gold shape
+ * reading as yellow. Reproduced here as a gradient so the mark keeps that depth
+ * at any size.
  */
-export function logoMark({ tone = '#d9b96b', bg = 'none' } = {}) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="Northstar Cart">
-  <rect x="1" y="1" width="94" height="94" rx="10" fill="${bg === 'none' ? 'none' : bg}"/>
-  <rect x="8" y="8" width="80" height="80" rx="9" fill="none" stroke="${tone}" stroke-width="2.6"/>
-  <path d="M48,22 Q48,48 74,48 Q48,48 48,74 Q48,48 22,48 Q48,48 48,22 Z" fill="${tone}"/>
-  <path d="M48,34 Q48,48 62,48 Q48,48 48,62 Q48,48 34,48 Q48,48 48,34 Z" fill="${tone}" transform="rotate(45 48 48)"/>
+function goldGradient(id) {
+  return `<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6e6b8"/>
+      <stop offset="42%" stop-color="#dcbd74"/>
+      <stop offset="100%" stop-color="#a8843f"/>
+    </linearGradient>`;
+}
+
+/** A four-pointed star with concave sides, centred on (cx, cy), arms of `r`. */
+function starPath(cx, cy, r) {
+  return `M${cx},${cy - r} Q${cx},${cy} ${cx + r},${cy} Q${cx},${cy} ${cx},${cy + r} `
+    + `Q${cx},${cy} ${cx - r},${cy} Q${cx},${cy} ${cx},${cy - r} Z`;
+}
+
+/**
+ * The mark on its own: the north star inside an orbit, no words.
+ *
+ * This is the operator's own logo — a four-pointed star whose arms break through
+ * a thin circle, with a small companion star beneath — drawn as vector artwork
+ * rather than embedded as a bitmap. A raster logo cannot survive being used at
+ * 32px in a header and 96px in a footer, and the supplied file had a textured
+ * dark-green background baked into it that would have sat as a visible rectangle
+ * on the page's own ink-green.
+ *
+ * The circle is drawn first and the star over it, so the arms cover the points
+ * where they cross: that is what gives the broken-arc look without needing four
+ * separate arc segments.
+ */
+export function logoMark({ width = 120 } = {}) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 124" width="${width}" height="${Math.round((width / 120) * 124)}" role="img" aria-label="Northstar Cart">
+  <defs>${goldGradient('nsGoldMark')}</defs>
+  <circle cx="60" cy="54" r="27.5" fill="none" stroke="url(#nsGoldMark)" stroke-width="1.5" opacity="0.9"/>
+  <path d="${starPath(60, 54, 42)}" fill="url(#nsGoldMark)"/>
+  <path d="${starPath(60, 108, 8)}" fill="url(#nsGoldMark)"/>
 </svg>`;
 }
 
 /**
- * The store wordmark: a north star in gold, plus the name.
+ * The horizontal lockup, for the footer and the admin sidebar.
  *
- * This replaced the seal that carried the Chinese character for tea when the
- * shop took its own name. The seal frame stayed
- * — it is the shape the header, the footer and the favicon are all built around,
- * and it reads as a maker's mark rather than as a logo bolted on — but the
- * character inside it became an eight-pointed compass star: two four-pointed
- * stars, the smaller one turned forty-five degrees, which is the mark a compass
- * rose uses rather than a generic sparkle.
- *
- * Eight points on purpose. Four reads as "shiny"; eight reads as a compass, and
- * the name is Northstar.
+ * The header does not use this: it pairs `logoMark()` with live text so the name
+ * is selectable, scalable and read out as a heading. Here a single image is the
+ * right thing, and the wordmark inside it is set the way the operator's artwork
+ * sets it — upper case, widely letter-spaced, with a rule either side of the
+ * subtitle.
  */
 export function logo({
   name = 'Northstar Cart',
-  subtitle = 'TEA & JEWELLERY',
-  tone = '#d9b96b',
-  text = '#f4efe3',
+  subtitle = 'Tea & Jewellery',
+  width = 460,
 }) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 110" width="460" height="110" role="img" aria-label="${escapeXml(name)}">
-  <g transform="translate(52 55)">
-    <rect x="-38" y="-38" width="76" height="76" rx="8" fill="none" stroke="${tone}" stroke-width="2.4"/>
-    <path d="M0,-28 Q0,0 28,0 Q0,0 0,28 Q0,0 -28,0 Q0,0 0,-28 Z" fill="${tone}"/>
-    <path d="M0,-13 Q0,0 13,0 Q0,0 0,13 Q0,0 -13,0 Q0,0 0,-13 Z" fill="${tone}" transform="rotate(45)"/>
+  const capName = String(name).toUpperCase();
+  const capSub = String(subtitle).toUpperCase();
+
+  /*
+   * Geometry, stated once so the three parts cannot overlap.
+   *
+   *   mark       y   4 … 128   (its own 120×124 space, centred on x = 300)
+   *   wordmark   baseline 172
+   *   subtitle   baseline 200, with a rule either side at y = 196
+   *
+   * The first attempt put the subtitle above the wordmark, because the baseline
+   * numbers were written without checking the order they stacked in.
+   */
+  const SUB_BASELINE = 200;
+  const RULE_Y = 196;
+  const SUB_SIZE = 11.5;
+  const SUB_TRACK = 5;
+  // Advance width of a letter-spaced upper-case string, near enough to place rules.
+  const subWidth = capSub.length * (SUB_SIZE * 0.63 + SUB_TRACK);
+  const ruleGap = 16;
+  const leftRuleEnd = 300 - subWidth / 2 - ruleGap;
+  const rightRuleStart = 300 + subWidth / 2 + ruleGap;
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 215" width="${width}" height="${Math.round((width / 600) * 215)}" role="img" aria-label="${escapeXml(name)} — ${escapeXml(subtitle)}">
+  <defs>${goldGradient('nsGoldLogo')}</defs>
+  <g transform="translate(240 4)">
+    <circle cx="60" cy="54" r="27.5" fill="none" stroke="url(#nsGoldLogo)" stroke-width="1.5" opacity="0.9"/>
+    <path d="${starPath(60, 54, 42)}" fill="url(#nsGoldLogo)"/>
+    <path d="${starPath(60, 108, 8)}" fill="url(#nsGoldLogo)"/>
   </g>
-  <text x="108" y="50" font-family="Georgia,'Times New Roman',serif" font-size="31" fill="${text}" letter-spacing="0.6">${escapeXml(name)}</text>
-  <text x="110" y="75" font-family="Helvetica,Arial,sans-serif" font-size="11.5" letter-spacing="4.4" fill="${tone}">${escapeXml(subtitle)}</text>
+  <text x="300" y="172" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="36" letter-spacing="8" fill="url(#nsGoldLogo)">${escapeXml(capName)}</text>
+  <g stroke="#b8934f" stroke-width="1" opacity="0.75">
+    <line x1="46" y1="${RULE_Y}" x2="${leftRuleEnd}" y2="${RULE_Y}"/>
+    <line x1="${rightRuleStart}" y1="${RULE_Y}" x2="554" y2="${RULE_Y}"/>
+  </g>
+  <text x="300" y="${SUB_BASELINE}" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="${SUB_SIZE}" letter-spacing="${SUB_TRACK}" fill="url(#nsGoldLogo)">${escapeXml(capSub)}</text>
 </svg>`;
 }
 
-/** Favicon: the star mark only. */
-export function favicon({ tone = '#d9b96b', bg = '#0d1f16' } = {}) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+/** Favicon: the mark alone, on the shop's ink-green. */
+export function favicon({ bg = '#0d1f16', width = 64 } = {}) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="${width}" height="${width}">
+  <defs>${goldGradient('nsGoldFav')}</defs>
   <rect width="64" height="64" rx="12" fill="${bg}"/>
-  <rect x="8" y="8" width="48" height="48" rx="6" fill="none" stroke="${tone}" stroke-width="2.5"/>
-  <path d="M32,17 Q32,32 47,32 Q32,32 32,47 Q32,32 17,32 Q32,32 32,17 Z" fill="${tone}"/>
-  <path d="M32,24 Q32,32 40,32 Q32,32 32,40 Q32,32 24,32 Q32,32 32,24 Z" fill="${tone}" transform="rotate(45 32 32)"/>
+  <circle cx="32" cy="29" r="14.5" fill="none" stroke="url(#nsGoldFav)" stroke-width="1.1" opacity="0.9"/>
+  <path d="${starPath(32, 29, 22)}" fill="url(#nsGoldFav)"/>
+  <path d="${starPath(32, 57, 4.2)}" fill="url(#nsGoldFav)"/>
 </svg>`;
 }
 
