@@ -142,16 +142,23 @@
                 <input type="radio" name="shippingMethod" value="standard" checked style="width:17px;height:17px;accent-color:var(--gold-300);margin-top:3px" />
                 <span class="grow">
                   <strong>Standard</strong>
-                  <span>Tracked parcel, dispatched within 48 hours. Complimentary on orders over <%= money(store.freeShippingThreshold) %>, otherwise <%= money(store.flatShippingFee) %>.</span>
+                  <span>Tracked parcel, dispatched within 48 hours, typically arriving 10–25 business days after
+                    dispatch. Complimentary on orders over <%= money(store.freeShippingThreshold) %>, otherwise
+                    <%= money(store.flatShippingFee) %>.</span>
                 </span>
               </label>
               <label class="pay-option" style="cursor:pointer;border-color:var(--line);background:transparent">
                 <input type="radio" name="shippingMethod" value="express" style="width:17px;height:17px;accent-color:var(--gold-300);margin-top:3px" />
                 <span class="grow">
                   <strong>Express</strong>
-                  <span>Priority carrier service, likewise dispatched within 48 hours. <%= money(store.flatShippingFee * 2) %>.</span>
+                  <span>Priority carrier service, likewise dispatched within 48 hours, typically arriving 7–15
+                    business days after dispatch. <%= money(store.flatShippingFee * 2) %>.</span>
                 </span>
               </label>
+              <p class="tiny faint" style="margin:0">
+                Delivery windows are estimates, not guarantees: customs clearance can add time without notice.
+                The full terms are in the <a class="link-underline" href="/shipping">shipping policy</a>.
+              </p>
             </div>
           </div>
 

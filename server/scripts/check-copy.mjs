@@ -42,24 +42,7 @@ const BANNED = [
   { pattern: /\b(?:shipped|shipping|dispatched|packed)[^.<]{0,30}\bfrom Canada\b/i, why: 'claims a Canadian shipping origin' },
   { pattern: /\b(?:tea room|warehouse|warehouses?|fulfilment centre)[^.<]{0,30}\bin Canada\b/i, why: 'claims a Canadian warehouse' },
   { pattern: /\bCanada\b[^.<]{0,30}\b(?:warehouse|fulfilment)\b/i, why: 'claims a Canadian warehouse' },
-  { pattern: /\bdelivery takes\b/i, why: 'quotes a delivery time' },
-  { pattern: /\barrives? in \d/i, why: 'quotes a delivery time' },
-  { pattern: /\bbusiness days? (?:in transit|domestically|internationally|\d)/i, why: 'quotes a transit time' },
-  /*
-   * A day range is only banned when it is about the journey. "Refunds appear
-   * within 5 to 10 business days" is a promise about our own refund desk, which
-   * the customer is entitled to and which no carrier can change — that is not a
-   * delivery estimate and must not be flagged as one.
-   */
-  {
-    pattern: /\d+\s*(?:to|–|-|—)\s*\d+\s*business days[^.]{0,50}\b(?:delivery|transit|arrive|arrival|shipping|ship|customs)\b/i,
-    why: 'quotes a transit time',
-  },
-  {
-    pattern: /\b(?:delivery|transit|arrive|arrival|shipping|ship)\w*\b[^.]{0,60}\d+\s*(?:to|–|-|—)\s*\d+\s*business days/i,
-    why: 'quotes a transit time',
-  },
-  { pattern: /\bExpected (?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\b/, why: 'quotes an arrival date' },
+  { pattern: /\bExpected (?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\b/, why: 'quotes a per-order arrival date' },
   /*
    * A delivery claim does not have to come from a policy page. The editorial
    * copy held a testimonial reading "arrived two days after I ordered it" —
@@ -73,7 +56,53 @@ const BANNED = [
   { pattern: /\b(?:took|came|got here)\b[^.]{0,20}\b(?:\d+|two|three|four|five)\s*days?\b/i, why: 'quotes a delivery time' },
   { pattern: /\bshipped (?:in|within) \d/i, why: 'quotes a dispatch or transit time' },
   { pattern: /\bdays? after (?:I|we) ordered\b/i, why: 'quotes a delivery time' },
+  { pattern: /\barrives? in \d+\s*(?:business\s*)?days?\b/i, why: 'promises an arrival' },
+  { pattern: /\bdelivery takes\b/i, why: 'asserts a delivery time' },
 ];
+
+/**
+ * A published delivery window is allowed, but only with its caveat attached.
+ *
+ * The shop used to publish no delivery window at all, and this check banned any
+ * day range outright. That changed: the payment processor requires a stated
+ * window, because a customer who is told nothing invents the shortest possible
+ * expectation and disputes the charge when it passes.
+ *
+ * A naked range is still a promise the shop cannot keep, so the rule is now
+ * conditional rather than absolute — a page may state a range **if it also says
+ * the range is an estimate**. The banned patterns above still catch a per-order
+ * arrival date, which is a different and much worse thing: a date attached to
+ * one customer's order.
+ */
+const DELIVERY_RANGE = /\d+\s*(?:to|–|-|—)\s*\d+\s*business days/gi;
+/*
+ * Delivery-ish words, deliberately without "ship"/"shipping": those appear in
+ * ordinary refund talk ("the goods ship from China", "return postage"), and
+ * including them made the refund page look like it was promising a delivery
+ * window. "shipped in 5" is caught by its own rule above.
+ */
+const DELIVERY_CONTEXT = /\b(?:deliver|delivery|transit|arriv|dispatch|customs|carrier)\w*/i;
+const RANGE_DISCLAIMER = /\bestimat(?:e|es|ed)\b|\bnot (?:a )?guarantee[ds]?\b/i;
+
+/**
+ * Day ranges on the page that are about delivery rather than about refunds.
+ *
+ * "Refunds appear within 5 to 10 business days" is a promise about our own refund
+ * desk, which the customer is entitled to and which no carrier can change. A
+ * blanket day-range rule flagged it, so the range only counts when a delivery
+ * word appears near it.
+ */
+function deliveryRanges(text) {
+  const hits = [];
+  DELIVERY_RANGE.lastIndex = 0;
+  let m;
+  while ((m = DELIVERY_RANGE.exec(text)) !== null) {
+    const from = Math.max(0, m.index - 160);
+    const to = Math.min(text.length, m.index + m[0].length + 160);
+    if (DELIVERY_CONTEXT.test(text.slice(from, to))) hits.push(m[0]);
+  }
+  return hits;
+}
 
 /** Pages that must carry the dispatch promise, and what proves it. */
 const MUST_PROMISE = [
@@ -108,6 +137,22 @@ for (const page of PAGES) {
   for (const rule of BANNED) {
     const m = text.match(rule.pattern);
     if (m) hits.push({ why: rule.why, sample: m[0], index: m.index });
+  }
+
+  /*
+   * A stated delivery window is fine; an unqualified one is not.
+   *
+   * The processor requires the window to be published, because a customer told
+   * nothing invents the shortest expectation and disputes the charge when it
+   * passes. But a range with no caveat is a promise about a border the shop does
+   * not control, so the page has to say the range is an estimate.
+   */
+  if (deliveryRanges(text).length && !RANGE_DISCLAIMER.test(text)) {
+    hits.push({
+      why: 'states a delivery window without saying it is an estimate',
+      sample: deliveryRanges(text)[0],
+      index: text.indexOf(deliveryRanges(text)[0]),
+    });
   }
 
   if (hits.length) {

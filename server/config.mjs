@@ -101,6 +101,23 @@ const COMPANY_DEFAULTS = {
   registrationNumber: '',
   taxNumber: '',
   /*
+   * Where customers send a return.
+   *
+   * Not the registered office: every parcel ships from the warehouse in China,
+   * and the operator has chosen for returns to go back there rather than across
+   * the Pacific to Markham. Publishing the registered office as a returns address
+   * would be worse than publishing nothing — a customer would post a bracelet to
+   * Ontario at their own cost and it would sit in an office that holds no stock.
+   *
+   * Left empty until the operator supplies the warehouse address. While it is
+   * empty the refund policy says the address comes with the returns
+   * authorisation, which is true, rather than printing a plausible-looking
+   * address nobody has confirmed.
+   *
+   * One row per line, separated by "|", exactly like COMPANY_ADDRESS.
+   */
+  returnsAddress: str('COMPANY_RETURNS_ADDRESS', ''),
+  /*
    * Two addresses, for two different jobs.
    *
    * `support@` is what the site prints, because every one of its uses is a
@@ -203,6 +220,18 @@ const config = {
     country: str('COMPANY_COUNTRY', COMPANY_DEFAULTS.country),
     registrationNumber: str('COMPANY_REGISTRATION_NUMBER', COMPANY_DEFAULTS.registrationNumber),
     taxNumber: str('COMPANY_TAX_NUMBER', COMPANY_DEFAULTS.taxNumber),
+    /*
+     * The warehouse returns go to. Empty until the operator supplies it; see the
+     * note on COMPANY_DEFAULTS.returnsAddress for why this is not the registered
+     * office.
+     */
+    returnsAddressLines: str('COMPANY_RETURNS_ADDRESS', COMPANY_DEFAULTS.returnsAddress)
+      .split('|')
+      .map((line) => line.trim())
+      .filter(Boolean),
+    get hasReturnsAddress() {
+      return this.returnsAddressLines.length > 0;
+    },
     contactPerson: str('COMPANY_CONTACT_PERSON', 'Customer service'),
     email: str('COMPANY_EMAIL', COMPANY_DEFAULTS.email),
     privacyEmail: str('COMPANY_PRIVACY_EMAIL', COMPANY_DEFAULTS.privacyEmail),

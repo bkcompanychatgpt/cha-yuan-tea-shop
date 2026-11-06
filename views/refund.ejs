@@ -54,8 +54,38 @@
           <li>We inspect the parcel when it arrives and email you to confirm, or to explain why it is not accepted.
             That is the point at which the refund is approved.</li>
         </ol>
+
+        <%#
+          The returns address, published but not invented.
+
+          Returns go to the warehouse in China, not to the registered office in
+          Markham — posting a bracelet to Ontario at the customer's own cost, to an
+          office that holds no stock, would be worse than telling them nothing. The
+          address is an environment variable because it is the operator's to supply;
+          while it is unset the page says the address comes with the authorisation,
+          which is true, rather than printing something plausible.
+        %>
+        <div class="alert alert-info" style="margin-top:6px">
+          <strong>Where to send returns</strong><br />
+          <% if (company.hasReturnsAddress) { %>
+            Our returns warehouse, in China:
+            <span style="display:block;margin-top:8px;line-height:1.7">
+              <% company.returnsAddressLines.forEach((line, i) => { %><%= line %><% if (i < company.returnsAddressLines.length - 1) { %><br /><% } %><% }) %>
+            </span>
+            <span class="tiny faint" style="display:block;margin-top:10px">
+              Send by a tracked service and put the return authorisation number on the outside. We take no
+              responsibility for parcels that arrive without one.
+            </span>
+          <% } else { %>
+            The exact address is in the returns authorisation we email you. Do not post anything back before you
+            have one.
+          <% } %>
+        </div>
+
         <p>For a damaged, faulty or wrong item we send a prepaid return label where the carrier offers one. For a
-          change of mind, the return postage is yours.</p>
+          change of mind, the return postage is yours — the goods ship from and return to China, so international
+          return postage on a change of mind can cost more than a small order is worth. Tell us first and we will say
+          plainly whether a return is worth your postage, and often we will simply refund a low-value item instead.</p>
       </div>
     </div>
 

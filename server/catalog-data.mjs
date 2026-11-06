@@ -1112,7 +1112,14 @@ export const EDITORIAL = {
     },
     {
       q: 'How much is shipping, and where do you ship from?',
-      a: 'Every order is packed and dispatched from our warehouse in China within 48 hours, with tracking from the moment it leaves us. Shipping is complimentary over $79, otherwise a flat $9.50; express is $19. We do not quote a delivery date — the carrier and customs decide that, not us.',
+      /*
+       * The delivery window is published here as well as on /shipping, because
+       * this FAQ is where a customer checks before buying. It is stated as a
+       * typical range with the reason it can slip, not as a promise: a shop that
+       * quotes a hard date it cannot control is writing a chargeback against
+       * itself.
+       */
+      a: 'Every order is packed and dispatched from our warehouse in China within 48 hours, with tracking from the moment it leaves us. Standard delivery typically takes 10–25 business days after dispatch, and Express typically 7–15; both are estimates, because customs clearance can add time without notice. Shipping is complimentary over $79, otherwise a flat $9.50; express is $19.',
     },
     {
       q: 'What payment methods do you accept?',
