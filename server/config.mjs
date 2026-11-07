@@ -103,18 +103,15 @@ const COMPANY_DEFAULTS = {
   /*
    * Where customers send a return.
    *
-   * Not the registered office: every parcel ships from the warehouse in China,
-   * and the operator has chosen for returns to go back there rather than across
-   * the Pacific to Markham. Publishing the registered office as a returns address
-   * would be worse than publishing nothing — a customer would post a bracelet to
-   * Ontario at their own cost and it would sit in an office that holds no stock.
+   * Defaults to the registered office, which is what the operator asked for: the
+   * goods ship from the warehouse in China, but returns come back to Markham. The
+   * variable exists so a warehouse address can replace it later without a code
+   * change — an address that holds no stock is only a good returns address while
+   * somebody there is actually receiving and inspecting parcels, and that is the
+   * operator's call, not a default worth guessing.
    *
-   * Left empty until the operator supplies the warehouse address. While it is
-   * empty the refund policy says the address comes with the returns
-   * authorisation, which is true, rather than printing a plausible-looking
-   * address nobody has confirmed.
-   *
-   * One row per line, separated by "|", exactly like COMPANY_ADDRESS.
+   * One row per line, separated by "|", exactly like COMPANY_ADDRESS. Empty means
+   * "use the registered office".
    */
   returnsAddress: str('COMPANY_RETURNS_ADDRESS', ''),
   /*
@@ -221,14 +218,23 @@ const config = {
     registrationNumber: str('COMPANY_REGISTRATION_NUMBER', COMPANY_DEFAULTS.registrationNumber),
     taxNumber: str('COMPANY_TAX_NUMBER', COMPANY_DEFAULTS.taxNumber),
     /*
-     * The warehouse returns go to. Empty until the operator supplies it; see the
-     * note on COMPANY_DEFAULTS.returnsAddress for why this is not the registered
-     * office.
+     * Where returns go: the configured warehouse address if one has been
+     * supplied, otherwise the registered office. See COMPANY_DEFAULTS.
+     * returnsAddress.
      */
-    returnsAddressLines: str('COMPANY_RETURNS_ADDRESS', COMPANY_DEFAULTS.returnsAddress)
-      .split('|')
-      .map((line) => line.trim())
-      .filter(Boolean),
+    returnsAddressLines: (() => {
+      const given = str('COMPANY_RETURNS_ADDRESS', COMPANY_DEFAULTS.returnsAddress)
+        .split('|')
+        .map((line) => line.trim())
+        .filter(Boolean);
+      if (given.length) return given;
+      return str('COMPANY_ADDRESS', COMPANY_DEFAULTS.address)
+        .split('|')
+        .map((line) => line.trim())
+        .filter(Boolean);
+    })(),
+    /** True when returns go somewhere other than the registered office. */
+    returnsAtWarehouse: str('COMPANY_RETURNS_ADDRESS', COMPANY_DEFAULTS.returnsAddress).trim() !== '',
     get hasReturnsAddress() {
       return this.returnsAddressLines.length > 0;
     },
