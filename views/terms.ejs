@@ -16,8 +16,9 @@
       <div class="stack-12">
         <p>This site is operated by <strong class="gold"><%= company.legalName %></strong>, trading as
           <%= company.tradingName %>, of <%= company.addressLines.join(', ') %>. Our company registration is
-          <span class="mono"><%= company.registrationNumber %></span> and our tax registration is
-          <span class="mono"><%= company.taxNumber %></span>. You can reach us at
+          <span class="mono"><%= company.missing.registrationNumber ? 'to be supplied' : company.registrationNumber %></span>
+          and our tax registration is
+          <span class="mono"><%= company.missing.taxNumber ? 'to be supplied' : company.taxNumber %></span>. You can reach us at
           <a class="link-underline" href="mailto:<%= company.email %>"><%= company.email %></a> or on
           <a class="link-underline" href="tel:<%= company.phone.replace(/[^+0-9]/g, '') %>"><%= company.phone %></a>,
           <%= company.hours %>. Full details are on the <a class="link-underline" href="/contact">contact page</a>.</p>

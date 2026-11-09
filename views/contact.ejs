@@ -90,7 +90,26 @@
         <div><span>Opening hours</span><span><%= company.hours %></span></div>
         <div><span>Reply time</span><span>Within <%= company.responseTime %></span></div>
         <div><span>Language</span><span>English</span></div>
-        <div><span>Returns address</span><span>Email us first for a return authorisation, and we will send the address to use</span></div>
+        <%#
+          The returns address, shown rather than withheld.
+
+          This row used to say "email us and we will send the address", which was
+          true while returns went to a warehouse whose address was not published.
+          Returns now come to the registered office, so the policy page and this
+          page say the same thing — a customer deciding whether a return is worth
+          the postage needs the address before writing to us, not after.
+        %>
+        <div>
+          <span>Returns address</span>
+          <span>
+            <% if (company.hasReturnsAddress) { %>
+              <%= company.returnsAddressLines.join(', ') %> —
+              email us first for a return authorisation and put its number on the parcel
+            <% } else { %>
+              Email us first for a return authorisation, and we will send the address to use
+            <% } %>
+          </span>
+        </div>
       </div>
 
       <% if (company.isPlaceholder) { %>

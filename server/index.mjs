@@ -1683,6 +1683,27 @@ app.use((req, res) => {
 
 app.use((err, req, res, _next) => {
   console.error('[error]', err);
+  /*
+   * A body the server could not even parse is the caller's fault, not ours, and
+   * body-parser already said so: it throws with a 4xx `status`. Reporting those
+   * as 500 both misleads the caller and fills the error log with noise from
+   * anything that posts junk at /api/ottpay/callback, which is a public URL by
+   * necessity. 5xx stays generic on purpose — an unexpected error must not leak
+   * its message to a stranger.
+   */
+  const status = Number(err?.status || err?.statusCode || 0);
+  if (status >= 400 && status < 500) {
+    if (req.path.startsWith('/api/')) {
+      return res.status(status).json({ error: 'request', message: 'That request could not be read.' });
+    }
+    res.status(status);
+    return renderPage(res, 'error', {
+      page: 'error',
+      title: 'Bad request',
+      status,
+      message: 'That request could not be read. Please go back and try again.',
+    });
+  }
   if (req.path.startsWith('/api/')) {
     return res.status(500).json({ error: 'server', message: 'Something went wrong on our side.' });
   }
