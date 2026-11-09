@@ -72,7 +72,7 @@ const checks = [
 let pass = 0;
 let fail = 0;
 
-console.log('\nNorthstar Cart contrast audit (WCAG AA)\n');
+console.log('\nBridgeport Global contrast audit (WCAG AA)\n');
 for (const [fg, bg, min, label] of checks) {
   if (!t[fg] || !t[bg]) {
     console.log(`  \u001b[33mSKIP\u001b[0m  ${label} — token missing (${!t[fg] ? `--${fg}` : `--${bg}`})`);

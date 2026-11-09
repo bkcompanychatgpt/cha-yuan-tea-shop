@@ -15,6 +15,11 @@
 
 services:
   - type: web
+    # Render identifies the service by this name, and the onrender.com hostname is
+    # derived from it. It is the repository's name, not the brand: renaming it here
+    # would make a blueprint sync create a *second* service rather than rename this
+    # one, and the custom domain would have to be moved across. Customers only ever
+    # see the domain below, so this stays as it is.
     name: cha-yuan-tea-shop
     runtime: node
     plan: starter
@@ -55,7 +60,7 @@ services:
 
       # ------------------------------------------------ storefront identity
       - key: STORE_NAME
-        value: Northstar Cart
+        value: Bridgeport Global
       - key: STORE_LOGO_SUBTITLE
         value: TEA & JEWELLERY
       - key: STORE_TAGLINE
@@ -84,18 +89,18 @@ services:
       # printing an invented number. Add them as `sync: false` entries here once
       # they exist.
       - key: COMPANY_LEGAL_NAME
-        value: Northstar Cart Inc.
+        value: Bridgeport Global Inc.
       - key: COMPANY_TRADING_NAME
-        value: Northstar Cart
+        value: Bridgeport Global
       # One line per address row, separated by "|".
       - key: COMPANY_ADDRESS
         value: 4-400 Esna Park Drive|Markham, Ontario L3R 3K2|Canada
       - key: COMPANY_COUNTRY
         value: Canada
       - key: COMPANY_EMAIL
-        value: support@northstarcart.com
+        value: support@bridgeportglobalinc.com
       - key: COMPANY_PRIVACY_EMAIL
-        value: privacy@northstarcart.com
+        value: privacy@bridgeportglobalinc.com
       - key: COMPANY_PHONE
         value: +1 (942) 380-9665
       - key: COMPANY_CONTACT_PERSON

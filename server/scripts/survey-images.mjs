@@ -48,7 +48,7 @@ const QUERIES = [
   'herbal tea dried flowers',
 ];
 
-const UA = 'NorthstarCartAssetSourcing/1.0 (https://github.com/local/northstar-cart; dev@northstarcart.test)';
+const UA = 'BridgeportGlobalAssetSourcing/1.0 (https://github.com/local/bridgeport-global; dev@bridgeportglobalinc.test)';
 
 async function search(query, page = 1, pageSize = 20) {
   const url = `https://api.openverse.org/v1/images/?q=${encodeURIComponent(query)}&page=${page}&page_size=${pageSize}`;

@@ -1,5 +1,5 @@
 /** Probe the Openverse API to see what it returns for our query shapes. */
-const UA = 'NorthstarCartAssetSourcing/1.0 (dev@northstarcart.test)';
+const UA = 'BridgeportGlobalAssetSourcing/1.0 (dev@bridgeportglobalinc.test)';
 
 const urls = [
   'https://api.openverse.org/v1/images/?q=jade+bracelet&page=1&page_size=5',

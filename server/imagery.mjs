@@ -526,7 +526,7 @@ export function productArtwork(product) {
 }
 
 /** Wide hero / banner artwork: 1920x1080 landscape. */
-export function heroArtwork({ key = 'home', title = '', subtitle = '', family = 'Green' }) {
+export function heroArtwork({ key = 'home', title = '', subtitle = '', family = 'Green', brand = '' }) {
   const p = paletteFor(family);
   const r = rng(`hero-${key}`);
   let leaves = '';
@@ -548,7 +548,7 @@ export function heroArtwork({ key = 'home', title = '', subtitle = '', family = 
     bands += `<path d="M-50 ${y} C 400 ${y - 70}, 900 ${y + 60}, 1970 ${y - 30} L 1970 1120 L -50 1120 Z"
       fill="${p.bg1}" opacity="${0.30 - i * 0.05}"/>`;
   }
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img" aria-label="${escapeXml(title || 'Northstar Cart')}">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img" aria-label="${escapeXml(title || brand || 'Shop artwork')}">
   <defs>
     <linearGradient id="hb" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="${p.bg1}"/>
@@ -812,8 +812,8 @@ function starPath(cx, cy, r) {
  * where they cross: that is what gives the broken-arc look without needing four
  * separate arc segments.
  */
-export function logoMark({ width = 120 } = {}) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 124" width="${width}" height="${Math.round((width / 120) * 124)}" role="img" aria-label="Northstar Cart">
+export function logoMark({ width = 120, name = '' } = {}) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 124" width="${width}" height="${Math.round((width / 120) * 124)}" role="img"${name ? ` aria-label="${escapeXml(name)}"` : ' aria-hidden="true"'}>
   <defs>${goldGradient('nsGoldMark')}</defs>
   <circle cx="60" cy="54" r="27.5" fill="none" stroke="url(#nsGoldMark)" stroke-width="1.5" opacity="0.9"/>
   <path d="${starPath(60, 54, 42)}" fill="url(#nsGoldMark)"/>
@@ -831,7 +831,7 @@ export function logoMark({ width = 120 } = {}) {
  * subtitle.
  */
 export function logo({
-  name = 'Northstar Cart',
+  name = 'Bridgeport Global',
   subtitle = 'Tea & Jewellery',
   width = 460,
 }) {
@@ -858,6 +858,23 @@ export function logo({
   const leftRuleEnd = 300 - subWidth / 2 - ruleGap;
   const rightRuleStart = 300 + subWidth / 2 + ruleGap;
 
+  /*
+   * The wordmark sizes itself to the name.
+   *
+   * It was fixed at 36px with 8px tracking, which fitted the 14 characters it was
+   * written for and would have run off both edges of a 600-unit box on anything
+   * longer — silently, because an overflowing <text> is still legal SVG and the
+   * only symptom is a name with its first and last letters cut off. Georgia caps
+   * advance about 0.66em and the tracking is a fixed fraction of the size, so one
+   * ratio solves both: the name is laid out at the largest size that fits the
+   * 536-unit usable width, never above the 36px it was drawn at.
+   */
+  const NAME_MAX_W = 536;
+  const ADVANCE = 0.66; // average upper-case advance in Georgia, in em
+  const TRACK_RATIO = 0.22; // tracking as a fraction of the size
+  const nameSize = Math.min(36, NAME_MAX_W / (Math.max(1, capName.length) * (ADVANCE + TRACK_RATIO)));
+  const nameTrack = nameSize * TRACK_RATIO;
+
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 215" width="${width}" height="${Math.round((width / 600) * 215)}" role="img" aria-label="${escapeXml(name)} — ${escapeXml(subtitle)}">
   <defs>${goldGradient('nsGoldLogo')}</defs>
   <g transform="translate(240 4)">
@@ -865,7 +882,7 @@ export function logo({
     <path d="${starPath(60, 54, 42)}" fill="url(#nsGoldLogo)"/>
     <path d="${starPath(60, 108, 8)}" fill="url(#nsGoldLogo)"/>
   </g>
-  <text x="300" y="172" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="36" letter-spacing="8" fill="url(#nsGoldLogo)">${escapeXml(capName)}</text>
+  <text x="300" y="172" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="${nameSize.toFixed(1)}" letter-spacing="${nameTrack.toFixed(1)}" fill="url(#nsGoldLogo)">${escapeXml(capName)}</text>
   <g stroke="#b8934f" stroke-width="1" opacity="0.75">
     <line x1="46" y1="${RULE_Y}" x2="${leftRuleEnd}" y2="${RULE_Y}"/>
     <line x1="${rightRuleStart}" y1="${RULE_Y}" x2="554" y2="${RULE_Y}"/>

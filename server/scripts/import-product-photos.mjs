@@ -34,6 +34,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import { getDb } from '../db.mjs';
+import { config } from '../config.mjs';
 import { extractFlat } from './lib/zip.mjs';
 import { gradeResize } from './lib/grade.mjs';
 
@@ -223,7 +224,9 @@ if (!arg) {
     credits.credits[product.slug] = {
       source: '',
       title: prompt ? `Generated illustration of ${product.name}` : `Generated image of ${product.name}`,
-      author: 'Generated for Northstar Cart',
+      // The shop's own name, from config: a rename must not leave the credit
+      // lines naming the previous brand.
+      author: `Generated for ${config.store.name}`,
       licence: 'Own work, generated',
       licenceUrl: '',
       generated: true,

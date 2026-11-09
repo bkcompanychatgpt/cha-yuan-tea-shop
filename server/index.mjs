@@ -1,5 +1,5 @@
 /**
- * Northstar Cart — HTTP application.
+ * Bridgeport Global — HTTP application.
  *
  * Express server hosting the storefront, the JSON API, the OTT Pay callback
  * endpoint, the 3-D Secure challenge relay and the admin back office.
@@ -428,6 +428,7 @@ app.get('/img/hero/:key.svg', (req, res) => {
   sendSvg(res, imagery.heroArtwork({
     key,
     family,
+    brand: config.store.name,
     title: (req.query.title || '').toString().slice(0, 60),
     subtitle: (req.query.subtitle || '').toString().slice(0, 60),
   }));
@@ -447,7 +448,7 @@ app.get('/img/logo.svg', (req, res) => sendSvg(res, imagery.logo({
  * header above 1180px, because the `.brand-text` span beside it was only hidden
  * below that width.
  */
-app.get('/img/logo-mark.svg', (req, res) => sendSvg(res, imagery.logoMark(), { immutable: true }));
+app.get('/img/logo-mark.svg', (req, res) => sendSvg(res, imagery.logoMark({ name: config.store.name }), { immutable: true }));
 /**
  * Payment-network marks.
  *

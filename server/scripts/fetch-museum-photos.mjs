@@ -22,7 +22,7 @@ const ROOT = path.resolve(HERE, '..', '..');
 const RAW_DIR = path.join(ROOT, 'data', 'photos', 'museum-raw');
 const INDEX = path.join(ROOT, 'data', 'photos', 'museum-index.json');
 
-const UA = 'NorthstarCartAssetSourcing/1.0 (dev@northstarcart.test)';
+const UA = 'BridgeportGlobalAssetSourcing/1.0 (dev@bridgeportglobalinc.test)';
 const API = 'https://openaccess-api.clevelandart.org/api/artworks/';
 
 const QUERIES = {

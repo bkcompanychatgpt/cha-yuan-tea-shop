@@ -24,7 +24,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..');
 const OUT_DIR = path.join(ROOT, 'public', 'img', 'badge');
 
-const UA = 'NorthstarCartAssetSourcing/1.0 (https://github.com/local/northstar-cart; dev@northstarcart.test)';
+const UA = 'BridgeportGlobalAssetSourcing/1.0 (https://github.com/local/bridgeport-global; dev@bridgeportglobalinc.test)';
 const API = 'https://commons.wikimedia.org/w/api.php';
 
 /**

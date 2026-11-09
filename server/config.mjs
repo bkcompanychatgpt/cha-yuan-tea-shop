@@ -94,7 +94,7 @@ const paymentMode = str('PAYMENT_MODE', 'mock').toLowerCase();
  * where the company is registered, and every parcel ships from China.
  */
 const COMPANY_DEFAULTS = {
-  legalName: 'Northstar Cart Inc.',
+  legalName: 'Bridgeport Global Inc.',
   address: '4-400 Esna Park Drive|Markham, Ontario L3R 3K2|Canada',
   country: 'Canada',
   // Left blank on purpose — see the note above.
@@ -128,8 +128,8 @@ const COMPANY_DEFAULTS = {
    * sent to the conventional prefixes arrives instead of bouncing — a supplier
    * will guess `info@` before they read the footer.
    */
-  email: 'support@northstarcart.com',
-  privacyEmail: 'privacy@northstarcart.com',
+  email: 'support@bridgeportglobalinc.com',
+  privacyEmail: 'privacy@bridgeportglobalinc.com',
   phone: '+1 (942) 380-9665',
 };
 
@@ -179,7 +179,7 @@ const config = {
   isProduction: str('NODE_ENV', 'development') === 'production',
 
   store: {
-    name: str('STORE_NAME', 'Northstar Cart'),
+    name: str('STORE_NAME', 'Bridgeport Global'),
     /*
      * The word under the wordmark. It used to read "CHINESE TEA", which was true
      * when the shop sold one thing; it now sells tea and beaded bracelets, so the
@@ -209,7 +209,7 @@ const config = {
    */
   company: {
     legalName: str('COMPANY_LEGAL_NAME', COMPANY_DEFAULTS.legalName),
-    tradingName: str('COMPANY_TRADING_NAME', str('STORE_NAME', 'Northstar Cart')),
+    tradingName: str('COMPANY_TRADING_NAME', str('STORE_NAME', 'Bridgeport Global')),
     addressLines: str('COMPANY_ADDRESS', COMPANY_DEFAULTS.address)
       .split('|')
       .map((line) => line.trim())
@@ -306,7 +306,7 @@ const config = {
   },
 
   admin: {
-    email: str('ADMIN_EMAIL', 'owner@northstarcart.test').toLowerCase(),
+    email: str('ADMIN_EMAIL', 'owner@bridgeportglobalinc.test').toLowerCase(),
     password: str('ADMIN_PASSWORD', 'changeme-please'),
   },
 
@@ -322,7 +322,7 @@ const config = {
  */
 const PUBLIC_DEFAULTS = {
   adminPassword: 'changeme-please',
-  adminEmail: 'owner@northstarcart.test',
+  adminEmail: 'owner@bridgeportglobalinc.test',
   sessionSecret: 'change-me-to-a-long-random-string',
 };
 

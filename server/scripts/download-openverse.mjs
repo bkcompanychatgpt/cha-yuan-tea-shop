@@ -17,7 +17,7 @@ const RAW_DIR = path.join(PHOTO_DIR, 'openverse-raw');
 const MANIFEST = path.join(PHOTO_DIR, 'openverse-candidates.json');
 const INDEX = path.join(PHOTO_DIR, 'openverse-index.json');
 
-const UA = 'NorthstarCartAssetSourcing/1.0 (https://github.com/local/northstar-cart; dev@northstarcart.test)';
+const UA = 'BridgeportGlobalAssetSourcing/1.0 (https://github.com/local/bridgeport-global; dev@bridgeportglobalinc.test)';
 
 async function downloadOnce(url, dest, attempt = 1, maxAttempts = 4) {
   try {

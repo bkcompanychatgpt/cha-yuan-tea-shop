@@ -9,7 +9,7 @@
  */
 import { all, get } from '../db.mjs';
 
-console.log('\nNorthstar Cart database audit\n');
+console.log('\nBridgeport Global database audit\n');
 
 console.log('--- payment callbacks (decrypted with AES-128-ECB) ---');
 const events = all(

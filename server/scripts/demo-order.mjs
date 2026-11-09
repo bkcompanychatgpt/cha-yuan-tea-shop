@@ -39,7 +39,7 @@ async function json(path, options) {
 }
 
 async function main() {
-  console.log(`\nNorthstar Cart — demonstration order against ${BASE}\n`);
+  console.log(`\nBridgeport Global — demonstration order against ${BASE}\n`);
 
   const config = await json('/api/config');
   const csrf = decodeURIComponent((jar.match(/cy_csrf=([^;]+)/) || [])[1] || '');

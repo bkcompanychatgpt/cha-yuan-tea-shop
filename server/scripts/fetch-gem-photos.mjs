@@ -26,7 +26,7 @@ const SHEET_DIR = path.join(PHOTO_DIR, 'sheets');
 const MANIFEST = path.join(PHOTO_DIR, 'gem-candidates.json');
 const INDEX = path.join(PHOTO_DIR, 'gem-index.json');
 
-const UA = 'NorthstarCartAssetSourcing/1.0 (https://github.com/local/northstar-cart; dev@northstarcart.test)';
+const UA = 'BridgeportGlobalAssetSourcing/1.0 (https://github.com/local/bridgeport-global; dev@bridgeportglobalinc.test)';
 
 /**
  * Queries aimed at photographs of an *object for sale* rather than at a museum

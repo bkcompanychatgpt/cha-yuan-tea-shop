@@ -139,7 +139,7 @@ async function main() {
     console.error('No Chrome/Edge found — skipping the visual probe.');
     process.exit(0);
   }
-  console.log(`\nNorthstar Cart visual probe (${path.basename(browser)})\n`);
+  console.log(`\nBridgeport Global visual probe (${path.basename(browser)})\n`);
 
   const reports = [];
   for (const viewport of VIEWPORTS) {

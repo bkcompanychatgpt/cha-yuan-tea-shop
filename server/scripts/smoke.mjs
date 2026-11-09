@@ -74,7 +74,7 @@ function csrfFromCookie() {
 }
 
 async function main() {
-  console.log(`\nNorthstar Cart smoke test against ${BASE}\n`);
+  console.log(`\nBridgeport Global smoke test against ${BASE}\n`);
   console.log('Storefront');
 
   /* ---------------------------------------------------------- storefront */
@@ -258,7 +258,7 @@ async function main() {
   };
 
   const baseOrder = {
-    email: 'smoke@northstarcart.test',
+    email: 'smoke@bridgeportglobalinc.test',
     name: 'Smoke Tester',
     phone: '+1 416 555 0123',
     address: '1123 Leslie Street',
@@ -381,7 +381,7 @@ async function main() {
   }
 
   {
-    const r = await request(`/order/${orderNumber}?email=smoke@northstarcart.test`);
+    const r = await request(`/order/${orderNumber}?email=smoke@bridgeportglobalinc.test`);
     const html = await r.text();
     record(r.status === 200 && html.includes(orderNumber), 'the order confirmation page renders');
     record(html.includes('Smoke Tester'), 'the confirmation shows the customer');
@@ -390,7 +390,7 @@ async function main() {
   /* ------------------------------------------------- fulfilment promises */
   console.log('\nOrder confirmation detail');
   {
-    const r = await request(`/order/${orderNumber}?email=smoke@northstarcart.test`);
+    const r = await request(`/order/${orderNumber}?email=smoke@bridgeportglobalinc.test`);
     const html = await r.text();
     record(html.includes('What happens next'), 'the confirmation explains what happens next');
     record((html.match(/class="fulfil-step /g) || []).length === 6, 'the confirmation shows all six fulfilment stages');
@@ -471,7 +471,7 @@ async function main() {
   {
     const r = await request('/admin/login', {
       method: 'POST',
-      form: { email: 'owner@northstarcart.test', password: 'wrong-password', next: '/admin' },
+      form: { email: 'owner@bridgeportglobalinc.test', password: 'wrong-password', next: '/admin' },
     });
     record(r.status === 401, 'admin rejects a wrong password', `status ${r.status}`);
   }
@@ -479,7 +479,7 @@ async function main() {
   {
     const r = await request('/admin/login', {
       method: 'POST',
-      form: { email: 'owner@northstarcart.test', password: 'changeme-please', next: '/admin' },
+      form: { email: 'owner@bridgeportglobalinc.test', password: 'changeme-please', next: '/admin' },
     });
     record(r.status === 302 && (r.headers.get('location') || '').includes('/admin'), 'admin accepts the configured password', `status ${r.status}`);
   }
