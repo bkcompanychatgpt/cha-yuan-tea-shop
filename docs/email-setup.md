@@ -49,16 +49,27 @@ previous domain:
 
 | Type | Name | Value | Notes |
 | --- | --- | --- | --- |
-| MX | `@` | `us1.smtp.messagingengine.com` | priority 10 |
-| MX | `@` | `us2.smtp.messagingengine.com` | priority 20 |
+| MX | `@` | `us1-smtp.messagingengine.com` | priority 10 |
+| MX | `@` | `us2-smtp.messagingengine.com` | priority 20 |
 | TXT | `@` | `v=spf1 include:spf.messagingengine.com ?all` | exactly one SPF record |
 | CNAME | `fm1._domainkey` | `fm1.bridgeportglobalinc.com.dkim.fmhosted.com` | |
 | CNAME | `fm2._domainkey` | `fm2.bridgeportglobalinc.com.dkim.fmhosted.com` | |
 | CNAME | `fm3._domainkey` | `fm3.bridgeportglobalinc.com.dkim.fmhosted.com` | |
 | TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:support@bridgeportglobalinc.com; fo=1` | |
 
-Three things people get wrong here:
+These are the values that were actually serving the previous domain — read back
+out of DNS, not recalled. Note `us1-smtp` with a hyphen: `us1.smtp` is the format
+most guides show and it is not what Fastmail assigned here.
 
+If you would rather not click through the console, `server/scripts/cloudflare-dns.mjs`
+writes all of it (site records too) from a `CLOUDFLARE_API_TOKEN`:
+
+```
+node server/scripts/cloudflare-dns.mjs --zone bridgeportglobalinc.com          # dry run
+node server/scripts/cloudflare-dns.mjs --zone bridgeportglobalinc.com --apply
+```
+
+Three things people get wrong here:
 - **Cloudflare proxies orange clouds by default.** MX records cannot be proxied and
   Cloudflare handles that, but the `fm*._domainkey` CNAMEs must be **grey cloud
   (DNS only)**. A proxied DKIM record breaks signing, and signed mail failing is
